@@ -180,11 +180,12 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
     request.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name"
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startSchoolYear"
                                                               ascending:YES
                                                                selector:@selector(localizedStandardCompare:)]];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     [self createDataSource];
+    [self.tableView reloadData];
 }
 
 //网络请求
