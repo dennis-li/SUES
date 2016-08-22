@@ -63,8 +63,8 @@
 // 服务器交互进行用户名，密码认证
 -(BOOL)loginWithUser {
     
-    NSString *username = @"023113141";
-    NSString *password = @"lidaye1991";
+    NSString *username = @"022115212";
+    NSString *password = @"015117";
 //    NSString *username = self.usernameTF.text;
 //    NSString *password = self.passwordTF.text;
     
@@ -91,6 +91,8 @@
        
         NSLog(@"result = %@",result);
         if (![result containsString:@"handleLoginSuccessed"]) {
+            NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+            NSLog(@"RET = %@",result);
             NSLog(@"密码或用户名错误");
         } else{
             self.userId = username;

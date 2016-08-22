@@ -55,6 +55,14 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     return self;
 }
 
+-(NSString *)currentWeek
+{
+    if (!_currentWeek) {
+        return @"1";
+    }
+    return _currentWeek;
+}
+
 -(void)setUser:(User *)user
 {
     _user = user;
@@ -68,11 +76,6 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     [self addAllButtonsToMainScrollView];
 }
 
--(void)setCurrentWeek:(NSString *)currentWeek
-{
-    _currentWeek = currentWeek;
-    
-}
 
 #pragma mark - courseButtonDictionary,haveAClass
 -(NSMutableDictionary<NSString *,UIButton *> *)courseButtonDictionary

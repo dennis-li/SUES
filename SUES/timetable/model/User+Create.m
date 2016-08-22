@@ -33,7 +33,6 @@
             user = [matches lastObject];
         }
     }
-    NSLog(@"user.name = %@",user.name);
     return user;
 }
 

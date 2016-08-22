@@ -46,7 +46,6 @@
         grade.startSchoolYear = gradeDictionary[COURSE_STARTSCHOOLYEAR];
         grade.semester = gradeDictionary[COURSE_SEMESTER];
         grade.whoGrade = [User searchUserWithId:gradeDictionary[GRADE_WHOGRADE] inManagedObjectContext:context];
-        NSLog(@"grade.name = %@",grade.name);
     }
     return grade;
 }

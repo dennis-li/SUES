@@ -37,7 +37,7 @@
     UIWebView *webView  = [[UIWebView alloc] init];
     webView.delegate = self;
     self.weebView = webView;
-    [self test];
+//    [self test];
     [self checkLogin];
     return YES;
 }
@@ -96,7 +96,7 @@
     //    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
     NSArray *courseArray = [self.managedObjectContext executeFetchRequest:request error:nil];
     
-    if ([courseArray count]) {
+    if (0) {
         self.user = [courseArray lastObject];
         [self.userDictionary setValue:self.user.name forKey:USER_NAME];
         [self.userDictionary setValue:self.user.password forKey:USER_PASSWORD];
@@ -143,9 +143,8 @@
             NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//table[@id='myBar']/tbody/tr/td[2]/b"];
             TFHppleElement *element = [userNameArray firstObject];
             NSString *userName = [[[element content] componentsSeparatedByString:@":"] lastObject];
-            NSMutableDictionary *userDictionary = [[NSMutableDictionary alloc] init];
             [self.userDictionary setValue:userName forKey:USER_NAME];
-            self.user = [User userWithName:userDictionary inManagedObjectContext:self.managedObjectContext];
+            self.user = [User userWithName:self.userDictionary inManagedObjectContext:self.managedObjectContext];
     }
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='listTable']/tbody/tr[position()>2]/td"];
     if ([elements count]) {

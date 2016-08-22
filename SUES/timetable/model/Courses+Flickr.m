@@ -45,7 +45,6 @@
         course.startSchoolYear = gradeDictionary[COURSE_STARTSCHOOLYEAR];
         course.semester = gradeDictionary[COURSE_SEMESTER];
         course.whoCourse = [User userWithName:gradeDictionary[COURSE_WHOCOURSE] inManagedObjectContext:context];
-        NSLog(@"course.teacher = %@",course.teacher);
 #warning period
         course.period = period;
     }
