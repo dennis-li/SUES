@@ -8,23 +8,340 @@
 
 #import "AppDelegate.h"
 #import "MainTabBarController.h"
+#import "CreateContext.h"
+#import "TFHpple.h"
+#import "Public.h"
+#import "Courses+Flickr.h"
+#import "Grade+Flickr.h"
+#import "User+Create.h"
+#import <AFNetworking.h>
 
-@interface AppDelegate ()
-
+@interface AppDelegate ()<UIWebViewDelegate>
+@property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic,strong) UIWebView *weebView;
+@property (nonatomic,strong) NSMutableArray *coursesArray;
+@property (nonatomic,strong) NSMutableDictionary *userDictionary;
 @end
 
 @implementation AppDelegate
-
+-(NSMutableDictionary *)userDictionary
+{
+    if (!_userDictionary) {
+        _userDictionary = [[NSMutableDictionary alloc] init];
+    }
+    return _userDictionary;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    appDelegate.user = nil;
+    UIWebView *webView  = [[UIWebView alloc] init];
+    webView.delegate = self;
+    self.weebView = webView;
+    [self test];
+    [self checkLogin];
+    return YES;
+}
+
+-(void)test
+{
+    NSString *username = @"023113141";
+    NSString *password = @"";
+    //    NSString *username = self.usernameTF.text;
+    //    NSString *password = self.passwordTF.text;
     
+    NSString *capatcha = @"";
+    NSString *gotoOnFaili = @"http://my.sues.edu.cn/loginFailure.portal";
+    NSString *gotoSuccess = @"http://my.sues.edu.cn/loginSuccess.portal";
+    
+    NSDictionary *parameters = @{@"Login.Token1":username,
+                                 @"Login.Token2":password,
+                                 @"capatcha":capatcha,
+                                 @"goto":gotoSuccess,
+                                 @"gotoOnFaili":gotoOnFaili
+                                 };
+    //请求的url
+    NSString *urlString = @"http://my.sues.edu.cn/userPasswordValidate.portal";
+    //请求的managers
+    AFHTTPSessionManager *managers = [AFHTTPSessionManager manager];
+    //请求的方式：POST
+    managers.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    managers.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [managers POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"请求成功，服务器返回的信息%@",responseObject);
+        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        
+        NSLog(@"result = %@",result);
+        if (![result containsString:@"handleLoginSuccessed"]) {
+            NSLog(@"密码或用户名错误");
+        } else{
+            NSString *URLString = @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=courseTable&setting.forSemester=0&setting.kind=std&semester.id=402&ids=72123730&ignoreHead=1";
+            NSURL *url = [NSURL URLWithString:URLString];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [self.weebView loadRequest:request];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"需要链接学校的无线网error = %@",error);
+    }];
+}
+//webView加载完成之后,把数据传到AppDelegate
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    NSString *string = [self.weebView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
+    NSLog(@"webViewHTML = %@",string);
+}
+-(void)checkLogin
+{
+    self.managedObjectContext = [CreateContext createContext];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+    //    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
+    NSArray *courseArray = [self.managedObjectContext executeFetchRequest:request error:nil];
+    
+    if ([courseArray count]) {
+        self.user = [courseArray lastObject];
+        [self.userDictionary setValue:self.user.name forKey:USER_NAME];
+        [self.userDictionary setValue:self.user.password forKey:USER_PASSWORD];
+        [self.userDictionary setValue:self.user.userId forKey:USER_ID];
+        [self changeRootCtroller];
+    }
+}
+
+-(void)changeRootCtroller
+{
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:250.0f/255.0f green:210.0f/255.0f blue:40.0f/255.0f alpha:1.0f]];
     MainTabBarController *tabCtrl = [[MainTabBarController alloc] init];
-    self.window.rootViewController = tabCtrl;
-    return YES;
+//    self.window.rootViewController = tabCtrl;
+    
+    [UIView transitionWithView:[[UIApplication sharedApplication].delegate window]
+                      duration:0.4
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        BOOL oldState=[UIView areAnimationsEnabled];
+                        [UIView setAnimationsEnabled:NO];
+                        [[[UIApplication sharedApplication].delegate window] setRootViewController:tabCtrl];
+                        [UIView setAnimationsEnabled:oldState];
+                        
+                    }
+                    completion:NULL];
+}
+
+//返回登录信息
+-(void)startUserDataWithUserDetail:(NSString *)HTMLData userId:(NSString *)userId userPassWord:(NSString *)userPassWord
+{
+    [self.userDictionary setValue:userId  forKey:USER_ID];
+    [self.userDictionary setValue:userPassWord forKey:USER_PASSWORD];
+    [self startUserDataFetchWithHtmlData:HTMLData];
+}
+
+//开始获取用户的数据，并创建用户self.user
+-(void)startUserDataFetchWithHtmlData:(NSString *)HTMLData
+{
+    
+    NSData *htmlData= [HTMLData dataUsingEncoding:NSUTF8StringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    if (!self.user) {
+            NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//table[@id='myBar']/tbody/tr/td[2]/b"];
+            TFHppleElement *element = [userNameArray firstObject];
+            NSString *userName = [[[element content] componentsSeparatedByString:@":"] lastObject];
+            NSMutableDictionary *userDictionary = [[NSMutableDictionary alloc] init];
+            [self.userDictionary setValue:userName forKey:USER_NAME];
+            self.user = [User userWithName:userDictionary inManagedObjectContext:self.managedObjectContext];
+    }
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='listTable']/tbody/tr[position()>2]/td"];
+    if ([elements count]) {
+        if (LX_DEBUG) {
+            NSLog(@"[%@->%@] requestData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+        }
+    }
+    [self saveDownloadData:elements];
+}
+
+
+-(void)saveDownloadData :(NSArray *)elements
+{
+    //存储一个课程
+    NSMutableDictionary *courseDictionary = nil;//新建一个课程字典
+    NSString *week;
+    NSInteger whichLesson = 0;
+    NSInteger sectionStart = 0;
+    NSInteger sectionEnd = 0;
+    for (TFHppleElement *element in elements) {
+        whichLesson++;
+        if ([[element objectForKey:@"class"] isEqualToString:@"darkColumn"]) {//匹配星期几
+            week = [element content];
+            whichLesson = 0;
+        }
+        
+        if ([element objectForKey:@"colspan"]) {
+            sectionEnd = [[element objectForKey:@"colspan"] integerValue]+whichLesson-1;
+            sectionStart = whichLesson;
+            whichLesson = sectionEnd;
+        }
+        
+        //找到一个课程详情
+        if ([[element objectForKey:@"class"] isEqualToString:@"infoTitle"]) {
+            NSString *course = [element objectForKey:@"title"];
+            if (!course) {
+                if (LX_DEBUG) {
+                    NSLog(@"[%@->%@] flickr Course",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+                }
+                continue;
+            }
+            
+            /*@[王国强 多元微积分A（上）(0014), (1-8,B310多), 沈军 多元微积分A（下）(4477), (10-17,A307多)*/
+            NSArray *courseArray = [course componentsSeparatedByString:@";"];
+            if (![courseArray count]) {
+                continue;
+            }
+            for (NSString *courseDetail in courseArray) {
+                if (![[courseDetail substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"("]) {
+                    if (courseDictionary) {
+                        if (LX_DEBUG) {
+                            for (NSString *string in courseDictionary) {
+                                NSLog(@"%@ = %@",string,courseDictionary[string]);
+                            }
+                            NSLog(@"-----------------------------------");
+                        }
+                        
+                    }
+                    courseDictionary = [self createACourseDictionary];
+                    [self.coursesArray addObject:courseDictionary];
+                    [courseDictionary setValue:[NSNumber numberWithInteger:sectionStart] forKey:COURSE_SECTIONSTART];
+                    [courseDictionary setValue:[NSNumber numberWithInteger:sectionEnd] forKey:COURSE_SECTIONEND];
+                    [courseDictionary setValue:[NSNumber numberWithInteger:2015] forKey:COURSE_STARTSCHOOLYEAR];
+                    [courseDictionary setValue:[NSNumber numberWithInteger:2] forKey:COURSE_SEMESTER];
+                    [courseDictionary setValue:self.userDictionary forKey:COURSE_WHOCOURSE];
+                    
+                    NSArray *teacherAndcourseNameArray = [courseDetail componentsSeparatedByString:@" "];
+                    if ([teacherAndcourseNameArray count] > 1) {
+                        for (NSString *teacher in teacherAndcourseNameArray) {
+                            NSLog(@"teacher = %@",teacher);
+                        }
+                        [courseDictionary setValue:[teacherAndcourseNameArray firstObject] forKey:COURSE_TEACHER];//老师
+                    } else {
+                        [courseDictionary setValue:@"待定" forKey:COURSE_TEACHER];
+                    }
+                    
+                    NSArray *courseNameAndIdArray = [[teacherAndcourseNameArray lastObject] componentsSeparatedByString:@"("];//高歌 电路(一)(3911);(1-8,C110多); 制造技术基础实习C(3897);(10-11,实训楼1号楼底楼7号门大厅)
+                    [courseDictionary setValue:[courseNameAndIdArray firstObject] forKey:COURSE_NAME];
+                    
+                    NSString *courseId = [[courseNameAndIdArray lastObject] substringToIndex:[[courseNameAndIdArray lastObject]length]-1];
+                    [courseDictionary setValue:courseId forKey:COURSE_ID];
+#warning -暂用period做为课程唯一标识符
+                    NSString *period = [[[self weekToDay:week] stringByAppendingString:[NSString stringWithFormat:@"%ld",sectionStart]] stringByAppendingString:courseId];
+                    [courseDictionary setValue:period forKey:COURSE_PERIOD];
+                } else {
+                    
+                    if ([courseDictionary objectForKey:COURSE_DAY]) {
+                        //这种情况－－高燕 自动控制理论A(0524);(11,训1104-1111);(12-14,训1105);(1-8 10,D302多)
+                        NSString *oldLocale = [courseDictionary objectForKey:COURSE_LOCALE];
+                        NSString *oldSmartPeriod = [courseDictionary objectForKey:COURSE_SMARTPERIOD];
+                        
+                        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
+                        //上课时间
+                        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
+                        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
+                        
+                        [courseDictionary setValue:[oldLocale stringByAppendingString:[NSString stringWithFormat:@",%@",courseDetail]] forKey:COURSE_LOCALE];//上课地点
+                        [courseDictionary setValue:[oldSmartPeriod stringByAppendingString:smartPeriod] forKey:COURSE_SMARTPERIOD];
+                    } else {//这里只运行一次
+                        
+                        [courseDictionary setValue:[NSNumber numberWithInteger:[[self weekToDay:week] integerValue]] forKey:COURSE_DAY];
+                        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
+                        
+                        //上课时间
+                        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
+                        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
+                        
+                        [courseDictionary setValue:courseDetail forKey:COURSE_LOCALE];//上课地点
+                        [courseDictionary setValue:smartPeriod forKey:COURSE_SMARTPERIOD];
+                    }
+                }
+            }
+        }
+    }
+    [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
+    
+    [self.managedObjectContext save:NULL];
+    [self sendNotificationToCourseTable];
+}
+
+-(void)sendNotificationToCourseTable
+{
+    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToCourseTable"
+     object:self
+     userInfo:userInfo];
+}
+
+//返回一个字典，存储课程详情
+-(NSMutableDictionary *)createACourseDictionary
+{
+    return [[NSMutableDictionary alloc] init];
+}
+
+//存储所有的课程信息
+-(NSMutableArray *)coursesArray
+{
+    if (!_coursesArray) {
+        _coursesArray = [[NSMutableArray alloc] init];
+    }
+    return _coursesArray;
+}
+
+//给定一个上课时间字符串，返回总共的具体上课时间smartPeriod = 10 11 12 13 14 15 16 17
+-(NSString *)returnTotalSmartData:(NSString *)courseTime
+{
+    NSArray *courseTimes = [courseTime componentsSeparatedByString:@" "];//@[4, 8, 双12-14]
+    NSMutableString *smartPeriod = [[NSMutableString alloc] init];
+    for (NSString *coursetime in courseTimes) {
+        if ([coursetime length] < 3) {
+            [smartPeriod appendString:[NSString stringWithFormat:@"%@ ",coursetime]];
+        }else {
+            NSString *temp = [coursetime substringWithRange:NSMakeRange(0, 1)];
+            if ([temp isEqualToString:@"单"] || [temp isEqualToString:@"双"]) {
+                NSArray *times = [[coursetime substringFromIndex:1] componentsSeparatedByString:@"-"];
+                [smartPeriod appendString:[self returnSmartValue:2 startNum:[times firstObject] endNum:[times lastObject]]];
+            } else {
+                NSArray *times = [coursetime componentsSeparatedByString:@"-"];
+                [smartPeriod appendString:[self returnSmartValue:1 startNum:[times firstObject] endNum:[times lastObject]]];
+            }
+        }
+    }
+    return smartPeriod;
+}
+//给定一个上课时间范围，返回具体的上课时间
+-(NSString *)returnSmartValue:(NSInteger)step startNum:(NSString *)startNum endNum:(NSString *)endNum
+{
+    NSMutableString *string = [[NSMutableString alloc] init];
+    NSInteger start,end;
+    start = [startNum integerValue];
+    end = [endNum integerValue];
+    for (; start <= end; start+=step) {
+        [string appendString:[NSString stringWithFormat:@"%ld ",start]];
+    }
+    return string;
+}
+
+-(NSString *)weekToDay:(NSString *)week
+{
+    if ([week isEqualToString:@"星期一"]) {
+        return @"1";
+    } else if([week isEqualToString:@"星期二"]){
+        return @"2";
+    } else if([week isEqualToString:@"星期三"]){
+        return @"3";
+    } else if([week isEqualToString:@"星期四"]){
+        return @"4";
+    } else if([week isEqualToString:@"星期五"]){
+        return @"5";
+    } else if([week isEqualToString:@"星期六"]){
+        return @"6";
+    } else if([week isEqualToString:@"星期日"]){
+        return @"7";
+    }
+    return @"0";
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -48,87 +365,26 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
-}
-
-#pragma mark - Core Data stack
-
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
-- (NSURL *)applicationDocumentsDirectory {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "lixu-dennisli-163.com.SUES" in the application's documents directory.
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
-
-- (NSManagedObjectModel *)managedObjectModel {
-    // The managed object model for the application. It is a fatal error for the application not to be able to find and load its model.
-    if (_managedObjectModel != nil) {
-        return _managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"SUES" withExtension:@"momd"];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return _managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it.
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
-    }
     
-    // Create the coordinator and store
-    
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"SUES.sqlite"];
-    NSError *error = nil;
-    NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        // Report any error we got.
-        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-        dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
-        dict[NSLocalizedFailureReasonErrorKey] = failureReason;
-        dict[NSUnderlyingErrorKey] = error;
-        error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
-        // Replace this with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _persistentStoreCoordinator;
 }
 
 
-- (NSManagedObjectContext *)managedObjectContext {
-    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (!coordinator) {
-        return nil;
-    }
-    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    return _managedObjectContext;
-}
 
-#pragma mark - Core Data Saving support
+//- (NSManagedObjectContext *)managedObjectContext {
+//    // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
+//    if (_managedObjectContext != nil) {
+//        return _managedObjectContext;
+//    }
+//    
+//    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+//    if (!coordinator) {
+//        return nil;
+//    }
+//    _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+//    [_managedObjectContext setPersistentStoreCoordinator:coordinator];
+//    return _managedObjectContext;
+//}
 
-- (void)saveContext {
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        NSError *error = nil;
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            // Replace this implementation with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        }
-    }
-}
+
 
 @end

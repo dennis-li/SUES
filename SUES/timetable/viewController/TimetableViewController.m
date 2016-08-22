@@ -34,9 +34,21 @@
 
 @implementation TimetableViewController
 
+-(void)awakeFromNib
+{
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:@"sendContextToCourseTable"
+     object:nil
+     queue:nil
+     usingBlock:^(NSNotification * _Nonnull note) {
+         self.managedObjectContext = note.userInfo[@"context"];
+         NSLog(@"notificationContext");
+     }];
     
     self.view.backgroundColor=[UIColor blueColor];
     //获取当前状态栏的高度
@@ -59,7 +71,7 @@
     UpdateUserView *updateUserView = [[UpdateUserView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
     self.signInView = updateUserView;
     updateUserView.delegate = self;
-    [self checkSignIn];
+//    [self checkSignIn];
     
     [self createNextWeekButton];
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 567, 375,100)];
@@ -68,7 +80,6 @@
     webView.scalesPageToFit = NO;
     
     /*
-    
     self.swipeView = [[SwipeView alloc] initWithFrame:CGRectMake(0, statusRect.size.height+navRect.size.height, self.view.frame.size.width, self.view.frame.size.height-(statusRect.size.height+navRect.size.height+tabBarRect.size.height))];
     self.swipeView.pagingEnabled = YES;
     self.swipeView.delegate = self;
@@ -136,13 +147,12 @@
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
+    NSLog(@"setContext");
     _managedObjectContext = managedObjectContext;
-//    NSMutableDictionary *userDictionary = [[NSMutableDictionary alloc] init];
-//    [userDictionary setValue:@"李旭" forKey:USER_NAME];
-//    [userDictionary setValue:@"1234" forKey:USER_PASSWORD];
-//    [userDictionary setValue:@"023113141" forKey:USER_ID];
-//    self.userDictionary = userDictionary;
-//    self.user = [User userWithName:userDictionary inManagedObjectContext:self.managedObjectContext];
+    AppDelegate *app = [[UIApplication sharedApplication] delegate];
+    self.user = app.user;
+    NSLog(@"app.name = %@",app.user.name);
+    self.weekView.user = self.user;
 }
 
 
@@ -281,42 +291,42 @@
 }
 
 //网络请求
--(void)newWrokResquest
-{
-    NSString *username = @"023113141";
-    NSString *password = @"";
-    NSString *capatcha = @"";
-    NSString *gotoOnFaili = @"http://my.sues.edu.cn/loginFailure.portal";
-    NSString *gotoSuccess = @"http://my.sues.edu.cn/loginSuccess.portal";
-    //请求的参数
-    
-    NSDictionary *parameters = @{@"Login.Token1":username,
-                                 @"Login.Token2":password,
-                                 @"capatcha":capatcha,
-                                 @"goto":gotoSuccess,
-                                 @"gotoOnFaili":gotoOnFaili
-                                 };
-    //请求的url
-    NSString *urlString = @"http://my.sues.edu.cn/userPasswordValidate.portal";
-    //请求的managers
-    AFHTTPSessionManager *managers = [AFHTTPSessionManager manager];
-    //请求的方式：POST
-    managers.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    managers.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [managers POST:urlString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"服务器请求成功");
-        NSLog(@"Result = %@",result);
-        
-        
-       
-        
-    } failure:^(NSURLSessionDataTask *task, NSError * error) {
-        NSLog(@"请求失败,服务器返回的错误信息%@",error);
-    }];
-    
-}
+//-(void)newWrokResquest
+//{
+//    NSString *username = @"023113141";
+//    NSString *password = @"";
+//    NSString *capatcha = @"";
+//    NSString *gotoOnFaili = @"http://my.sues.edu.cn/loginFailure.portal";
+//    NSString *gotoSuccess = @"http://my.sues.edu.cn/loginSuccess.portal";
+//    //请求的参数
+//    
+//    NSDictionary *parameters = @{@"Login.Token1":username,
+//                                 @"Login.Token2":password,
+//                                 @"capatcha":capatcha,
+//                                 @"goto":gotoSuccess,
+//                                 @"gotoOnFaili":gotoOnFaili
+//                                 };
+//    //请求的url
+//    NSString *urlString = @"http://my.sues.edu.cn/userPasswordValidate.portal";
+//    //请求的managers
+//    AFHTTPSessionManager *managers = [AFHTTPSessionManager manager];
+//    //请求的方式：POST
+//    managers.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+//    managers.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    
+//    [managers POST:urlString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+//        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSLog(@"服务器请求成功");
+//        NSLog(@"Result = %@",result);
+//        
+//        
+//       
+//        
+//    } failure:^(NSURLSessionDataTask *task, NSError * error) {
+//        NSLog(@"请求失败,服务器返回的错误信息%@",error);
+//    }];
+//    
+//}
 
 -(void)setUrlString:(NSString *)urlString
 {

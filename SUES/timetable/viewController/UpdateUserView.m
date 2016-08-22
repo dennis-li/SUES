@@ -57,10 +57,11 @@
 
 -(void)submit
 {
-//    NSString *username = self.userId.text;
-//    NSString *password = self.userPass.text;
     NSString *username = @"023113141";
     NSString *password = @"lidaye1991";
+//    NSString *username = self.userId.text;
+//    NSString *password = self.userPass.text;
+    
     NSString *capatcha = @"";
     NSString *gotoOnFaili = @"http://my.sues.edu.cn/loginFailure.portal";
     NSString *gotoSuccess = @"http://my.sues.edu.cn/loginSuccess.portal";

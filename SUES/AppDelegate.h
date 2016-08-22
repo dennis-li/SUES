@@ -17,12 +17,11 @@
 @property (strong, nonatomic) User *user;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-- (void)saveContext;
-- (NSURL *)applicationDocumentsDirectory;
 
+
+-(void)changeRootCtroller;
+-(void)startUserDataWithUserDetail:(NSString *)HTMLData userId:(NSString *)userId userPassWord:(NSString *)userPassWord;
 
 @end
 

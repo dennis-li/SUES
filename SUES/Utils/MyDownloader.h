@@ -19,15 +19,10 @@
 
 @end
 
-@interface MyDownloader : NSObject<NSURLConnectionDataDelegate,NSURLConnectionDelegate>
-{
-    NSMutableData *_receiveData;
-    NSURLConnection *_conn;
-}
+@interface MyDownloader : NSObject<NSURLConnectionDataDelegate>
 
 //代理属性
 @property (nonatomic,weak)id<MyDownloaderDelegate>delegate;
-@property (nonatomic,strong)NSData *receiveData;
 //类型
 @property (nonatomic,strong)NSString *type;
 
