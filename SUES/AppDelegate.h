@@ -21,7 +21,7 @@
 @property (nonatomic,strong)NSMutableArray *coursesArray;
 
 -(void)changeRootCtroller;
--(void)startUserDataWithUserDetail:(NSString *)HTMLData userId:(NSString *)userId userPassWord:(NSString *)userPassWord;
+
 
 @end
 

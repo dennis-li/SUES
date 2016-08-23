@@ -16,10 +16,10 @@
 
 
 @interface MyDownloader ()<UIWebViewDelegate>
-@property (nonatomic ,strong)NSMutableDictionary *userDictionary;
-@property (nonatomic ,strong)NSMutableArray *coursesArray;
-@property (nonatomic ,strong)UIWebView *webView;
-@property (nonatomic ,strong)NSString *urlString;
+@property (nonatomic ,strong)NSMutableDictionary *userDictionary;//存放user的信息
+@property (nonatomic ,strong)NSMutableArray *coursesArray;//存放所有课程
+@property (nonatomic ,strong)UIWebView *webView;//加载课表，加载完之后获取源码
+@property (nonatomic ,strong)NSString *urlString;//需要加载内容的URL
 @property (nonatomic ,strong)User *user;
 @property (nonatomic ,strong)NSManagedObjectContext *managedObjectContext;
 @end
@@ -71,6 +71,15 @@
     return _userDictionary;
 }
 
+-(NSMutableArray *)coursesArray
+{
+    if (!_coursesArray) {
+        _coursesArray = [[NSMutableArray alloc] init];
+    }
+    return _coursesArray;
+}
+
+//第一次登录，需要下载所有数据
 -(void)downloadWithUrlString:(NSString *)urlString downloadType:(DownloadType)type
                     userId:(NSString *)userId userPassWord:(NSString *)userPassWord
 {
@@ -95,6 +104,7 @@
     [self startUserDataFetchWithHtmlData:string];
 }
 
+#pragma - mark Coursetable
 //开始获取用户的数据，并创建用户self.user
 -(void)startUserDataFetchWithHtmlData:(NSString *)HTMLData
 {
@@ -119,7 +129,6 @@
     [self saveDownloadData:elements];
 }
 
-#pragma - mark Coursetable
 -(void)saveDownloadData:(NSArray *)elements
 {
     //存储一个课程
@@ -229,6 +238,7 @@
     [self.delegate downloadFinish:self];
 }
 
+//处理完数据发送通知到前台
 -(void)sendNotificationToCourseTable
 {
     NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
@@ -258,13 +268,6 @@
     return @"0";
 }
 
--(NSMutableArray *)coursesArray
-{
-    if (!_coursesArray) {
-        _coursesArray = [[NSMutableArray alloc] init];
-    }
-    return _coursesArray;
-}
 
 //返回一个字典，存储课程详情
 -(NSMutableDictionary *)createACourseDictionary

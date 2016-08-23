@@ -12,8 +12,7 @@
 #import "MBProgressHUD.h"
 #import "MyDownloader.h"
 
-@interface loginViewController ()<UIGestureRecognizerDelegate,UIWebViewDelegate,MyDownloaderDelegate>
-@property (nonatomic,strong)UIWebView *webView;
+@interface loginViewController ()<UIGestureRecognizerDelegate,MyDownloaderDelegate>
 @property (nonatomic,strong) NSString *userId;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic,strong) MBProgressHUD *hud;
@@ -24,17 +23,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    HUD = [[MBProgressHUD alloc] initWithView:self.view];
-//	[self.view addSubview:HUD];
-//	
-//    //	HUD.delegate = self;
-//	HUD.labelText = @"登录中...";
-    
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 375,667)];
-    self.webView = webView;//获取完整的网页源码
-    self.webView.delegate = self;
-    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -107,16 +95,6 @@
     return true;
 }
 
-//给webView的URL
--(void)setUrlString:(NSString *)urlString
-{
-    NSLog(@"setUrlString = %@",urlString);
-    //请求数据
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:request];
-    
-}
 
 //HUD提示框
 - (void)barDeterminateExample {
@@ -135,20 +113,6 @@
 //            [hud hideAnimated:YES];
 //        });
     });
-}
-
-//webView加载完成之后,把数据传到AppDelegatecontentListFrame
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
-    NSLog(@"webViewHTML = %@",string);
-    
-    AppDelegate *app = [[UIApplication sharedApplication] delegate];
-    [app startUserDataWithUserDetail:string userId:self.userId userPassWord:self.userPassWord];
-//    [self.hud hideAnimated:YES];
-    self.hud = nil;
-    [self.view addSubview:self.webView];
-//    [app changeRootCtroller];
 }
 
 #pragma - mark MyDownloaderDelegate
