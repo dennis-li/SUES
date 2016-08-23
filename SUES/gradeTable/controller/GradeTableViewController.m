@@ -13,7 +13,6 @@
 #import "AppDelegate.h"
 
 @interface GradeTableViewController ()
-//给定context，给定数据库
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic,strong) User *user;
 @end
@@ -35,9 +34,7 @@
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {
-         NSLog(@"notification");
          self.managedObjectContext = note.userInfo[@"context"];
-         NSLog(@"notificationContext");
      }];
 }
 
@@ -47,8 +44,9 @@
     NSFetchRequest *gradeRequest = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
     gradeRequest.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
     gradeRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startSchoolYear"
-                                                              ascending:YES
+                                                              ascending:NO
                                                                selector:@selector(localizedStandardCompare:)]];
+    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:gradeRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     [self createDataSource];
     [self.tableView reloadData];

@@ -17,8 +17,6 @@
 @property (strong, nonatomic) User *user;
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic,strong) NSMutableDictionary *userDictionary;
-@property (nonatomic,strong)NSMutableArray *coursesArray;
 
 -(void)changeRootCtroller;
 

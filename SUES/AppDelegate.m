@@ -9,13 +9,8 @@
 #import "AppDelegate.h"
 #import "MainTabBarController.h"
 #import "CreateContext.h"
-#import "TFHpple.h"
 #import "Public.h"
-#import "Courses+Flickr.h"
-#import "Grade+Flickr.h"
-#import "User+Create.h"
 #import <AFNetworking.h>
-#import "AppDelegate+HtmlToCoreData.h"
 
 @interface AppDelegate ()
 @property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

@@ -67,12 +67,13 @@
 }
 
 #pragma mark - UITableViewDataSource
+//把成绩分组
 -(void)createDataSource
 {
     NSArray *dataArray = [self.fetchedResultsController fetchedObjects];
     NSMutableSet *dataSet = [[NSMutableSet alloc] init];
     for (Grade *grade in dataArray) {
-        NSString *sectionName = [[grade.startSchoolYear stringValue] stringByAppendingString:[NSString stringWithFormat:@"-%@",[grade.semester stringValue]]];
+        NSString *sectionName = [[grade.startSchoolYear stringValue] stringByAppendingString:[NSString stringWithFormat:@"/%ld-%@",[grade.startSchoolYear integerValue]+1,[grade.semester stringValue]]];
         [dataSet addObject:sectionName];
         if (![self.dataDictionary objectForKey:sectionName]) {
             NSMutableArray *sectionArray = [[NSMutableArray alloc] init];
@@ -81,13 +82,8 @@
         NSMutableArray *sectionArray = [self.dataDictionary objectForKey:sectionName];
         [sectionArray addObject:grade];
     }
-    self.sectionName = [dataSet allObjects];
-    for (NSString *grade in self.sectionName) {
-        NSLog(@"sectionName = %@",grade);
-        NSArray *grades = [self.dataDictionary objectForKey:grade];
-        Grade *grad = [grades firstObject];
-        NSLog(@"grade.name = %@",grad.name);
-    }
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO];//yes升序排列，no,降序排列
+    self.sectionName = [[dataSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sort, nil]];
 }
 
 

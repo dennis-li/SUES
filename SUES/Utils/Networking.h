@@ -8,18 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol MyDownloaderDelegate <NSObject>
+@protocol NetworkingDelegate <NSObject>
 
 //请求失败
-- (void)requestFail:(NSError  *)error;
+- (void)requestFail:(NSString  *)error;
 
 //请求成功
-- (void)requestFinish;
+- (void)requestFinish:(NSString *)returnString;
 
 @end
 
 @interface Networking : NSObject
 
-@property (nonatomic,weak)id<MyDownloaderDelegate>delegate;
+@property (nonatomic,weak)id<NetworkingDelegate>delegate;
+-(void)loginRequestWithUserName:(NSString *)username password:(NSString *)password;
 
 @end

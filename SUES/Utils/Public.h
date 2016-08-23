@@ -64,4 +64,10 @@
 //成绩URL
 #define GRADE_URL @"http://jxxt.sues.edu.cn/eams/personGrade.action?method=historyCourseGrade"
 
+
+//登录表单补充数据
+#define FORM_CAPATCHA  @""
+#define FORM_GOTOONFILI  @"http://my.sues.edu.cn/loginFailure.portal"
+#define FORM_SUCCESS  @"http://my.sues.edu.cn/loginSuccess.portal"
+
 #endif /* Public_h */
