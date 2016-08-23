@@ -87,14 +87,12 @@
             self.userId = username;
             self.userPassWord = password;
             [self barDeterminateExample];
-            
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"需要链接学校的无线网error = %@",error);
     }];
     return true;
 }
-
 
 //HUD提示框
 - (void)barDeterminateExample {
@@ -108,7 +106,7 @@
         NSString *URLString = @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=courseTable&setting.forSemester=0&setting.kind=std&semester.id=402&ids=72123730&ignoreHead=1";
 //        NSString *URLString = @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=stdHome";
 #warning 暂时用DownloadCourses
-        [downloader downloadWithUrlString:URLString downloadType:DownloadCourses userId:self.userId userPassWord:self.userPassWord];
+        [downloader downloadWithUserId:self.userId userPassWord:self.userPassWord];
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [hud hideAnimated:YES];
 //        });

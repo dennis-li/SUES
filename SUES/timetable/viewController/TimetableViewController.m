@@ -71,7 +71,7 @@
 {
     
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToCourseTable"
+     addObserverForName:@"sendContextToForegroundTable"
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {

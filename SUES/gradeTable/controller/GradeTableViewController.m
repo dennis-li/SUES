@@ -25,49 +25,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self observerNotification];
     // Do any additional setup after loading the view.
-    self.managedObjectContext = [CreateContext createContext];
-    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    NSLog(@"user.name = %@",appDelegate.user.name);
-    NSLog(@"viewLoad");
+    self.managedObjectContext = self.user.managedObjectContext;
+}
+
+-(void)observerNotification
+{
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:@"sendContextToForegroundTable"
+     object:nil
+     queue:nil
+     usingBlock:^(NSNotification * _Nonnull note) {
+         NSLog(@"notification");
+         self.managedObjectContext = note.userInfo[@"context"];
+         NSLog(@"notificationContext");
+     }];
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
     _managedObjectContext = managedObjectContext;
     
-    NSFetchRequest *userRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    userRequest.predicate = nil;
-    NSArray *userArray = [self.managedObjectContext executeFetchRequest:userRequest error:nil];
-    self.user = [userArray lastObject];
-    NSLog(@"user.Name = %@",self.user.name);
+//    NSFetchRequest *userRequest = [NSFetchRequest fetchRequestWithEntityName:@"User"];
+//    userRequest.predicate = nil;
+//    NSArray *userArray = [self.managedObjectContext executeFetchRequest:userRequest error:nil];
+//    self.user = [userArray lastObject];
+//    NSLog(@"user.Name = %@",self.user.name);
     
     NSFetchRequest *gradeRequest = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
     gradeRequest.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
     gradeRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name"
                                                               ascending:YES
                                                                selector:@selector(localizedStandardCompare:)]];
-    NSArray *gradeArray = [self.managedObjectContext executeFetchRequest:gradeRequest error:nil];
-    if ([gradeArray count]) {
-//        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
-//        request.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
-//        request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name"
-//                                                                  ascending:YES
-//                                                                   selector:@selector(localizedStandardCompare:)]];
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:gradeRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-        [self createDataSource];
-    } else {
-        [self requesHTMLData];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:gradeRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    [self createDataSource];
+    [self.tableView reloadData];
+}
+
+-(User *)user
+{
+    if (!_user) {
+        AppDelegate *app = [[UIApplication sharedApplication] delegate];
+        _user = app.user;
     }
-    
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
-//    request.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
-//    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name"
-//                                                              ascending:YES
-//                                                               selector:@selector(localizedStandardCompare:)]];
-//    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-//    [self createDataSource];
+    return _user;
 }
 
 
@@ -218,8 +221,7 @@
     [manager GET:URLString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"resutl..grade = %@",result);
-        [self netWorkRequest:[result dataUsingEncoding:NSUTF8StringEncoding]];
-        
+        [self netWorkRequest:[result dataUsingEncoding:NSUTF8StringEncoding]];        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error = %@",error);
     }];

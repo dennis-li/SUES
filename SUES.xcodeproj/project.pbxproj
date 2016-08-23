@@ -12,6 +12,7 @@
 		5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D691D6AB8A40049FE84 /* loginViewController.m */; };
 		5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */; };
 		5C089D741D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D731D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m */; };
+		5C089D831D6C10D90049FE84 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D821D6C10D90049FE84 /* Networking.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -94,6 +95,8 @@
 		5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		5C089D721D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+HtmlToCoreData.h"; sourceTree = "<group>"; };
 		5C089D731D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+HtmlToCoreData.m"; sourceTree = "<group>"; };
+		5C089D811D6C10D90049FE84 /* Networking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Networking.h; sourceTree = "<group>"; };
+		5C089D821D6C10D90049FE84 /* Networking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Networking.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Courses+Flickr.h"; path = "timetable/model/Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -522,6 +525,8 @@
 				5C4640FB1D66F4B5007289EA /* CreateContext.m */,
 				5C089D591D6A8B240049FE84 /* MyDownloader.h */,
 				5C089D5A1D6A8B240049FE84 /* MyDownloader.m */,
+				5C089D811D6C10D90049FE84 /* Networking.h */,
+				5C089D821D6C10D90049FE84 /* Networking.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */,
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C94503B1D63F1B9000BBEB7 /* User.m in Sources */,
+				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
 				5C089D741D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, DownloadType) {
-    All = 0,
+    DownloadAll = 0,
     DownloadCourses,
     DownloadGrade
 };
@@ -30,9 +30,8 @@ typedef NS_ENUM(NSUInteger, DownloadType) {
 //代理属性
 @property (nonatomic,weak)id<MyDownloaderDelegate>delegate;
 //类型
-@property (nonatomic,strong)NSString *type;
+@property (nonatomic,assign)DownloadType *type;
 
-//下载
--(void)downloadWithUrlString:(NSString *)urlString downloadType:(DownloadType)type
-                    userId:(NSString *)userId userPassWord:(NSString *)userPassWord;
+//第一次下载
+-(void)downloadWithUserId:(NSString *)userId userPassWord:(NSString *)userPassWord;
 @end

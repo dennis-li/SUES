@@ -12,14 +12,16 @@
 #import <UIKit/UIKit.h>
 #import "User+Create.h"
 #import "Courses+Flickr.h"
+#import "Grade+Flickr.h"
 #import "AppDelegate.h"
+#import <AFNetworking.h>
 
 
 @interface MyDownloader ()<UIWebViewDelegate>
+@property (nonatomic,strong) NSMutableArray *gradeArray;//存放所有的成绩
 @property (nonatomic ,strong)NSMutableDictionary *userDictionary;//存放user的信息
 @property (nonatomic ,strong)NSMutableArray *coursesArray;//存放所有课程
 @property (nonatomic ,strong)UIWebView *webView;//加载课表，加载完之后获取源码
-@property (nonatomic ,strong)NSString *urlString;//需要加载内容的URL
 @property (nonatomic ,strong)User *user;
 @property (nonatomic ,strong)NSManagedObjectContext *managedObjectContext;
 @end
@@ -71,6 +73,14 @@
     return _userDictionary;
 }
 
+-(NSMutableArray *)gradeArray
+{
+    if (!_gradeArray) {
+        _gradeArray = [[NSMutableArray alloc ] init];
+    }
+    return _gradeArray;
+}
+
 -(NSMutableArray *)coursesArray
 {
     if (!_coursesArray) {
@@ -80,10 +90,8 @@
 }
 
 //第一次登录，需要下载所有数据
--(void)downloadWithUrlString:(NSString *)urlString downloadType:(DownloadType)type
-                    userId:(NSString *)userId userPassWord:(NSString *)userPassWord
+-(void)downloadWithUserId:(NSString *)userId userPassWord:(NSString *)userPassWord
 {
-    self.urlString = urlString;
     [self.userDictionary setValue:userId  forKey:USER_ID];
     [self.userDictionary setValue:userPassWord forKey:USER_PASSWORD];
     [self loadWebView];
@@ -91,22 +99,124 @@
 
 -(void)loadWebView
 {
-    NSURL *url = [NSURL URLWithString:self.urlString];
+    NSURL *url = [NSURL URLWithString:COURSE_URL];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-   
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
     NSLog(@"webViewHTML = %@",string);
-    [self startUserDataFetchWithHtmlData:string];
+    [self analyzeCoursesHtmlData:string];
+    [self startRequesGradeHtmlData];
+    [self sendNotificationToCourseTable];
+    [self.delegate downloadFinish:self];
+}
+
+//处理完数据发送通知到前台
+-(void)sendNotificationToCourseTable
+{
+    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToForegroundTable"
+     object:self
+     userInfo:userInfo];
+}
+
+#pragma - mark Gradetable
+-(void)startRequesGradeHtmlData
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        if(LX_DEBUG)
+            NSLog(@"resutl..grade = %@",result);
+        [self analyzeGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding]];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error = %@",error);
+    }];
+}
+
+-(void)analyzeGradeHtmlData:(NSData *)htmlData
+{
+   
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@id='gradeTable']/tr[position()>1]/td"];
+   
+    if (![elements count]) {
+        if (LX_DEBUG) {
+            NSLog(@"[%@->%@] requestGradeData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+        }
+    }
+    [self downloadGradeData:elements];
+}
+
+
+-(void)downloadGradeData:(NSArray *)gradeData
+{
+    NSMutableDictionary *gradeCourseDictionary;
+    NSInteger key = 0;
+    for (TFHppleElement *element in gradeData) {
+        if (!(key % 11)) {
+            gradeCourseDictionary = [self createACourseDictionary];
+            [self.gradeArray addObject:gradeCourseDictionary];
+            [gradeCourseDictionary setValue:self.user.userId forKey:GRADE_WHOGRADE];
+        }
+        switch (key % 11) {
+            case 0:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_CODE];
+                break;
+            case 1:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_ID];
+                break;
+            case 2:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_NAME];
+                break;
+            case 3:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CATEGORY];
+                break;
+            case 4:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CREDIT];
+                break;
+            case 5:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MIDTERMGRADE];
+                break;
+            case 6:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];
+                break;
+            case 7:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MAKEUPEXAMGRADE];
+                break;
+            case 8:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];
+                break;
+            case 9:
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_GRADEPOINT];
+                break;
+            case 10:
+            {
+                NSArray *semesterAndYear =  [[element content] componentsSeparatedByString:@" "];
+                NSString *year = [[[semesterAndYear firstObject] componentsSeparatedByString:@"-"] firstObject];
+                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[year integerValue]] forKey:COURSE_STARTSCHOOLYEAR];
+                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[[semesterAndYear lastObject] integerValue]] forKey:COURSE_SEMESTER];
+            }
+                break;
+            default:
+                break;
+        }
+        
+        key++;
+    }
+    [Grade loadGradeFromFlickrArray:self.gradeArray intoManagedObjectContext:self.managedObjectContext];
+    [self.managedObjectContext save:NULL];
 }
 
 #pragma - mark Coursetable
 //开始获取用户的数据，并创建用户self.user
--(void)startUserDataFetchWithHtmlData:(NSString *)HTMLData
+-(void)analyzeCoursesHtmlData:(NSString *)HTMLData
 {
     
     NSData *htmlData= [HTMLData dataUsingEncoding:NSUTF8StringEncoding];
@@ -126,10 +236,10 @@
             NSLog(@"[%@->%@] requestData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
         }
     }
-    [self saveDownloadData:elements];
+    [self saveCourseData:elements];
 }
 
--(void)saveDownloadData:(NSArray *)elements
+-(void)saveCourseData:(NSArray *)elements
 {
     //存储一个课程
     NSMutableDictionary *courseDictionary = nil;//新建一个课程字典
@@ -234,18 +344,6 @@
     }
     [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
-    [self sendNotificationToCourseTable];
-    [self.delegate downloadFinish:self];
-}
-
-//处理完数据发送通知到前台
--(void)sendNotificationToCourseTable
-{
-    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToCourseTable"
-     object:self
-     userInfo:userInfo];
 }
 
 -(NSString *)weekToDay:(NSString *)week
