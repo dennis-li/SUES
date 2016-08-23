@@ -1,126 +1,21 @@
 //
-//  MyDownloader.m
-//  SohuByObject_C
+//  AppDelegate+HtmlToCoreData.m
+//  SUES
 //
-//  Created by lixu on 16/4/25.
+//  Created by lixu on 16/8/22.
 //  Copyright © 2016年 lixu. All rights reserved.
 //
 
-#import "MyDownloader.h"
+#import "AppDelegate+HtmlToCoreData.h"
 #import "TFHpple.h"
 #import "Public.h"
-#import <UIKit/UIKit.h>
-#import "User+Create.h"
 #import "Courses+Flickr.h"
-#import "AppDelegate.h"
+#import "User+Create.h"
 
 
-@interface MyDownloader ()<UIWebViewDelegate>
-@property (nonatomic ,strong)NSMutableDictionary *userDictionary;
-@property (nonatomic ,strong)NSMutableArray *coursesArray;
-@property (nonatomic ,strong)UIWebView *webView;
-@property (nonatomic ,strong)NSString *urlString;
-@property (nonatomic ,strong)User *user;
-@property (nonatomic ,strong)NSManagedObjectContext *managedObjectContext;
-@end
+@implementation AppDelegate (HtmlToCoreData)
 
-@implementation MyDownloader
-
--(instancetype)init
-{
-    if (self = [super init]) {
-        [[NSNotificationCenter defaultCenter]
-         addObserverForName:@"WeekViewToCourseDVC"
-         object:nil
-         queue:nil
-         usingBlock:^(NSNotification * _Nonnull note) {
-             self.userDictionary = note.userInfo[@"userDictionary"];
-         }];
-        self.webView = [[UIWebView alloc] init];
-        self.webView.delegate = self;
-    }
-    return self;
-}
-
--(NSManagedObjectContext *)managedObjectContext
-{
-    if (!_managedObjectContext) {
-        _managedObjectContext = [self returnApp].managedObjectContext;
-    }
-    return _managedObjectContext;
-}
-
--(User *)user
-{
-    if (!_user) {
-        _user = [self returnApp].user;
-    }
-    return _user;
-}
-
--(AppDelegate *)returnApp
-{
-    return [[UIApplication sharedApplication] delegate];
-}
-
--(NSMutableDictionary *)userDictionary
-{
-    if (!_userDictionary) {
-        _userDictionary = [[NSMutableDictionary alloc] init];
-    }
-    return _userDictionary;
-}
-
--(void)downloadWithUrlString:(NSString *)urlString downloadType:(DownloadType)type
-                    userId:(NSString *)userId userPassWord:(NSString *)userPassWord
-{
-    self.urlString = urlString;
-    [self.userDictionary setValue:userId  forKey:USER_ID];
-    [self.userDictionary setValue:userPassWord forKey:USER_PASSWORD];
-    [self loadWebView];
-}
-
--(void)loadWebView
-{
-    NSURL *url = [NSURL URLWithString:self.urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:request];
-}
-
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-   
-    NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
-    NSLog(@"webViewHTML = %@",string);
-    [self startUserDataFetchWithHtmlData:string];
-}
-
-//开始获取用户的数据，并创建用户self.user
--(void)startUserDataFetchWithHtmlData:(NSString *)HTMLData
-{
-    
-    NSData *htmlData= [HTMLData dataUsingEncoding:NSUTF8StringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    if (!self.user) {
-        NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//table[@id='myBar']/tbody/tr/td[2]/b"];
-        TFHppleElement *element = [userNameArray firstObject];
-        NSString *userName = [[[element content] componentsSeparatedByString:@":"] lastObject];
-        [self.userDictionary setValue:userName forKey:USER_NAME];
-        AppDelegate *app = [self returnApp];
-        app.user = [User userWithName:self.userDictionary inManagedObjectContext:self.managedObjectContext];
-    }
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='listTable']/tbody/tr[position()>2]/td"];
-    if ([elements count]) {
-        if (LX_DEBUG) {
-            NSLog(@"[%@->%@] requestData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-        }
-    }
-    [self saveDownloadData:elements];
-}
-
-#pragma - mark Coursetable
--(void)saveDownloadData:(NSArray *)elements
+-(void)saveDownloadData :(NSArray *)elements
 {
     //存储一个课程
     NSMutableDictionary *courseDictionary = nil;//新建一个课程字典
@@ -190,7 +85,7 @@
                     
                     NSString *courseId = [[courseNameAndIdArray lastObject] substringToIndex:[[courseNameAndIdArray lastObject]length]-1];
                     [courseDictionary setValue:courseId forKey:COURSE_ID];
-#warning -咱用period做为课程唯一标识符
+#warning -暂用period做为课程唯一标识符
                     NSString *period = [[[self weekToDay:week] stringByAppendingString:[NSString stringWithFormat:@"%ld",sectionStart]] stringByAppendingString:courseId];
                     [courseDictionary setValue:period forKey:COURSE_PERIOD];
                 } else {
@@ -224,9 +119,9 @@
         }
     }
     [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
+    
     [self.managedObjectContext save:NULL];
     [self sendNotificationToCourseTable];
-    [self.delegate downloadFinish:self];
 }
 
 -(void)sendNotificationToCourseTable
@@ -236,34 +131,6 @@
      postNotificationName:@"sendContextToCourseTable"
      object:self
      userInfo:userInfo];
-}
-
--(NSString *)weekToDay:(NSString *)week
-{
-    if ([week isEqualToString:@"星期一"]) {
-        return @"1";
-    } else if([week isEqualToString:@"星期二"]){
-        return @"2";
-    } else if([week isEqualToString:@"星期三"]){
-        return @"3";
-    } else if([week isEqualToString:@"星期四"]){
-        return @"4";
-    } else if([week isEqualToString:@"星期五"]){
-        return @"5";
-    } else if([week isEqualToString:@"星期六"]){
-        return @"6";
-    } else if([week isEqualToString:@"星期日"]){
-        return @"7";
-    }
-    return @"0";
-}
-
--(NSMutableArray *)coursesArray
-{
-    if (!_coursesArray) {
-        _coursesArray = [[NSMutableArray alloc] init];
-    }
-    return _coursesArray;
 }
 
 //返回一个字典，存储课程详情
@@ -304,6 +171,26 @@
         [string appendString:[NSString stringWithFormat:@"%ld ",start]];
     }
     return string;
+}
+
+-(NSString *)weekToDay:(NSString *)week
+{
+    if ([week isEqualToString:@"星期一"]) {
+        return @"1";
+    } else if([week isEqualToString:@"星期二"]){
+        return @"2";
+    } else if([week isEqualToString:@"星期三"]){
+        return @"3";
+    } else if([week isEqualToString:@"星期四"]){
+        return @"4";
+    } else if([week isEqualToString:@"星期五"]){
+        return @"5";
+    } else if([week isEqualToString:@"星期六"]){
+        return @"6";
+    } else if([week isEqualToString:@"星期日"]){
+        return @"7";
+    }
+    return @"0";
 }
 
 @end

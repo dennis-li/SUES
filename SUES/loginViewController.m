@@ -10,8 +10,9 @@
 #import "AppDelegate.h"
 #import <AFNetworking.h>
 #import "MBProgressHUD.h"
+#import "MyDownloader.h"
 
-@interface loginViewController ()<UIGestureRecognizerDelegate,UIWebViewDelegate>
+@interface loginViewController ()<UIGestureRecognizerDelegate,UIWebViewDelegate,MyDownloaderDelegate>
 @property (nonatomic,strong)UIWebView *webView;
 @property (nonatomic,strong) NSString *userId;
 @property (nonatomic,strong) NSString *userPassWord;
@@ -30,7 +31,7 @@
 //    //	HUD.delegate = self;
 //	HUD.labelText = @"登录中...";
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 567, 375,100)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 375,667)];
     self.webView = webView;//获取完整的网页源码
     self.webView.delegate = self;
     
@@ -63,8 +64,8 @@
 // 服务器交互进行用户名，密码认证
 -(BOOL)loginWithUser {
     
-    NSString *username = @"022115212";
-    NSString *password = @"015117";
+    NSString *username = @"023113141";
+    NSString *password = @"lidaye1991";
 //    NSString *username = self.usernameTF.text;
 //    NSString *password = self.passwordTF.text;
     
@@ -114,6 +115,7 @@
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.webView loadRequest:request];
+    
 }
 
 //HUD提示框
@@ -121,18 +123,21 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     self.hud = hud;
     // Set the bar determinate mode to show task progress.
-    
+    MyDownloader *downloader = [[MyDownloader alloc] init];
+    downloader.delegate = self;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        // Do something useful in the background and update the HUD periodically.
+        // Do something useful in the background and update the HUD periodically.courseTableForStd.action?method=stdHome
         NSString *URLString = @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=courseTable&setting.forSemester=0&setting.kind=std&semester.id=402&ids=72123730&ignoreHead=1";
-        self.urlString = URLString;
+//        NSString *URLString = @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=stdHome";
+#warning 暂时用DownloadCourses
+        [downloader downloadWithUrlString:URLString downloadType:DownloadCourses userId:self.userId userPassWord:self.userPassWord];
 //        dispatch_async(dispatch_get_main_queue(), ^{
 //            [hud hideAnimated:YES];
 //        });
     });
 }
 
-//webView加载完成之后,把数据传到AppDelegate
+//webView加载完成之后,把数据传到AppDelegatecontentListFrame
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
@@ -140,9 +145,24 @@
     
     AppDelegate *app = [[UIApplication sharedApplication] delegate];
     [app startUserDataWithUserDetail:string userId:self.userId userPassWord:self.userPassWord];
-    [self.hud hideAnimated:YES];
+//    [self.hud hideAnimated:YES];
     self.hud = nil;
+    [self.view addSubview:self.webView];
+//    [app changeRootCtroller];
+}
+
+#pragma - mark MyDownloaderDelegate
+
+-(void)downloadFinish:(MyDownloader *)downloader
+{
+    [self.hud hideAnimated:YES];
+    AppDelegate *app = [[UIApplication sharedApplication] delegate];
     [app changeRootCtroller];
+}
+
+-(void)downloadFail:(MyDownloader *)downloader error:(NSError *)error
+{
+    NSLog(@"加载数据失败");
 }
 
 

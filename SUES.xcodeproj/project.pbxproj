@@ -11,6 +11,7 @@
 		5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D5A1D6A8B240049FE84 /* MyDownloader.m */; };
 		5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D691D6AB8A40049FE84 /* loginViewController.m */; };
 		5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */; };
+		5C089D741D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D731D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -91,15 +92,17 @@
 		5C089D691D6AB8A40049FE84 /* loginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = loginViewController.m; sourceTree = "<group>"; };
 		5C089D6C1D6AD4540049FE84 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		5C089D721D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+HtmlToCoreData.h"; sourceTree = "<group>"; };
+		5C089D731D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+HtmlToCoreData.m"; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
-		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
-		5C4640FE1D66F651007289EA /* Courses+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Courses+Flickr.m"; sourceTree = "<group>"; };
-		5C4640FF1D66F651007289EA /* Grade+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Grade+Flickr.h"; sourceTree = "<group>"; };
-		5C4641001D66F651007289EA /* Grade+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Grade+Flickr.m"; sourceTree = "<group>"; };
-		5C4641011D66F651007289EA /* User+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+Create.h"; sourceTree = "<group>"; };
-		5C4641021D66F651007289EA /* User+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+Create.m"; sourceTree = "<group>"; };
-		5C4641061D66F6B4007289EA /* TimetableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimetableViewController.h; sourceTree = "<group>"; };
+		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Courses+Flickr.h"; path = "timetable/model/Courses+Flickr.h"; sourceTree = "<group>"; };
+		5C4640FE1D66F651007289EA /* Courses+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Courses+Flickr.m"; path = "timetable/model/Courses+Flickr.m"; sourceTree = "<group>"; };
+		5C4640FF1D66F651007289EA /* Grade+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Grade+Flickr.h"; path = "timetable/model/Grade+Flickr.h"; sourceTree = "<group>"; };
+		5C4641001D66F651007289EA /* Grade+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Grade+Flickr.m"; path = "timetable/model/Grade+Flickr.m"; sourceTree = "<group>"; };
+		5C4641011D66F651007289EA /* User+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "User+Create.h"; path = "timetable/model/User+Create.h"; sourceTree = "<group>"; };
+		5C4641021D66F651007289EA /* User+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "User+Create.m"; path = "timetable/model/User+Create.m"; sourceTree = "<group>"; };
+		5C4641061D66F6B4007289EA /* TimetableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TimetableViewController.h; path = timetable/viewController/TimetableViewController.h; sourceTree = "<group>"; };
 		5C4641071D67F0E8007289EA /* UpdateUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateUser.h; path = Utils/UpdateUser.h; sourceTree = "<group>"; };
 		5C4641081D67F0E8007289EA /* UpdateUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UpdateUser.m; path = Utils/UpdateUser.m; sourceTree = "<group>"; };
 		5C4641101D67F759007289EA /* UpdateUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateUserView.h; path = SUES/timetable/viewController/UpdateUserView.h; sourceTree = SOURCE_ROOT; };
@@ -133,19 +136,19 @@
 		5C944FC91D61F862000BBEB7 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
 		5C944FCC1D61F862000BBEB7 /* course.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = course.json; sourceTree = "<group>"; };
 		5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "李旭的提交日志"; sourceTree = "<group>"; };
-		5C944FCF1D61F862000BBEB7 /* TimetableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimetableModel.h; sourceTree = "<group>"; };
-		5C944FD01D61F862000BBEB7 /* TimetableModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableModel.m; sourceTree = "<group>"; };
-		5C944FD21D61F862000BBEB7 /* BrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserView.h; sourceTree = "<group>"; };
-		5C944FD31D61F862000BBEB7 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserView.m; sourceTree = "<group>"; };
+		5C944FCF1D61F862000BBEB7 /* TimetableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimetableModel.h; path = timetable/model/TimetableModel.h; sourceTree = "<group>"; };
+		5C944FD01D61F862000BBEB7 /* TimetableModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimetableModel.m; path = timetable/model/TimetableModel.m; sourceTree = "<group>"; };
+		5C944FD21D61F862000BBEB7 /* BrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrowserView.h; path = timetable/view/BrowserView.h; sourceTree = "<group>"; };
+		5C944FD31D61F862000BBEB7 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BrowserView.m; path = timetable/view/BrowserView.m; sourceTree = "<group>"; };
 		5C944FD41D61F862000BBEB7 /* DayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayView.h; sourceTree = "<group>"; };
 		5C944FD51D61F862000BBEB7 /* DayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayView.m; sourceTree = "<group>"; };
-		5C944FD61D61F862000BBEB7 /* WeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekView.h; sourceTree = "<group>"; };
-		5C944FD71D61F862000BBEB7 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekView.m; sourceTree = "<group>"; };
-		5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailViewController.h; sourceTree = "<group>"; };
-		5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
-		5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableViewController.m; sourceTree = "<group>"; };
-		5C944FE01D61F862000BBEB7 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timetableViewModel.h; sourceTree = "<group>"; };
-		5C944FE11D61F862000BBEB7 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timetableViewModel.m; sourceTree = "<group>"; };
+		5C944FD61D61F862000BBEB7 /* WeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WeekView.h; path = timetable/view/WeekView.h; sourceTree = "<group>"; };
+		5C944FD71D61F862000BBEB7 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WeekView.m; path = timetable/view/WeekView.m; sourceTree = "<group>"; };
+		5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CourseDetailViewController.h; path = timetable/viewController/CourseDetailViewController.h; sourceTree = "<group>"; };
+		5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CourseDetailViewController.m; path = timetable/viewController/CourseDetailViewController.m; sourceTree = "<group>"; };
+		5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimetableViewController.m; path = timetable/viewController/TimetableViewController.m; sourceTree = "<group>"; };
+		5C944FE01D61F862000BBEB7 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timetableViewModel.h; path = timetable/viewModel/timetableViewModel.h; sourceTree = "<group>"; };
+		5C944FE11D61F862000BBEB7 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = timetableViewModel.m; path = timetable/viewModel/timetableViewModel.m; sourceTree = "<group>"; };
 		5C944FE31D61F862000BBEB7 /* Public.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Public.h; sourceTree = "<group>"; };
 		5C944FFB1D621789000BBEB7 /* RedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedViewController.h; sourceTree = "<group>"; };
 		5C944FFC1D621789000BBEB7 /* RedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedViewController.m; sourceTree = "<group>"; };
@@ -171,12 +174,12 @@
 		5C94503D1D63F2E2000BBEB7 /* SUES.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SUES.xcdatamodel; sourceTree = "<group>"; };
 		5C94503F1D6490FB000BBEB7 /* course2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = course2.html; sourceTree = "<group>"; };
 		5C9450411D649125000BBEB7 /* course3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = course3.html; sourceTree = "<group>"; };
-		5C9450461D653D43000BBEB7 /* GradeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeTableViewController.h; sourceTree = "<group>"; };
-		5C9450471D653D43000BBEB7 /* GradeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeTableViewController.m; sourceTree = "<group>"; };
+		5C9450461D653D43000BBEB7 /* GradeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GradeTableViewController.h; path = gradeTable/controller/GradeTableViewController.h; sourceTree = "<group>"; };
+		5C9450471D653D43000BBEB7 /* GradeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GradeTableViewController.m; path = gradeTable/controller/GradeTableViewController.m; sourceTree = "<group>"; };
 		5C9450491D654893000BBEB7 /* grade.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = grade.html; sourceTree = "<group>"; };
-		5C94504E1D658BFE000BBEB7 /* PublicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicCell.h; sourceTree = "<group>"; };
-		5C94504F1D658BFE000BBEB7 /* PublicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicCell.m; sourceTree = "<group>"; };
-		5C9450501D658BFE000BBEB7 /* PublicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicCell.xib; sourceTree = "<group>"; };
+		5C94504E1D658BFE000BBEB7 /* PublicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PublicCell.h; path = gradeTable/view/PublicCell.h; sourceTree = "<group>"; };
+		5C94504F1D658BFE000BBEB7 /* PublicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PublicCell.m; path = gradeTable/view/PublicCell.m; sourceTree = "<group>"; };
+		5C9450501D658BFE000BBEB7 /* PublicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PublicCell.xib; path = gradeTable/view/PublicCell.xib; sourceTree = "<group>"; };
 		5C9451331D65CD4E000BBEB7 /* totalGrade.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = totalGrade.html; sourceTree = "<group>"; };
 		5F725620DD84F6D7AE00C060 /* Pods-SUESTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUESTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SUESTests/Pods-SUESTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A6DD14BDC2EBF81AD0F44D1 /* libPods-SUES.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SUES.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +224,119 @@
 				5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */,
 			);
 			name = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		5C089D751D6BDA5F0049FE84 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5C9450261D63F1B9000BBEB7 /* CoreData */,
+				5C089D7D1D6BDC5D0049FE84 /* User */,
+				5C089D7C1D6BDC170049FE84 /* Grade */,
+				5C089D7B1D6BDB870049FE84 /* Courses */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		5C089D761D6BDA6D0049FE84 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5C944F7E1D61E926000BBEB7 /* Main.storyboard */,
+				5C089D7F1D6BDCAD0049FE84 /* Grade */,
+				5C089D7A1D6BDAE70049FE84 /* Courses */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		5C089D771D6BDA760049FE84 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5C089D801D6BDD790049FE84 /* Login */,
+				5C944FC51D61F862000BBEB7 /* baseNav */,
+				5C089D791D6BDAAD0049FE84 /* Courses */,
+				5C089D781D6BDAA30049FE84 /* Grade */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5C089D781D6BDAA30049FE84 /* Grade */ = {
+			isa = PBXGroup;
+			children = (
+				5C9450461D653D43000BBEB7 /* GradeTableViewController.h */,
+				5C9450471D653D43000BBEB7 /* GradeTableViewController.m */,
+			);
+			name = Grade;
+			sourceTree = "<group>";
+		};
+		5C089D791D6BDAAD0049FE84 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */,
+				5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */,
+				5C4641061D66F6B4007289EA /* TimetableViewController.h */,
+				5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */,
+			);
+			name = Courses;
+			sourceTree = "<group>";
+		};
+		5C089D7A1D6BDAE70049FE84 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				5C944FD21D61F862000BBEB7 /* BrowserView.h */,
+				5C944FD31D61F862000BBEB7 /* BrowserView.m */,
+				5C944FD61D61F862000BBEB7 /* WeekView.h */,
+				5C944FD71D61F862000BBEB7 /* WeekView.m */,
+			);
+			name = Courses;
+			sourceTree = "<group>";
+		};
+		5C089D7B1D6BDB870049FE84 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				5C944FCF1D61F862000BBEB7 /* TimetableModel.h */,
+				5C944FD01D61F862000BBEB7 /* TimetableModel.m */,
+				5C944FE11D61F862000BBEB7 /* timetableViewModel.m */,
+				5C944FE01D61F862000BBEB7 /* timetableViewModel.h */,
+				5C4640FD1D66F651007289EA /* Courses+Flickr.h */,
+				5C4640FE1D66F651007289EA /* Courses+Flickr.m */,
+			);
+			name = Courses;
+			sourceTree = "<group>";
+		};
+		5C089D7C1D6BDC170049FE84 /* Grade */ = {
+			isa = PBXGroup;
+			children = (
+				5C4640FF1D66F651007289EA /* Grade+Flickr.h */,
+				5C4641001D66F651007289EA /* Grade+Flickr.m */,
+			);
+			name = Grade;
+			sourceTree = "<group>";
+		};
+		5C089D7D1D6BDC5D0049FE84 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				5C4641011D66F651007289EA /* User+Create.h */,
+				5C4641021D66F651007289EA /* User+Create.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		5C089D7F1D6BDCAD0049FE84 /* Grade */ = {
+			isa = PBXGroup;
+			children = (
+				5C94504E1D658BFE000BBEB7 /* PublicCell.h */,
+				5C94504F1D658BFE000BBEB7 /* PublicCell.m */,
+				5C9450501D658BFE000BBEB7 /* PublicCell.xib */,
+			);
+			name = Grade;
+			sourceTree = "<group>";
+		};
+		5C089D801D6BDD790049FE84 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5C089D681D6AB8A40049FE84 /* loginViewController.h */,
+				5C089D691D6AB8A40049FE84 /* loginViewController.m */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		5C4641191D688BE2007289EA /* Tools */ = {
@@ -283,11 +399,12 @@
 		5C944F741D61E926000BBEB7 /* SUES */ = {
 			isa = PBXGroup;
 			children = (
+				5C944FE21D61F862000BBEB7 /* Utils */,
+				5C089D771D6BDA760049FE84 /* Controller */,
+				5C089D761D6BDA6D0049FE84 /* View */,
+				5C089D751D6BDA5F0049FE84 /* Model */,
 				5C944FCA1D61F862000BBEB7 /* timetable */,
 				5C944FF31D621411000BBEB7 /* gradeTable */,
-				5C944FC51D61F862000BBEB7 /* baseNav */,
-				5C944FE21D61F862000BBEB7 /* Utils */,
-				5C944F7E1D61E926000BBEB7 /* Main.storyboard */,
 				5C944F751D61E926000BBEB7 /* Supporting Files */,
 			);
 			path = SUES;
@@ -296,6 +413,8 @@
 		5C944F751D61E926000BBEB7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5C089D721D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.h */,
+				5C089D731D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m */,
 				5C944F781D61E926000BBEB7 /* AppDelegate.h */,
 				5C944F791D61E926000BBEB7 /* AppDelegate.m */,
 				5C944F841D61E926000BBEB7 /* Assets.xcassets */,
@@ -304,8 +423,6 @@
 				5C944F761D61E926000BBEB7 /* main.m */,
 				5C4641071D67F0E8007289EA /* UpdateUser.h */,
 				5C4641081D67F0E8007289EA /* UpdateUser.m */,
-				5C089D681D6AB8A40049FE84 /* loginViewController.h */,
-				5C089D691D6AB8A40049FE84 /* loginViewController.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -368,14 +485,6 @@
 		5C944FCE1D61F862000BBEB7 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				5C944FCF1D61F862000BBEB7 /* TimetableModel.h */,
-				5C944FD01D61F862000BBEB7 /* TimetableModel.m */,
-				5C4640FD1D66F651007289EA /* Courses+Flickr.h */,
-				5C4640FE1D66F651007289EA /* Courses+Flickr.m */,
-				5C4640FF1D66F651007289EA /* Grade+Flickr.h */,
-				5C4641001D66F651007289EA /* Grade+Flickr.m */,
-				5C4641011D66F651007289EA /* User+Create.h */,
-				5C4641021D66F651007289EA /* User+Create.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -383,12 +492,8 @@
 		5C944FD11D61F862000BBEB7 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				5C944FD21D61F862000BBEB7 /* BrowserView.h */,
-				5C944FD31D61F862000BBEB7 /* BrowserView.m */,
 				5C944FD41D61F862000BBEB7 /* DayView.h */,
 				5C944FD51D61F862000BBEB7 /* DayView.m */,
-				5C944FD61D61F862000BBEB7 /* WeekView.h */,
-				5C944FD71D61F862000BBEB7 /* WeekView.m */,
 				5C4641101D67F759007289EA /* UpdateUserView.h */,
 				5C4641111D67F759007289EA /* UpdateUserView.m */,
 			);
@@ -398,10 +503,6 @@
 		5C944FD81D61F862000BBEB7 /* viewController */ = {
 			isa = PBXGroup;
 			children = (
-				5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */,
-				5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */,
-				5C4641061D66F6B4007289EA /* TimetableViewController.h */,
-				5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */,
 			);
 			path = viewController;
 			sourceTree = "<group>";
@@ -409,8 +510,6 @@
 		5C944FDF1D61F862000BBEB7 /* viewModel */ = {
 			isa = PBXGroup;
 			children = (
-				5C944FE11D61F862000BBEB7 /* timetableViewModel.m */,
-				5C944FE01D61F862000BBEB7 /* timetableViewModel.h */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -418,7 +517,6 @@
 		5C944FE21D61F862000BBEB7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5C9450261D63F1B9000BBEB7 /* CoreData */,
 				5C944FE31D61F862000BBEB7 /* Public.h */,
 				5C4640FA1D66F4B5007289EA /* CreateContext.h */,
 				5C4640FB1D66F4B5007289EA /* CreateContext.m */,
@@ -441,8 +539,6 @@
 		5C944FF41D621411000BBEB7 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				5C9450461D653D43000BBEB7 /* GradeTableViewController.h */,
-				5C9450471D653D43000BBEB7 /* GradeTableViewController.m */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -457,9 +553,6 @@
 		5C944FF61D621411000BBEB7 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				5C94504E1D658BFE000BBEB7 /* PublicCell.h */,
-				5C94504F1D658BFE000BBEB7 /* PublicCell.m */,
-				5C9450501D658BFE000BBEB7 /* PublicCell.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -497,8 +590,7 @@
 				5C9450331D63F1B9000BBEB7 /* User.h */,
 				5C9450341D63F1B9000BBEB7 /* User.m */,
 			);
-			name = CoreData;
-			path = ../CoreData;
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		EDB7439EB78A5520A1FBE6AD /* Frameworks */ = {
@@ -799,6 +891,7 @@
 				5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */,
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C94503B1D63F1B9000BBEB7 /* User.m in Sources */,
+				5C089D741D6B2BA50049FE84 /* AppDelegate+HtmlToCoreData.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,
 				5C9450351D63F1B9000BBEB7 /* CoreDataTableViewController.m in Sources */,

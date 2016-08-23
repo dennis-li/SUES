@@ -81,7 +81,14 @@
      }];
 }
 
+-(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    NSLog(@"setContext");
+    _managedObjectContext = managedObjectContext;
+    [self refreshWeekView];
+}
 
+//切换周数，按钮
 -(void)createNextWeekButton
 {
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
@@ -103,14 +110,6 @@
     weekView.currentWeek = currentWeek;
     weekView.user = self.user;
 }
-
--(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
-{
-    NSLog(@"setContext");
-    _managedObjectContext = managedObjectContext;
-    [self refreshWeekView];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

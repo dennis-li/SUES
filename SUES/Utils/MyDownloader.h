@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, DownloadType) {
+    All = 0,
+    DownloadCourses,
+    DownloadGrade
+};
+
 @class MyDownloader;
 @protocol MyDownloaderDelegate <NSObject>
 
@@ -27,5 +33,6 @@
 @property (nonatomic,strong)NSString *type;
 
 //下载
-- (void)downloadWithUrlString:(NSString *)urlString;
+-(void)downloadWithUrlString:(NSString *)urlString downloadType:(DownloadType)type
+                    userId:(NSString *)userId userPassWord:(NSString *)userPassWord;
 @end
