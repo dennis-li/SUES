@@ -11,8 +11,6 @@
 
 @interface GradeTableViewController : CoreDataTableViewController
 
-//给定context，给定数据库
-@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic,strong) User *user;
+
 
 @end

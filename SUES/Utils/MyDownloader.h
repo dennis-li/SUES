@@ -30,7 +30,7 @@ typedef NS_ENUM(NSUInteger, DownloadType) {
 //代理属性
 @property (nonatomic,weak)id<MyDownloaderDelegate>delegate;
 //类型
-@property (nonatomic,assign)DownloadType *type;
+@property (nonatomic,assign)DownloadType type;
 
 //第一次下载
 -(void)downloadWithUserId:(NSString *)userId userPassWord:(NSString *)userPassWord;

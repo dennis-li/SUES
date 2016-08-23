@@ -39,16 +39,12 @@
 
 -(void)checkLogin
 {
-   
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     //    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
     NSArray *courseArray = [self.managedObjectContext executeFetchRequest:request error:nil];
     
-    if (0) {
+    if ([courseArray count]) {
         self.user = [courseArray lastObject];
-        [self.userDictionary setValue:self.user.name forKey:USER_NAME];
-        [self.userDictionary setValue:self.user.password forKey:USER_PASSWORD];
-        [self.userDictionary setValue:self.user.userId forKey:USER_ID];
         [self changeRootCtroller];
     }
 }

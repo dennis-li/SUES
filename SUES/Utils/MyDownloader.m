@@ -109,9 +109,12 @@
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
     NSLog(@"webViewHTML = %@",string);
     [self analyzeCoursesHtmlData:string];
-    [self startRequesGradeHtmlData];
-    [self sendNotificationToCourseTable];
-    [self.delegate downloadFinish:self];
+    
+    if (self.type != DownloadCourses) {//如果只是下载课表就不执行
+        [self startRequesGradeHtmlData];
+        [self sendNotificationToCourseTable];
+        [self.delegate downloadFinish:self];
+    }
 }
 
 //处理完数据发送通知到前台
@@ -151,11 +154,11 @@
             NSLog(@"[%@->%@] requestGradeData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
         }
     }
-    [self downloadGradeData:elements];
+    [self saveGradeData:elements];
 }
 
 
--(void)downloadGradeData:(NSArray *)gradeData
+-(void)saveGradeData:(NSArray *)gradeData
 {
     NSMutableDictionary *gradeCourseDictionary;
     NSInteger key = 0;
