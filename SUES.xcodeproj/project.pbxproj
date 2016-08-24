@@ -12,6 +12,9 @@
 		5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D691D6AB8A40049FE84 /* loginViewController.m */; };
 		5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */; };
 		5C089D831D6C10D90049FE84 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D821D6C10D90049FE84 /* Networking.m */; };
+		5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E131D6D57D40049FE84 /* TimetableModel.m */; };
+		5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E151D6D57D40049FE84 /* timetableViewModel.m */; };
+		5C089E191D6D584E0049FE84 /* WeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E181D6D584E0049FE84 /* WeekView.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -34,13 +37,10 @@
 		5C944FE51D61F862000BBEB7 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FC91D61F862000BBEB7 /* MainTabBarController.m */; };
 		5C944FE61D61F862000BBEB7 /* course.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C944FCC1D61F862000BBEB7 /* course.json */; };
 		5C944FE71D61F862000BBEB7 /* 李旭的提交日志 in Resources */ = {isa = PBXBuildFile; fileRef = 5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */; };
-		5C944FE81D61F862000BBEB7 /* TimetableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD01D61F862000BBEB7 /* TimetableModel.m */; };
 		5C944FE91D61F862000BBEB7 /* BrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD31D61F862000BBEB7 /* BrowserView.m */; };
 		5C944FEA1D61F862000BBEB7 /* DayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD51D61F862000BBEB7 /* DayView.m */; };
-		5C944FEB1D61F862000BBEB7 /* WeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD71D61F862000BBEB7 /* WeekView.m */; };
 		5C944FEC1D61F862000BBEB7 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */; };
 		5C944FED1D61F862000BBEB7 /* TimetableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */; };
-		5C944FEF1D61F862000BBEB7 /* timetableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FE11D61F862000BBEB7 /* timetableViewModel.m */; };
 		5C944FFD1D621789000BBEB7 /* RedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FFC1D621789000BBEB7 /* RedViewController.m */; };
 		5C9450001D621798000BBEB7 /* GreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FFF1D621798000BBEB7 /* GreenViewController.m */; };
 		5C9450031D6217AC000BBEB7 /* GrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450021D6217AC000BBEB7 /* GrayViewController.m */; };
@@ -94,6 +94,11 @@
 		5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		5C089D811D6C10D90049FE84 /* Networking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Networking.h; sourceTree = "<group>"; };
 		5C089D821D6C10D90049FE84 /* Networking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Networking.m; sourceTree = "<group>"; };
+		5C089E121D6D57D40049FE84 /* TimetableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimetableModel.h; sourceTree = "<group>"; };
+		5C089E131D6D57D40049FE84 /* TimetableModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableModel.m; sourceTree = "<group>"; };
+		5C089E141D6D57D40049FE84 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timetableViewModel.h; sourceTree = "<group>"; };
+		5C089E151D6D57D40049FE84 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timetableViewModel.m; sourceTree = "<group>"; };
+		5C089E181D6D584E0049FE84 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekView.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -136,19 +141,14 @@
 		5C944FC91D61F862000BBEB7 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
 		5C944FCC1D61F862000BBEB7 /* course.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = course.json; sourceTree = "<group>"; };
 		5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "李旭的提交日志"; sourceTree = "<group>"; };
-		5C944FCF1D61F862000BBEB7 /* TimetableModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimetableModel.h; sourceTree = "<group>"; };
-		5C944FD01D61F862000BBEB7 /* TimetableModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableModel.m; sourceTree = "<group>"; };
 		5C944FD21D61F862000BBEB7 /* BrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserView.h; sourceTree = "<group>"; };
 		5C944FD31D61F862000BBEB7 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserView.m; sourceTree = "<group>"; };
 		5C944FD41D61F862000BBEB7 /* DayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayView.h; sourceTree = "<group>"; };
 		5C944FD51D61F862000BBEB7 /* DayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayView.m; sourceTree = "<group>"; };
 		5C944FD61D61F862000BBEB7 /* WeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekView.h; sourceTree = "<group>"; };
-		5C944FD71D61F862000BBEB7 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekView.m; sourceTree = "<group>"; };
 		5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailViewController.h; sourceTree = "<group>"; };
 		5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
 		5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableViewController.m; sourceTree = "<group>"; };
-		5C944FE01D61F862000BBEB7 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timetableViewModel.h; sourceTree = "<group>"; };
-		5C944FE11D61F862000BBEB7 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timetableViewModel.m; sourceTree = "<group>"; };
 		5C944FE31D61F862000BBEB7 /* Public.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Public.h; sourceTree = "<group>"; };
 		5C944FFB1D621789000BBEB7 /* RedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedViewController.h; sourceTree = "<group>"; };
 		5C944FFC1D621789000BBEB7 /* RedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedViewController.m; sourceTree = "<group>"; };
@@ -241,10 +241,6 @@
 			children = (
 				5C4640FD1D66F651007289EA /* Courses+Flickr.h */,
 				5C4640FE1D66F651007289EA /* Courses+Flickr.m */,
-				5C944FCF1D61F862000BBEB7 /* TimetableModel.h */,
-				5C944FD01D61F862000BBEB7 /* TimetableModel.m */,
-				5C944FE01D61F862000BBEB7 /* timetableViewModel.h */,
-				5C944FE11D61F862000BBEB7 /* timetableViewModel.m */,
 			);
 			path = Courses;
 			sourceTree = "<group>";
@@ -291,6 +287,10 @@
 		5C089D8A1D6C4D070049FE84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C089E121D6D57D40049FE84 /* TimetableModel.h */,
+				5C089E131D6D57D40049FE84 /* TimetableModel.m */,
+				5C089E141D6D57D40049FE84 /* timetableViewModel.h */,
+				5C089E151D6D57D40049FE84 /* timetableViewModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -299,9 +299,9 @@
 			isa = PBXGroup;
 			children = (
 				5C944FD21D61F862000BBEB7 /* BrowserView.h */,
+				5C089E181D6D584E0049FE84 /* WeekView.m */,
 				5C944FD31D61F862000BBEB7 /* BrowserView.m */,
 				5C944FD61D61F862000BBEB7 /* WeekView.h */,
-				5C944FD71D61F862000BBEB7 /* WeekView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -898,6 +898,7 @@
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C94503B1D63F1B9000BBEB7 /* User.m in Sources */,
 				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
+				5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,
 				5C9450351D63F1B9000BBEB7 /* CoreDataTableViewController.m in Sources */,
@@ -905,12 +906,10 @@
 				5C9450481D653D43000BBEB7 /* GradeTableViewController.m in Sources */,
 				5C4641251D688BE2007289EA /* TFHppleElement.m in Sources */,
 				5C4641091D67F0E8007289EA /* UpdateUser.m in Sources */,
-				5C944FEF1D61F862000BBEB7 /* timetableViewModel.m in Sources */,
 				5C4641051D66F651007289EA /* User+Create.m in Sources */,
 				5C4641121D67F759007289EA /* UpdateUserView.m in Sources */,
 				5C4641241D688BE2007289EA /* TFHpple.m in Sources */,
 				5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */,
-				5C944FEB1D61F862000BBEB7 /* WeekView.m in Sources */,
 				5C9450391D63F1B9000BBEB7 /* Grade.m in Sources */,
 				5C94503E1D63F2E2000BBEB7 /* SUES.xcdatamodeld in Sources */,
 				5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */,
@@ -918,13 +917,14 @@
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,
 				5C9450371D63F1B9000BBEB7 /* Courses.m in Sources */,
 				5C944FFD1D621789000BBEB7 /* RedViewController.m in Sources */,
-				5C944FE81D61F862000BBEB7 /* TimetableModel.m in Sources */,
 				5C944FE51D61F862000BBEB7 /* MainTabBarController.m in Sources */,
 				5C944F771D61E926000BBEB7 /* main.m in Sources */,
 				5C94503A1D63F1B9000BBEB7 /* User+CoreDataProperties.m in Sources */,
+				5C089E191D6D584E0049FE84 /* WeekView.m in Sources */,
 				5C944FED1D61F862000BBEB7 /* TimetableViewController.m in Sources */,
 				5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */,
 				5C944FEC1D61F862000BBEB7 /* CourseDetailViewController.m in Sources */,
+				5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */,
 				5C9450001D621798000BBEB7 /* GreenViewController.m in Sources */,
 				5C944FE91D61F862000BBEB7 /* BrowserView.m in Sources */,
 				5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */,
