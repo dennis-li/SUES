@@ -47,10 +47,12 @@
 - (IBAction)Login:(id)sender {
     NSString *username = self.usernameTF.text;
     NSString *password = self.passwordTF.text;
+    
+//    NSString *username = @"023113141";
+//    NSString *password = @"lidaye1991";
+    
     self.userId = username;
     self.userPassWord = password;
-    //    NSString *username = self.usernameTF.text;
-    //    NSString *password = self.passwordTF.text;
     
     //检查完数据之后，提交数据到服务器
     Networking *networking = [[Networking alloc ] init];
