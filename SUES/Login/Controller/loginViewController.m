@@ -92,18 +92,18 @@
 
 #pragma - NetworkingDelegaate
 
--(void)requestFinish:(NSString *)returnString
+-(void)requestFinish:(Networking *)networking returnString:(NSString *)returnString
 {
     [self downloadUserData];
 }
 
--(void)requestFail:(NSString *)error
+-(void)requestFail:(Networking *)networking error:(NSString *)error
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.mode = MBProgressHUDModeText;
     hud.label.text = NSLocalizedString(error, @"HUD message title");
     hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
-    [hud hideAnimated:YES afterDelay:2.f];
+    [hud hideAnimated:YES afterDelay:1.f];
 }
 
 @end

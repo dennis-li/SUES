@@ -20,20 +20,19 @@
     return self;
 }
 
--(void)requesHTMLData
+
+-(void)requestGradeHtmlData
 {
-    
-    NSString *URLString = @"http://jxxt.sues.edu.cn/eams/personGrade.action?method=historyCourseGrade";
-    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:URLString parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         if(LX_DEBUG)
             NSLog(@"resutl..grade = %@",result);
+        [self.delegate requestFinish:self returnString:result];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error = %@",error);
+        [self.delegate requestFail:self error:@"请求成绩失败"];
     }];
 }
 
@@ -59,14 +58,14 @@
         
         NSLog(@"result = %@",result);
         if (!result) {
-            [self.delegate requestFail:@"检查网络"];
+            [self.delegate requestFail:self error:@"检查网络"];
         } else if (![result containsString:@"handleLoginSuccessed"]) {
-            [self.delegate requestFail:@"密码或用户名错误"];
+            [self.delegate requestFail:self error:@"密码或用户名错误"];
         } else{
-            [self.delegate requestFinish:nil];
+            [self.delegate requestFinish:self returnString:nil];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self.delegate requestFail:@"检查网络"];
+        [self.delegate requestFail:self error:@"检查网络"];
     }];
 }
 

@@ -14,16 +14,20 @@
 #import "Courses+Flickr.h"
 #import "Grade+Flickr.h"
 #import "AppDelegate.h"
-#import <AFNetworking.h>
+#import "Networking.h"
 
 
-@interface MyDownloader ()<UIWebViewDelegate>
-@property (nonatomic,strong) NSMutableArray *gradeArray;//存放所有的成绩
-@property (nonatomic ,strong)NSMutableDictionary *userDictionary;//存放user的信息
-@property (nonatomic ,strong)NSMutableArray *coursesArray;//存放所有课程
-@property (nonatomic ,strong)UIWebView *webView;//加载课表，加载完之后获取源码
-@property (nonatomic ,strong)User *user;
-@property (nonatomic ,strong)NSManagedObjectContext *managedObjectContext;
+@interface MyDownloader ()<UIWebViewDelegate,NetworkingDelegate>
+@property (nonatomic ,strong) NSMutableArray *gradeArray;//存放所有的成绩
+@property (nonatomic ,strong) NSMutableDictionary *userDictionary;//存放user的信息
+@property (nonatomic ,strong) NSMutableArray *coursesArray;//存放所有课程
+@property (nonatomic ,strong) UIWebView *webView;//加载课表，加载完之后获取源码
+@property (nonatomic ,strong) User *user;
+@property (nonatomic ,strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic ,strong) NSMutableDictionary *courseDictionary;//存放一个课程详情
+@property (nonatomic ,assign) NSInteger sectionStart;//从第几节开始上课
+@property (nonatomic ,assign) NSInteger sectionEnd;
+@property (nonatomic ,strong) NSString *week;//课程的Day，那天上课
 @end
 
 @implementation MyDownloader
@@ -65,6 +69,14 @@
     return [[UIApplication sharedApplication] delegate];
 }
 
+-(NSMutableDictionary *)courseDictionary
+{
+    if (!_courseDictionary) {
+        _courseDictionary = [[NSMutableDictionary alloc] init];
+    }
+    return _courseDictionary;
+}
+
 -(NSMutableDictionary *)userDictionary
 {
     if (!_userDictionary) {
@@ -97,6 +109,7 @@
     [self loadWebView];
 }
 
+//加载UIWebView
 -(void)loadWebView
 {
     NSURL *url = [NSURL URLWithString:COURSE_URL];
@@ -104,6 +117,7 @@
     [self.webView loadRequest:request];
 }
 
+//web View 加载完毕
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
@@ -111,7 +125,7 @@
     [self analyzeCoursesHtmlData:string];
     
     if (self.type != DownloadCourses) {//如果只是下载课表就不执行
-        [self startRequesGradeHtmlData];
+        [self startRequestGradeHtmlData];
         [self sendNotificationToCourseTable];
         [self.delegate downloadFinish:self];
     }
@@ -128,19 +142,11 @@
 }
 
 #pragma - mark Gradetable
--(void)startRequesGradeHtmlData
+-(void)startRequestGradeHtmlData
 {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        if(LX_DEBUG)
-            NSLog(@"resutl..grade = %@",result);
-        [self analyzeGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding]];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error = %@",error);
-    }];
+    Networking *networking = [[Networking alloc] init];
+    networking.delegate = self;
+    [networking requestGradeHtmlData];
 }
 
 -(void)analyzeGradeHtmlData:(NSData *)htmlData
@@ -170,41 +176,41 @@
         }
         switch (key % 11) {
             case 0:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_CODE];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_CODE];//课程代码
                 break;
             case 1:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_ID];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_ID];//课程序号
                 break;
             case 2:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_NAME];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_NAME];//课程名称
                 break;
             case 3:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CATEGORY];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CATEGORY];//课程类别
                 break;
             case 4:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CREDIT];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CREDIT];//学分
                 break;
             case 5:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MIDTERMGRADE];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MIDTERMGRADE];//期中成绩
                 break;
             case 6:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALLEVEL];//期末总评
                 break;
             case 7:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MAKEUPEXAMGRADE];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MAKEUPEXAMGRADE];//补考成绩
                 break;
             case 8:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];//期末成绩
                 break;
             case 9:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_GRADEPOINT];
+                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_GRADEPOINT];//学分
                 break;
             case 10:
             {
                 NSArray *semesterAndYear =  [[element content] componentsSeparatedByString:@" "];
                 NSString *year = [[[semesterAndYear firstObject] componentsSeparatedByString:@"-"] firstObject];
-                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[year integerValue]] forKey:COURSE_STARTSCHOOLYEAR];
-                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[[semesterAndYear lastObject] integerValue]] forKey:COURSE_SEMESTER];
+                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[year integerValue]] forKey:COURSE_STARTSCHOOLYEAR];//学年
+                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[[semesterAndYear lastObject] integerValue]] forKey:COURSE_SEMESTER];//学期
             }
                 break;
             default:
@@ -213,6 +219,7 @@
         
         key++;
     }
+    //数据保存到数据库
     [Grade loadGradeFromFlickrArray:self.gradeArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
 }
@@ -225,7 +232,7 @@
     NSData *htmlData= [HTMLData dataUsingEncoding:NSUTF8StringEncoding];
     
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    if (!self.user) {
+    if (!self.user) {//第一次登录，保存用户
         NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//table[@id='myBar']/tbody/tr/td[2]/b"];
         TFHppleElement *element = [userNameArray firstObject];
         NSString *userName = [[[element content] componentsSeparatedByString:@":"] lastObject];
@@ -244,23 +251,18 @@
 
 -(void)saveCourseData:(NSArray *)elements
 {
-    //存储一个课程
-    NSMutableDictionary *courseDictionary = nil;//新建一个课程字典
-    NSString *week;
     NSInteger whichLesson = 0;
-    NSInteger sectionStart = 0;
-    NSInteger sectionEnd = 0;
     for (TFHppleElement *element in elements) {
         whichLesson++;
         if ([[element objectForKey:@"class"] isEqualToString:@"darkColumn"]) {//匹配星期几
-            week = [element content];
+            self.week = [element content];
             whichLesson = 0;
         }
         
         if ([element objectForKey:@"colspan"]) {
-            sectionEnd = [[element objectForKey:@"colspan"] integerValue]+whichLesson-1;
-            sectionStart = whichLesson;
-            whichLesson = sectionEnd;
+            self.sectionEnd = [[element objectForKey:@"colspan"] integerValue]+whichLesson-1;
+            self.sectionStart = whichLesson;
+            whichLesson = self.sectionEnd;
         }
         
         //找到一个课程详情
@@ -272,81 +274,99 @@
                 }
                 continue;
             }
-            
-            /*@[王国强 多元微积分A（上）(0014), (1-8,B310多), 沈军 多元微积分A（下）(4477), (10-17,A307多)*/
-            NSArray *courseArray = [course componentsSeparatedByString:@";"];
-            if (![courseArray count]) {
-                continue;
-            }
-            for (NSString *courseDetail in courseArray) {
-                if (![[courseDetail substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"("]) {
-                    if (courseDictionary) {
-                        if (LX_DEBUG) {
-                            for (NSString *string in courseDictionary) {
-                                NSLog(@"%@ = %@",string,courseDictionary[string]);
-                            }
-                            NSLog(@"-----------------------------------");
-                        }
-                        
-                    }
-                    courseDictionary = [self createACourseDictionary];
-                    [self.coursesArray addObject:courseDictionary];
-                    [courseDictionary setValue:[NSNumber numberWithInteger:sectionStart] forKey:COURSE_SECTIONSTART];
-                    [courseDictionary setValue:[NSNumber numberWithInteger:sectionEnd] forKey:COURSE_SECTIONEND];
-                    [courseDictionary setValue:[NSNumber numberWithInteger:2015] forKey:COURSE_STARTSCHOOLYEAR];
-                    [courseDictionary setValue:[NSNumber numberWithInteger:2] forKey:COURSE_SEMESTER];
-                    [courseDictionary setValue:self.userDictionary forKey:COURSE_WHOCOURSE];
-                    
-                    NSArray *teacherAndcourseNameArray = [courseDetail componentsSeparatedByString:@" "];
-                    if ([teacherAndcourseNameArray count] > 1) {
-                        for (NSString *teacher in teacherAndcourseNameArray) {
-                            NSLog(@"teacher = %@",teacher);
-                        }
-                        [courseDictionary setValue:[teacherAndcourseNameArray firstObject] forKey:COURSE_TEACHER];//老师
-                    } else {
-                        [courseDictionary setValue:@"待定" forKey:COURSE_TEACHER];
-                    }
-                    
-                    NSArray *courseNameAndIdArray = [[teacherAndcourseNameArray lastObject] componentsSeparatedByString:@"("];//高歌 电路(一)(3911);(1-8,C110多); 制造技术基础实习C(3897);(10-11,实训楼1号楼底楼7号门大厅)
-                    [courseDictionary setValue:[courseNameAndIdArray firstObject] forKey:COURSE_NAME];
-                    
-                    NSString *courseId = [[courseNameAndIdArray lastObject] substringToIndex:[[courseNameAndIdArray lastObject]length]-1];
-                    [courseDictionary setValue:courseId forKey:COURSE_ID];
-#warning -咱用period做为课程唯一标识符
-                    NSString *period = [[[self weekToDay:week] stringByAppendingString:[NSString stringWithFormat:@"%ld",sectionStart]] stringByAppendingString:courseId];
-                    [courseDictionary setValue:period forKey:COURSE_PERIOD];
-                } else {
-                    
-                    if ([courseDictionary objectForKey:COURSE_DAY]) {
-                        //这种情况－－高燕 自动控制理论A(0524);(11,训1104-1111);(12-14,训1105);(1-8 10,D302多)
-                        NSString *oldLocale = [courseDictionary objectForKey:COURSE_LOCALE];
-                        NSString *oldSmartPeriod = [courseDictionary objectForKey:COURSE_SMARTPERIOD];
-                        
-                        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
-                        //上课时间
-                        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
-                        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
-                        
-                        [courseDictionary setValue:[oldLocale stringByAppendingString:[NSString stringWithFormat:@",%@",courseDetail]] forKey:COURSE_LOCALE];//上课地点
-                        [courseDictionary setValue:[oldSmartPeriod stringByAppendingString:smartPeriod] forKey:COURSE_SMARTPERIOD];
-                    } else {//这里只运行一次
-                        
-                        [courseDictionary setValue:[NSNumber numberWithInteger:[[self weekToDay:week] integerValue]] forKey:COURSE_DAY];
-                        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
-                        
-                        //上课时间
-                        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
-                        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
-                        
-                        [courseDictionary setValue:courseDetail forKey:COURSE_LOCALE];//上课地点
-                        [courseDictionary setValue:smartPeriod forKey:COURSE_SMARTPERIOD];
-                    }
-                }
-            }
+            [self analysisOfTheCourseDetailWith:course];
         }
     }
+    //数据保存到数据库
     [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
+}
+
+//分析找到的一门新课程
+-(void)analysisOfTheCourseDetailWith:(NSString *)course
+{
+    /*@[王国强 多元微积分A（上）(0014), (1-8,B310多), 沈军 多元微积分A（下）(4477), (10-17,A307多)*/
+    NSArray *courseArray = [course componentsSeparatedByString:@";"];
+    
+    for (NSString *courseDetail in courseArray) {
+        if (![[courseDetail substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"("]) {
+            if (self.courseDictionary) {
+                if (LX_DEBUG) {
+                    for (NSString *string in self.courseDictionary) {
+                        NSLog(@"%@ = %@",string,self.courseDictionary[string]);
+                    }
+                    NSLog(@"-----------------------------------");
+                }
+                
+            }
+            self.courseDictionary = [self createACourseDictionary];
+            [self.coursesArray addObject:self.courseDictionary];
+            [self.courseDictionary setValue:[NSNumber numberWithInteger:self.sectionStart] forKey:COURSE_SECTIONSTART];//第几节开始上课
+            [self.courseDictionary setValue:[NSNumber numberWithInteger:self.sectionEnd] forKey:COURSE_SECTIONEND];
+            [self.courseDictionary setValue:[NSNumber numberWithInteger:2015] forKey:COURSE_STARTSCHOOLYEAR];//学年
+            [self.courseDictionary setValue:[NSNumber numberWithInteger:2] forKey:COURSE_SEMESTER];//学期
+            [self.courseDictionary setValue:self.userDictionary forKey:COURSE_WHOCOURSE];//用户
+            
+            [self analyzeCourseNameAndTeacherWith:courseDetail];
+        } else {
+            
+            [self analyzeCourseLocaleAndCourseTime:courseDetail];
+        }
+    }
+}
+
+//课程名称，教师名称
+-(void)analyzeCourseNameAndTeacherWith:(NSString *)courseDetail
+{
+    NSArray *teacherAndcourseNameArray = [courseDetail componentsSeparatedByString:@" "];
+    NSString *teacherName = [teacherAndcourseNameArray firstObject];
+    NSString *temp = [teacherName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ([teacherAndcourseNameArray count] > 1 && [temp length]) {
+        for (NSString *teacher in teacherAndcourseNameArray) {
+            NSLog(@"teacher = %@",teacher);
+        }
+        [self.courseDictionary setValue:[teacherAndcourseNameArray firstObject] forKey:COURSE_TEACHER];//老师
+    } else {
+        [self.courseDictionary setValue:@"待定" forKey:COURSE_TEACHER];
+    }
+    
+    NSArray *courseNameAndIdArray = [[teacherAndcourseNameArray lastObject] componentsSeparatedByString:@"("];//高歌 电路(一)(3911);(1-8,C110多); 制造技术基础实习C(3897);(10-11,实训楼1号楼底楼7号门大厅)
+    [self.courseDictionary setValue:[courseNameAndIdArray firstObject] forKey:COURSE_NAME];//课程名称
+    
+    NSString *courseId = [[courseNameAndIdArray lastObject] substringToIndex:[[courseNameAndIdArray lastObject]length]-1];
+    [self.courseDictionary setValue:courseId forKey:COURSE_ID];//课程序号
+#warning -咱用period做为课程唯一标识符
+    NSString *period = [[[self weekToDay:self.week] stringByAppendingString:[NSString stringWithFormat:@"%ld",self.sectionStart]] stringByAppendingString:courseId];
+    [self.courseDictionary setValue:period forKey:COURSE_PERIOD];
+}
+
+//上课时间和的点
+-(void)analyzeCourseLocaleAndCourseTime:(NSString *)courseDetail
+{
+    if ([self.courseDictionary objectForKey:COURSE_DAY]) {
+        //这种情况－－高燕 自动控制理论A(0524);(11,训1104-1111);(12-14,训1105);(1-8 10,D302多)
+        NSString *oldLocale = [self.courseDictionary objectForKey:COURSE_LOCALE];//上课地点
+        NSString *oldSmartPeriod = [self.courseDictionary objectForKey:COURSE_SMARTPERIOD];//具体上课的周
+        
+        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
+        //上课时间
+        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
+        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
+        
+        [self.courseDictionary setValue:[oldLocale stringByAppendingString:[NSString stringWithFormat:@",%@",courseDetail]] forKey:COURSE_LOCALE];//上课地点
+        [self.courseDictionary setValue:[oldSmartPeriod stringByAppendingString:smartPeriod] forKey:COURSE_SMARTPERIOD];
+    } else {//这里只运行一次
+        
+        [self.courseDictionary setValue:[NSNumber numberWithInteger:[[self weekToDay:self.week] integerValue]] forKey:COURSE_DAY];
+        NSArray *courseTimeAndLocaleArray = [courseDetail componentsSeparatedByString:@","];
+        
+        //上课时间
+        NSString *courseTime = [[courseTimeAndLocaleArray firstObject] substringFromIndex:1];//4 8 双12-14
+        NSString *smartPeriod = [self returnTotalSmartData:courseTime];
+        
+        [self.courseDictionary setValue:courseDetail forKey:COURSE_LOCALE];//上课地点
+        [self.courseDictionary setValue:smartPeriod forKey:COURSE_SMARTPERIOD];
+    }
 }
 
 -(NSString *)weekToDay:(NSString *)week
@@ -408,6 +428,18 @@
         [string appendString:[NSString stringWithFormat:@"%ld ",start]];
     }
     return string;
+}
+
+#pragma - mark NetworkingDelegate
+
+-(void)requestFinish:(Networking *)networking returnString:(NSString *)returnString
+{
+    [self analyzeGradeHtmlData:[returnString dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
+-(void)requestFail:(Networking *)networking error:(NSString *)error
+{
+    
 }
 
 @end
