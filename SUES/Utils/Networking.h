@@ -14,23 +14,17 @@ typedef NS_ENUM(NSUInteger, NetworkingType) {
     RefreshCourse
 };
 
-@class Networking;
-@protocol NetworkingDelegate <NSObject>
-
-//请求失败
-- (void)requestFail:(Networking *)networking error:(NSString  *)error;
-
-//请求成功
-- (void)requestFinish:(Networking *)networking returnString:(NSString *)returnString;
-
-@end
-
 @interface Networking : NSObject
 
-@property (nonatomic,weak)id<NetworkingDelegate>delegate;
 @property (nonatomic,assign)NetworkingType type;
 
+//回调信息
+@property (nonatomic,copy) void (^requestFinish)(NSString *requestString,NSString *error);
+
+//登录请求
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword;
+
+//课表请求
 -(void)requestGradeHtmlData;
 
 @end

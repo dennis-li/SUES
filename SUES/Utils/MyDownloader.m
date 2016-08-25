@@ -131,7 +131,7 @@
             if ([[element content] containsString:[self.userDictionary valueForKey:USER_ID]]) {
                 NSArray *userNameDetail = [[element content] componentsSeparatedByString:@" "];
                 if ([userNameDetail count] > 2) {
-                    userName = [[[userNameDetail objectAtIndex:1] componentsSeparatedByString:@":"] lastObject];
+                    userName = [[[userNameDetail objectAtIndex:2] componentsSeparatedByString:@":"] lastObject];
                     if (LX_DEBUG) {
                         NSLog(@"%@--%@--userName = %@",NSStringFromClass([self class]), NSStringFromSelector(_cmd),userName);
                     }

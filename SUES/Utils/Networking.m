@@ -49,21 +49,6 @@
     return _webView;
 }
 
-//请求成绩数据
--(void)requestGradeHtmlData
-{
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        if(LX_DEBUG)
-            NSLog(@"resutl..grade = %@",result);
-        [self.downloader loginAnalyzeUserWithGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding] userId:self.userId password:self.userPassword];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-    }];
-}
-
 
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword
 {
@@ -93,16 +78,31 @@
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         
         NSLog(@"result = %@",result);
-        if (!result) {
-            [self.delegate requestFail:self error:@"检查网络"];
-        } else if (![result containsString:@"handleLoginSuccessed"]) {
-            [self.delegate requestFail:self error:@"密码或用户名错误"];
-        } else{
+        if ([result containsString:@"handleLoginSuccessed"]) {
             [self requestGradeHtmlData];
-            self.webView.delegate = self;//加载course网页
+            self.webView.delegate = self;
+        } else if ([result containsString:@"handleLoginFailure"]) {
+            self.requestFinish(nil,@"密码或用户名错误");
+        } else{
+            self.requestFinish(nil,@"检查网络");
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self.delegate requestFail:self error:@"检查网络"];
+        self.requestFinish(nil,@"检查网络");
+    }];
+}
+
+//请求成绩数据
+-(void)requestGradeHtmlData
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        if(LX_DEBUG)
+            NSLog(@"resutl..grade = %@",result);
+        [self.downloader loginAnalyzeUserWithGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding] userId:self.userId password:self.userPassword];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
     }];
 }
 
@@ -112,7 +112,7 @@
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
     NSLog(@"CourseHTML = %@",string);
     [self.downloader analyzeCoursesHtmlData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-    [self.delegate requestFinish:self returnString:nil];
+    self.requestFinish(@" ",nil);
 }
 
 #pragma - mark MydownloaderDelegate

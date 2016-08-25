@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "Networking.h"
 
-@interface loginViewController ()<UIGestureRecognizerDelegate,NetworkingDelegate>
+@interface loginViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic,strong) NSString *userId;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic,strong) MBProgressHUD *hud;
@@ -37,7 +37,6 @@
 {
     if (!_networking) {
         _networking = [[Networking alloc] init];
-        _networking.delegate = self;
     }
     return _networking;
 }
@@ -72,29 +71,22 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     self.hud = hud;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        __weak loginViewController *weakSelf = self;
+        self.networking.requestFinish = ^(NSString *requestString,NSString *error){
+            [weakSelf.hud hideAnimated:YES];
+            if (!error) {
+                AppDelegate *app = [[UIApplication sharedApplication] delegate];
+                [app changeRootCtroller];
+            }else {
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
+                hud.mode = MBProgressHUDModeText;
+                hud.label.text = NSLocalizedString(error, @"HUD message title");
+                hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
+                [hud hideAnimated:YES afterDelay:1.f];
+            }
+        };
         [self.networking loginRequestWithUserName:self.userId password:self.userPassWord];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [hud hideAnimated:YES];
-//        });
     });
-}
-
-#pragma - NetworkingDelegaate
-
--(void)requestFinish:(Networking *)networking returnString:(NSString *)returnString
-{
-    [self.hud hideAnimated:YES];
-    AppDelegate *app = [[UIApplication sharedApplication] delegate];
-    [app changeRootCtroller];
-}
-
--(void)requestFail:(Networking *)networking error:(NSString *)error
-{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeText;
-    hud.label.text = NSLocalizedString(error, @"HUD message title");
-    hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
-    [hud hideAnimated:YES afterDelay:1.f];
 }
 
 @end
