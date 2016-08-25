@@ -213,9 +213,10 @@
         key++;
     }
     //数据保存到数据库
+    
     [Grade loadGradeFromFlickrArray:self.gradeArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
-    [self sendNotificationToGradeTable];
+    [self.delegate downloadFinish:self];
 }
 
 #pragma - mark Coursetable

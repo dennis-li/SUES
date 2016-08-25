@@ -10,7 +10,7 @@
 
 #warning - 以后更新的数据类型可以增加
 typedef NS_ENUM(NSUInteger, NetworkingType) {
-    RefreshGrade = 0,
+    RefreshGrade = 1,
     RefreshCourse
 };
 
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, NetworkingType) {
 //登录请求
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword;
 
-//课表请求
--(void)requestGradeHtmlData;
+//成绩请求
+-(void)requestGradeHtmlDataWithNetworkingType:(NetworkingType)type;
 
 @end

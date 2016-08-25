@@ -15,13 +15,13 @@
 +(Grade *)gradeWithFlickrInfo:(NSDictionary *)gradeDictionary inManagedObjectContext:(NSManagedObjectContext *)context 
 {
     Grade *grade = nil;
-    
+    User *user = [User searchUserWithId:gradeDictionary[GRADE_WHOGRADE] inManagedObjectContext:context];
     NSString *courseId = gradeDictionary[COURSE_ID];
     if (!gradeDictionary[COURSE_NAME]) {
         return nil;
     }
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
-    request.predicate = [NSPredicate predicateWithFormat:@"courseId = %@",courseId];
+    request.predicate = [NSPredicate predicateWithFormat:@"courseId = %@ AND whoGrade = %@",courseId,user];
     
     
     NSError *error;
@@ -30,6 +30,17 @@
         //handle error
     } else if ([matches count]){
         grade = [matches firstObject];
+        grade.courseCode = gradeDictionary[COURSE_CODE];
+        grade.category = gradeDictionary[GRADE_CATEGORY];
+        grade.name = gradeDictionary[COURSE_NAME];
+        grade.credit = gradeDictionary[GRADE_CREDIT];
+        grade.midTermGrade = gradeDictionary[GRADE_MIDTERMGRADE];
+        grade.finalLevel = gradeDictionary[GRADE_FINALLEVEL];
+        grade.makeupExamGrade = gradeDictionary[GRADE_MAKEUPEXAMGRADE];
+        grade.finalGrade = gradeDictionary[GRADE_FINALGRADE];
+        grade.gradePoint = gradeDictionary[GRADE_GRADEPOINT];
+        grade.startSchoolYear = [NSNumber numberWithInteger: [gradeDictionary[COURSE_STARTSCHOOLYEAR] integerValue] +1];
+        grade.semester = gradeDictionary[COURSE_SEMESTER];
     } else {
         //最后返回的可能是空数组
         grade = [NSEntityDescription insertNewObjectForEntityForName:@"Grade" inManagedObjectContext:context];
@@ -57,4 +68,5 @@
         [self gradeWithFlickrInfo:grade inManagedObjectContext:context];
     }
 }
+
 @end

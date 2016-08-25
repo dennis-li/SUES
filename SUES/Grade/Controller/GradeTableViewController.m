@@ -12,6 +12,8 @@
 #import "PublicCell.h"
 #import "AppDelegate.h"
 #import "MyDownloader.h"
+#import "Networking.h"
+#import "MBProgressHUD.h"
 
 @interface GradeTableViewController ()
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
@@ -28,6 +30,7 @@
     self.managedObjectContext = self.user.managedObjectContext;
 }
 
+//刷新成绩
 -(void)createRefreshButton
 {
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
@@ -39,13 +42,28 @@
 
 -(void)refreshGrade
 {
-    
+    __weak GradeTableViewController *weakSelf = self;
+    Networking *networking = [[Networking alloc] init];
+    networking.requestFinish = ^(NSString *requestString,NSString *error){
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
+        hud.mode = MBProgressHUDModeText;
+        
+        hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
+        [hud hideAnimated:YES afterDelay:0.5f];
+        if (error) {
+            hud.label.text = NSLocalizedString(error, @"HUD message title");
+        }else {
+//            [self.tableView reloadData];
+            hud.label.text = NSLocalizedString(requestString, @"HUD message title");
+        }
+    };
+    [networking requestGradeHtmlDataWithNetworkingType:RefreshGrade];
 }
 
 -(void)observerNotification
 {
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToForegroundTable"
+     addObserverForName:@"sendContextToGradeTable"
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {

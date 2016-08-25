@@ -10,11 +10,14 @@
 #import <AFNetworking.h>
 #import "Public.h"
 #import "MyDownloader.h"
+#import "AppDelegate.h"
+#import "User.h"
 
 @interface Networking ()<MyDownloaderDelegate,UIWebViewDelegate>
 
 @property (nonatomic,strong)MyDownloader *downloader;
 @property (nonatomic,strong)UIWebView *webView;
+@property (nonatomic,strong)User *user;
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *userPassword;
 
@@ -28,6 +31,19 @@
         
     }
     return self;
+}
+
+-(User *)user
+{
+    if (!_user) {
+        _user = [self returnApp].user;
+    }
+    return _user;
+}
+
+-(AppDelegate *)returnApp
+{
+    return [[UIApplication sharedApplication] delegate];
 }
 
 -(MyDownloader *)downloader
@@ -79,8 +95,20 @@
         
         NSLog(@"result = %@",result);
         if ([result containsString:@"handleLoginSuccessed"]) {
-            [self requestGradeHtmlData];
-            self.webView.delegate = self;
+            switch (self.type) {
+                case RefreshGrade:
+                    [self requestGradeHtmlData];
+                    break;
+                case RefreshCourse:
+                    self.webView.delegate = self;
+                    break;
+                    
+                default:
+                    [self requestGradeHtmlData];
+                    self.webView.delegate = self;
+                    break;
+            }
+            
         } else if ([result containsString:@"handleLoginFailure"]) {
             self.requestFinish(nil,@"密码或用户名错误");
         } else{
@@ -91,7 +119,16 @@
     }];
 }
 
-//请求成绩数据
+#pragma - mark 请求成绩数据
+//刷新成绩
+-(void)requestGradeHtmlDataWithNetworkingType:(NetworkingType)type
+{
+    self.type = type;
+    self.userId = self.user.userId;
+    self.userPassword = self.user.password;
+    [self verifyUserIdAndPassword];
+}
+
 -(void)requestGradeHtmlData
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -99,10 +136,17 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSData *htmlData = [result dataUsingEncoding:NSUTF8StringEncoding];
         if(LX_DEBUG)
             NSLog(@"resutl..grade = %@",result);
-        [self.downloader loginAnalyzeUserWithGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding] userId:self.userId password:self.userPassword];
+#warning - mark 以后任务多了，可以换成switch
+        if (self.type == RefreshGrade) {
+            [self.downloader analyzeGradeHtmlData:htmlData];
+        } else {
+            [self.downloader loginAnalyzeUserWithGradeHtmlData:htmlData userId:self.userId password:self.userPassword];
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        self.requestFinish(nil,@"服务器繁忙");
     }];
 }
 
@@ -118,7 +162,7 @@
 #pragma - mark MydownloaderDelegate
 -(void)downloadFinish:(MyDownloader *)downloader
 {
-    
+    self.requestFinish(@"数据已更新",nil);
 }
 
 -(void)downloadFail:(MyDownloader *)downloader error:(NSError *)error
