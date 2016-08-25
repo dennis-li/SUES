@@ -15,12 +15,13 @@
 		5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E131D6D57D40049FE84 /* TimetableModel.m */; };
 		5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E151D6D57D40049FE84 /* timetableViewModel.m */; };
 		5C089E191D6D584E0049FE84 /* WeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E181D6D584E0049FE84 /* WeekView.m */; };
+		5C089E4C1D6E92490049FE84 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E4B1D6E92490049FE84 /* MineViewController.m */; };
+		5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E511D6E94500049FE84 /* MessageViewController.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
 		5C4641051D66F651007289EA /* User+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641021D66F651007289EA /* User+Create.m */; };
 		5C4641091D67F0E8007289EA /* UpdateUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641081D67F0E8007289EA /* UpdateUser.m */; };
-		5C4641121D67F759007289EA /* UpdateUserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641111D67F759007289EA /* UpdateUserView.m */; };
 		5C4641241D688BE2007289EA /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46411C1D688BE2007289EA /* TFHpple.m */; };
 		5C4641251D688BE2007289EA /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46411E1D688BE2007289EA /* TFHppleElement.m */; };
 		5C4641261D688BE2007289EA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641201D688BE2007289EA /* XPathQuery.m */; };
@@ -35,16 +36,10 @@
 		5C944FB71D61EDDC000BBEB7 /* libAFNetworking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C944FB61D61EDDC000BBEB7 /* libAFNetworking.a */; };
 		5C944FE41D61F862000BBEB7 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FC71D61F862000BBEB7 /* BaseNavigationController.m */; };
 		5C944FE51D61F862000BBEB7 /* MainTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FC91D61F862000BBEB7 /* MainTabBarController.m */; };
-		5C944FE61D61F862000BBEB7 /* course.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C944FCC1D61F862000BBEB7 /* course.json */; };
-		5C944FE71D61F862000BBEB7 /* 李旭的提交日志 in Resources */ = {isa = PBXBuildFile; fileRef = 5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */; };
 		5C944FE91D61F862000BBEB7 /* BrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD31D61F862000BBEB7 /* BrowserView.m */; };
-		5C944FEA1D61F862000BBEB7 /* DayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FD51D61F862000BBEB7 /* DayView.m */; };
 		5C944FEC1D61F862000BBEB7 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */; };
 		5C944FED1D61F862000BBEB7 /* TimetableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */; };
-		5C944FFD1D621789000BBEB7 /* RedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FFC1D621789000BBEB7 /* RedViewController.m */; };
-		5C9450001D621798000BBEB7 /* GreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944FFF1D621798000BBEB7 /* GreenViewController.m */; };
 		5C9450031D6217AC000BBEB7 /* GrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450021D6217AC000BBEB7 /* GrayViewController.m */; };
-		5C94501C1D63622A000BBEB7 /* course.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C94501B1D63622A000BBEB7 /* course.html */; };
 		5C9450351D63F1B9000BBEB7 /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */; };
 		5C9450361D63F1B9000BBEB7 /* Courses+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C94502A1D63F1B9000BBEB7 /* Courses+CoreDataProperties.m */; };
 		5C9450371D63F1B9000BBEB7 /* Courses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C94502C1D63F1B9000BBEB7 /* Courses.m */; };
@@ -53,13 +48,9 @@
 		5C94503A1D63F1B9000BBEB7 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450321D63F1B9000BBEB7 /* User+CoreDataProperties.m */; };
 		5C94503B1D63F1B9000BBEB7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450341D63F1B9000BBEB7 /* User.m */; };
 		5C94503E1D63F2E2000BBEB7 /* SUES.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5C94503C1D63F2E2000BBEB7 /* SUES.xcdatamodeld */; };
-		5C9450401D6490FB000BBEB7 /* course2.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C94503F1D6490FB000BBEB7 /* course2.html */; };
-		5C9450421D649125000BBEB7 /* course3.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C9450411D649125000BBEB7 /* course3.html */; };
 		5C9450481D653D43000BBEB7 /* GradeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9450471D653D43000BBEB7 /* GradeTableViewController.m */; };
-		5C94504A1D654893000BBEB7 /* grade.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C9450491D654893000BBEB7 /* grade.html */; };
 		5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C94504F1D658BFE000BBEB7 /* PublicCell.m */; };
 		5C9450521D658BFE000BBEB7 /* PublicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C9450501D658BFE000BBEB7 /* PublicCell.xib */; };
-		5C9451341D65CD4E000BBEB7 /* totalGrade.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C9451331D65CD4E000BBEB7 /* totalGrade.html */; };
 		94AAFBC1EA15C9BD256799E3 /* libPods-SUESUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1969E9825E63A8688006770 /* libPods-SUESUITests.a */; };
 		C470461817F98B3405EF9F7F /* libPods-SUESTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2CEC74A7087AEAD1643BA93 /* libPods-SUESTests.a */; };
 /* End PBXBuildFile section */
@@ -99,6 +90,10 @@
 		5C089E141D6D57D40049FE84 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timetableViewModel.h; sourceTree = "<group>"; };
 		5C089E151D6D57D40049FE84 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timetableViewModel.m; sourceTree = "<group>"; };
 		5C089E181D6D584E0049FE84 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekView.m; sourceTree = "<group>"; };
+		5C089E4A1D6E92490049FE84 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
+		5C089E4B1D6E92490049FE84 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		5C089E501D6E94500049FE84 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
+		5C089E511D6E94500049FE84 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -110,8 +105,6 @@
 		5C4641061D66F6B4007289EA /* TimetableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimetableViewController.h; sourceTree = "<group>"; };
 		5C4641071D67F0E8007289EA /* UpdateUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateUser.h; sourceTree = "<group>"; };
 		5C4641081D67F0E8007289EA /* UpdateUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateUser.m; sourceTree = "<group>"; };
-		5C4641101D67F759007289EA /* UpdateUserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateUserView.h; sourceTree = "<group>"; };
-		5C4641111D67F759007289EA /* UpdateUserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateUserView.m; sourceTree = "<group>"; };
 		5C46411B1D688BE2007289EA /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		5C46411C1D688BE2007289EA /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		5C46411D1D688BE2007289EA /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
@@ -139,24 +132,15 @@
 		5C944FC71D61F862000BBEB7 /* BaseNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		5C944FC81D61F862000BBEB7 /* MainTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarController.h; sourceTree = "<group>"; };
 		5C944FC91D61F862000BBEB7 /* MainTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarController.m; sourceTree = "<group>"; };
-		5C944FCC1D61F862000BBEB7 /* course.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = course.json; sourceTree = "<group>"; };
-		5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "李旭的提交日志"; sourceTree = "<group>"; };
 		5C944FD21D61F862000BBEB7 /* BrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowserView.h; sourceTree = "<group>"; };
 		5C944FD31D61F862000BBEB7 /* BrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowserView.m; sourceTree = "<group>"; };
-		5C944FD41D61F862000BBEB7 /* DayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayView.h; sourceTree = "<group>"; };
-		5C944FD51D61F862000BBEB7 /* DayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayView.m; sourceTree = "<group>"; };
 		5C944FD61D61F862000BBEB7 /* WeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekView.h; sourceTree = "<group>"; };
 		5C944FD91D61F862000BBEB7 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailViewController.h; sourceTree = "<group>"; };
 		5C944FDA1D61F862000BBEB7 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
 		5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimetableViewController.m; sourceTree = "<group>"; };
 		5C944FE31D61F862000BBEB7 /* Public.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Public.h; sourceTree = "<group>"; };
-		5C944FFB1D621789000BBEB7 /* RedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedViewController.h; sourceTree = "<group>"; };
-		5C944FFC1D621789000BBEB7 /* RedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedViewController.m; sourceTree = "<group>"; };
-		5C944FFE1D621798000BBEB7 /* GreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GreenViewController.h; sourceTree = "<group>"; };
-		5C944FFF1D621798000BBEB7 /* GreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GreenViewController.m; sourceTree = "<group>"; };
 		5C9450011D6217AC000BBEB7 /* GrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrayViewController.h; sourceTree = "<group>"; };
 		5C9450021D6217AC000BBEB7 /* GrayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrayViewController.m; sourceTree = "<group>"; };
-		5C94501B1D63622A000BBEB7 /* course.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = course.html; sourceTree = "<group>"; };
 		5C9450271D63F1B9000BBEB7 /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
 		5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		5C9450291D63F1B9000BBEB7 /* Courses+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+CoreDataProperties.h"; sourceTree = "<group>"; };
@@ -172,15 +156,11 @@
 		5C9450331D63F1B9000BBEB7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		5C9450341D63F1B9000BBEB7 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5C94503D1D63F2E2000BBEB7 /* SUES.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SUES.xcdatamodel; sourceTree = "<group>"; };
-		5C94503F1D6490FB000BBEB7 /* course2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = course2.html; sourceTree = "<group>"; };
-		5C9450411D649125000BBEB7 /* course3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = course3.html; sourceTree = "<group>"; };
 		5C9450461D653D43000BBEB7 /* GradeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeTableViewController.h; sourceTree = "<group>"; };
 		5C9450471D653D43000BBEB7 /* GradeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeTableViewController.m; sourceTree = "<group>"; };
-		5C9450491D654893000BBEB7 /* grade.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = grade.html; sourceTree = "<group>"; };
 		5C94504E1D658BFE000BBEB7 /* PublicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicCell.h; sourceTree = "<group>"; };
 		5C94504F1D658BFE000BBEB7 /* PublicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublicCell.m; sourceTree = "<group>"; };
 		5C9450501D658BFE000BBEB7 /* PublicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PublicCell.xib; sourceTree = "<group>"; };
-		5C9451331D65CD4E000BBEB7 /* totalGrade.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = totalGrade.html; sourceTree = "<group>"; };
 		5F725620DD84F6D7AE00C060 /* Pods-SUESTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUESTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SUESTests/Pods-SUESTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A6DD14BDC2EBF81AD0F44D1 /* libPods-SUES.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SUES.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1969E9825E63A8688006770 /* libPods-SUESUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SUESUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,43 +206,6 @@
 			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
-		5C089D751D6BDA5F0049FE84 /* SaveData */ = {
-			isa = PBXGroup;
-			children = (
-				5C089D7B1D6BDB870049FE84 /* Courses */,
-				5C089D7C1D6BDC170049FE84 /* Grade */,
-				5C089D7D1D6BDC5D0049FE84 /* User */,
-			);
-			path = SaveData;
-			sourceTree = "<group>";
-		};
-		5C089D7B1D6BDB870049FE84 /* Courses */ = {
-			isa = PBXGroup;
-			children = (
-				5C4640FD1D66F651007289EA /* Courses+Flickr.h */,
-				5C4640FE1D66F651007289EA /* Courses+Flickr.m */,
-			);
-			path = Courses;
-			sourceTree = "<group>";
-		};
-		5C089D7C1D6BDC170049FE84 /* Grade */ = {
-			isa = PBXGroup;
-			children = (
-				5C4640FF1D66F651007289EA /* Grade+Flickr.h */,
-				5C4641001D66F651007289EA /* Grade+Flickr.m */,
-			);
-			path = Grade;
-			sourceTree = "<group>";
-		};
-		5C089D7D1D6BDC5D0049FE84 /* User */ = {
-			isa = PBXGroup;
-			children = (
-				5C4641011D66F651007289EA /* User+Create.h */,
-				5C4641021D66F651007289EA /* User+Create.m */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		5C089D881D6C4D070049FE84 /* Courses */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +230,12 @@
 		5C089D8A1D6C4D070049FE84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C9450291D63F1B9000BBEB7 /* Courses+CoreDataProperties.h */,
+				5C94502A1D63F1B9000BBEB7 /* Courses+CoreDataProperties.m */,
+				5C4640FD1D66F651007289EA /* Courses+Flickr.h */,
+				5C4640FE1D66F651007289EA /* Courses+Flickr.m */,
+				5C94502B1D63F1B9000BBEB7 /* Courses.h */,
+				5C94502C1D63F1B9000BBEB7 /* Courses.m */,
 				5C089E121D6D57D40049FE84 /* TimetableModel.h */,
 				5C089E131D6D57D40049FE84 /* TimetableModel.m */,
 				5C089E141D6D57D40049FE84 /* timetableViewModel.h */,
@@ -299,9 +248,9 @@
 			isa = PBXGroup;
 			children = (
 				5C944FD21D61F862000BBEB7 /* BrowserView.h */,
-				5C089E181D6D584E0049FE84 /* WeekView.m */,
 				5C944FD31D61F862000BBEB7 /* BrowserView.m */,
 				5C944FD61D61F862000BBEB7 /* WeekView.h */,
+				5C089E181D6D584E0049FE84 /* WeekView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -330,6 +279,12 @@
 		5C089D8E1D6C4D070049FE84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C94502D1D63F1B9000BBEB7 /* Grade+CoreDataProperties.h */,
+				5C94502E1D63F1B9000BBEB7 /* Grade+CoreDataProperties.m */,
+				5C4640FF1D66F651007289EA /* Grade+Flickr.h */,
+				5C4641001D66F651007289EA /* Grade+Flickr.m */,
+				5C94502F1D63F1B9000BBEB7 /* Grade.h */,
+				5C9450301D63F1B9000BBEB7 /* Grade.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -371,6 +326,78 @@
 			sourceTree = "<group>";
 		};
 		5C089D931D6C4D070049FE84 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5C089E391D6E91430049FE84 /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				5C089E3A1D6E91430049FE84 /* Controller */,
+				5C089E3B1D6E91430049FE84 /* Model */,
+				5C089E3C1D6E91430049FE84 /* View */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		5C089E3A1D6E91430049FE84 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5C089E501D6E94500049FE84 /* MessageViewController.h */,
+				5C089E511D6E94500049FE84 /* MessageViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5C089E3B1D6E91430049FE84 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5C089E3C1D6E91430049FE84 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5C089E3D1D6E91430049FE84 /* Mine */ = {
+			isa = PBXGroup;
+			children = (
+				5C089E3E1D6E91430049FE84 /* Controller */,
+				5C089E3F1D6E91430049FE84 /* Model */,
+				5C089E401D6E91430049FE84 /* View */,
+			);
+			path = Mine;
+			sourceTree = "<group>";
+		};
+		5C089E3E1D6E91430049FE84 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				5C089E4A1D6E92490049FE84 /* MineViewController.h */,
+				5C089E4B1D6E92490049FE84 /* MineViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		5C089E3F1D6E91430049FE84 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5C9450311D63F1B9000BBEB7 /* User+CoreDataProperties.h */,
+				5C9450321D63F1B9000BBEB7 /* User+CoreDataProperties.m */,
+				5C4641011D66F651007289EA /* User+Create.h */,
+				5C4641021D66F651007289EA /* User+Create.m */,
+				5C9450331D63F1B9000BBEB7 /* User.h */,
+				5C9450341D63F1B9000BBEB7 /* User.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5C089E401D6E91430049FE84 /* View */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -419,7 +446,9 @@
 				5C944F741D61E926000BBEB7 /* SUES */,
 				5C944F911D61E926000BBEB7 /* SUESTests */,
 				5C944F9C1D61E926000BBEB7 /* SUESUITests */,
+				5C944F751D61E926000BBEB7 /* Supporting Files */,
 				5C4641191D688BE2007289EA /* Tools */,
+				5C94503C1D63F2E2000BBEB7 /* SUES.xcdatamodeld */,
 			);
 			sourceTree = "<group>";
 		};
@@ -436,14 +465,13 @@
 		5C944F741D61E926000BBEB7 /* SUES */ = {
 			isa = PBXGroup;
 			children = (
-				5C9450261D63F1B9000BBEB7 /* CoreData */,
 				5C089D881D6C4D070049FE84 /* Courses */,
 				5C089D8C1D6C4D070049FE84 /* Grade */,
 				5C089D901D6C4D070049FE84 /* Login */,
-				5C944F751D61E926000BBEB7 /* Supporting Files */,
+				5C089E391D6E91430049FE84 /* Message */,
+				5C089E3D1D6E91430049FE84 /* Mine */,
 				5C944FE21D61F862000BBEB7 /* Utils */,
 				5C944FC51D61F862000BBEB7 /* baseNav */,
-				5C944FCA1D61F862000BBEB7 /* timetable */,
 			);
 			path = SUES;
 			sourceTree = "<group>";
@@ -493,64 +521,6 @@
 			path = baseNav;
 			sourceTree = "<group>";
 		};
-		5C944FCA1D61F862000BBEB7 /* timetable */ = {
-			isa = PBXGroup;
-			children = (
-				5C944FCB1D61F862000BBEB7 /* data */,
-				5C944FCE1D61F862000BBEB7 /* model */,
-				5C944FD11D61F862000BBEB7 /* view */,
-				5C944FD81D61F862000BBEB7 /* viewController */,
-				5C944FDF1D61F862000BBEB7 /* viewModel */,
-			);
-			path = timetable;
-			sourceTree = "<group>";
-		};
-		5C944FCB1D61F862000BBEB7 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				5C94501B1D63622A000BBEB7 /* course.html */,
-				5C944FCC1D61F862000BBEB7 /* course.json */,
-				5C94503F1D6490FB000BBEB7 /* course2.html */,
-				5C9450411D649125000BBEB7 /* course3.html */,
-				5C9450491D654893000BBEB7 /* grade.html */,
-				5C9451331D65CD4E000BBEB7 /* totalGrade.html */,
-				5C944FCD1D61F862000BBEB7 /* 李旭的提交日志 */,
-			);
-			path = data;
-			sourceTree = "<group>";
-		};
-		5C944FCE1D61F862000BBEB7 /* model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = model;
-			sourceTree = "<group>";
-		};
-		5C944FD11D61F862000BBEB7 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				5C944FD41D61F862000BBEB7 /* DayView.h */,
-				5C944FD51D61F862000BBEB7 /* DayView.m */,
-				5C4641101D67F759007289EA /* UpdateUserView.h */,
-				5C4641111D67F759007289EA /* UpdateUserView.m */,
-			);
-			path = view;
-			sourceTree = "<group>";
-		};
-		5C944FD81D61F862000BBEB7 /* viewController */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = viewController;
-			sourceTree = "<group>";
-		};
-		5C944FDF1D61F862000BBEB7 /* viewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = viewModel;
-			sourceTree = "<group>";
-		};
 		5C944FE21D61F862000BBEB7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -570,33 +540,8 @@
 			children = (
 				5C9450011D6217AC000BBEB7 /* GrayViewController.h */,
 				5C9450021D6217AC000BBEB7 /* GrayViewController.m */,
-				5C944FFE1D621798000BBEB7 /* GreenViewController.h */,
-				5C944FFF1D621798000BBEB7 /* GreenViewController.m */,
-				5C944FFB1D621789000BBEB7 /* RedViewController.h */,
-				5C944FFC1D621789000BBEB7 /* RedViewController.m */,
 			);
 			path = Delete;
-			sourceTree = "<group>";
-		};
-		5C9450261D63F1B9000BBEB7 /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				5C089D751D6BDA5F0049FE84 /* SaveData */,
-				5C9450291D63F1B9000BBEB7 /* Courses+CoreDataProperties.h */,
-				5C94502A1D63F1B9000BBEB7 /* Courses+CoreDataProperties.m */,
-				5C94502B1D63F1B9000BBEB7 /* Courses.h */,
-				5C94502C1D63F1B9000BBEB7 /* Courses.m */,
-				5C94502D1D63F1B9000BBEB7 /* Grade+CoreDataProperties.h */,
-				5C94502E1D63F1B9000BBEB7 /* Grade+CoreDataProperties.m */,
-				5C94502F1D63F1B9000BBEB7 /* Grade.h */,
-				5C9450301D63F1B9000BBEB7 /* Grade.m */,
-				5C94503C1D63F2E2000BBEB7 /* SUES.xcdatamodeld */,
-				5C9450311D63F1B9000BBEB7 /* User+CoreDataProperties.h */,
-				5C9450321D63F1B9000BBEB7 /* User+CoreDataProperties.m */,
-				5C9450331D63F1B9000BBEB7 /* User.h */,
-				5C9450341D63F1B9000BBEB7 /* User.m */,
-			);
-			path = CoreData;
 			sourceTree = "<group>";
 		};
 		EDB7439EB78A5520A1FBE6AD /* Frameworks */ = {
@@ -698,6 +643,11 @@
 				TargetAttributes = {
 					5C944F711D61E926000BBEB7 = {
 						CreatedOnToolsVersion = 7.3.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					5C944F8D1D61E926000BBEB7 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -734,17 +684,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C944FE61D61F862000BBEB7 /* course.json in Resources */,
-				5C94504A1D654893000BBEB7 /* grade.html in Resources */,
-				5C9451341D65CD4E000BBEB7 /* totalGrade.html in Resources */,
 				5C9450521D658BFE000BBEB7 /* PublicCell.xib in Resources */,
 				5C944F881D61E926000BBEB7 /* LaunchScreen.storyboard in Resources */,
 				5C944F851D61E926000BBEB7 /* Assets.xcassets in Resources */,
-				5C9450421D649125000BBEB7 /* course3.html in Resources */,
-				5C944FE71D61F862000BBEB7 /* 李旭的提交日志 in Resources */,
-				5C9450401D6490FB000BBEB7 /* course2.html in Resources */,
 				5C944F801D61E926000BBEB7 /* Main.storyboard in Resources */,
-				5C94501C1D63622A000BBEB7 /* course.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,8 +838,10 @@
 				5C9450361D63F1B9000BBEB7 /* Courses+CoreDataProperties.m in Sources */,
 				5C9450031D6217AC000BBEB7 /* GrayViewController.m in Sources */,
 				5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */,
+				5C089E4C1D6E92490049FE84 /* MineViewController.m in Sources */,
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C94503B1D63F1B9000BBEB7 /* User.m in Sources */,
+				5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */,
 				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
 				5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
@@ -907,7 +852,6 @@
 				5C4641251D688BE2007289EA /* TFHppleElement.m in Sources */,
 				5C4641091D67F0E8007289EA /* UpdateUser.m in Sources */,
 				5C4641051D66F651007289EA /* User+Create.m in Sources */,
-				5C4641121D67F759007289EA /* UpdateUserView.m in Sources */,
 				5C4641241D688BE2007289EA /* TFHpple.m in Sources */,
 				5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */,
 				5C9450391D63F1B9000BBEB7 /* Grade.m in Sources */,
@@ -916,7 +860,6 @@
 				5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */,
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,
 				5C9450371D63F1B9000BBEB7 /* Courses.m in Sources */,
-				5C944FFD1D621789000BBEB7 /* RedViewController.m in Sources */,
 				5C944FE51D61F862000BBEB7 /* MainTabBarController.m in Sources */,
 				5C944F771D61E926000BBEB7 /* main.m in Sources */,
 				5C94503A1D63F1B9000BBEB7 /* User+CoreDataProperties.m in Sources */,
@@ -925,10 +868,8 @@
 				5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */,
 				5C944FEC1D61F862000BBEB7 /* CourseDetailViewController.m in Sources */,
 				5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */,
-				5C9450001D621798000BBEB7 /* GreenViewController.m in Sources */,
 				5C944FE91D61F862000BBEB7 /* BrowserView.m in Sources */,
 				5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */,
-				5C944FEA1D61F862000BBEB7 /* DayView.m in Sources */,
 				5C4641271D688BE2007289EA /* SwipeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1077,7 +1018,7 @@
 			baseConfigurationReference = 55DA6D03DA19DD2A45029C9F /* Pods-SUES.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "SUES/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_BUNDLE_IDENTIFIER = "lixu-dennisli-163.com.SUES";
@@ -1090,7 +1031,7 @@
 			baseConfigurationReference = 597E1444BBEC45FAF0564A6E /* Pods-SUES.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = "SUES/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_BUNDLE_IDENTIFIER = "lixu-dennisli-163.com.SUES";

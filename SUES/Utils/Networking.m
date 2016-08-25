@@ -9,6 +9,16 @@
 #import "Networking.h"
 #import <AFNetworking.h>
 #import "Public.h"
+#import "MyDownloader.h"
+
+@interface Networking ()<MyDownloaderDelegate,UIWebViewDelegate>
+
+@property (nonatomic,strong)MyDownloader *downloader;
+@property (nonatomic,strong)UIWebView *webView;
+@property (nonatomic,strong)NSString *userId;
+@property (nonatomic,strong)NSString *userPassword;
+
+@end
 
 @implementation Networking
 
@@ -20,7 +30,26 @@
     return self;
 }
 
+-(MyDownloader *)downloader
+{
+    if (!_downloader) {
+        _downloader = [[MyDownloader alloc] init];
+    }
+    return _downloader;
+}
 
+-(UIWebView *)webView
+{
+    if (!_webView) {
+        _webView = [[UIWebView alloc] init];
+        NSURL *url = [NSURL URLWithString:COURSE_URL];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [_webView loadRequest:request];
+    }
+    return _webView;
+}
+
+//请求成绩数据
 -(void)requestGradeHtmlData
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -30,17 +59,24 @@
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         if(LX_DEBUG)
             NSLog(@"resutl..grade = %@",result);
-        [self.delegate requestFinish:self returnString:result];
+        [self.downloader loginAnalyzeUserWithGradeHtmlData:[result dataUsingEncoding:NSUTF8StringEncoding] userId:self.userId password:self.userPassword];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self.delegate requestFail:self error:@"请求成绩失败"];
     }];
 }
 
--(void)loginRequestWithUserName:(NSString *)username password:(NSString *)password
+
+-(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword
 {
-    
-    NSDictionary *parameters = @{@"Login.Token1":username,
-                                 @"Login.Token2":password,
+    self.userId = userId;
+    self.userPassword = userPassword;
+    [self verifyUserIdAndPassword];
+}
+
+//验证用户信息
+-(void)verifyUserIdAndPassword
+{
+    NSDictionary *parameters = @{@"Login.Token1":self.userId,
+                                 @"Login.Token2":self.userPassword,
                                  @"capatcha":FORM_CAPATCHA,
                                  @"goto":FORM_SUCCESS,
                                  @"gotoOnFaili":FORM_GOTOONFILI
@@ -62,11 +98,32 @@
         } else if (![result containsString:@"handleLoginSuccessed"]) {
             [self.delegate requestFail:self error:@"密码或用户名错误"];
         } else{
-            [self.delegate requestFinish:self returnString:nil];
+            [self requestGradeHtmlData];
+            self.webView.delegate = self;//加载course网页
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [self.delegate requestFail:self error:@"检查网络"];
     }];
+}
+
+#pragma - mark UIWebViewDelegate
+-(void)webViewDidFinishLoad:(UIWebView *)webView//加载完成，分析网页内容
+{
+    NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
+    NSLog(@"CourseHTML = %@",string);
+    [self.downloader analyzeCoursesHtmlData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+    [self.delegate requestFinish:self returnString:nil];
+}
+
+#pragma - mark MydownloaderDelegate
+-(void)downloadFinish:(MyDownloader *)downloader
+{
+    
+}
+
+-(void)downloadFail:(MyDownloader *)downloader error:(NSError *)error
+{
+    
 }
 
 @end

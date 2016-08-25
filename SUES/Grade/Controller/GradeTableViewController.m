@@ -11,6 +11,7 @@
 #import "Grade.h"
 #import "PublicCell.h"
 #import "AppDelegate.h"
+#import "MyDownloader.h"
 
 @interface GradeTableViewController ()
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
@@ -23,12 +24,26 @@
     [super viewDidLoad];
     [self observerNotification];
     // Do any additional setup after loading the view.
+    [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
+}
+
+-(void)createRefreshButton
+{
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+    [btn setTitle:@"刷新" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(refreshGrade) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTintColor:[UIColor blackColor]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+}
+
+-(void)refreshGrade
+{
+    
 }
 
 -(void)observerNotification
 {
-    
     [[NSNotificationCenter defaultCenter]
      addObserverForName:@"sendContextToForegroundTable"
      object:nil
@@ -83,5 +98,14 @@
     return 200;
 }
 
+#pragma - mark UITabBarController animated
+-(void)viewWillDisappear:(BOOL)animated
+{
+    CATransition *transition = [CATransition animation];
+    [transition setDuration:0.5f];
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromLeft;
+    [self.tabBarController.view.layer addAnimation:transition forKey:nil];
+}
 
 @end

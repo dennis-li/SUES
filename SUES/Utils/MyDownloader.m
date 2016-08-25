@@ -9,19 +9,16 @@
 #import "MyDownloader.h"
 #import "TFHpple.h"
 #import "Public.h"
-#import <UIKit/UIKit.h>
 #import "User+Create.h"
 #import "Courses+Flickr.h"
 #import "Grade+Flickr.h"
 #import "AppDelegate.h"
-#import "Networking.h"
 
 
-@interface MyDownloader ()<UIWebViewDelegate,NetworkingDelegate>
+@interface MyDownloader ()
 @property (nonatomic ,strong) NSMutableArray *gradeArray;//存放所有的成绩
 @property (nonatomic ,strong) NSMutableDictionary *userDictionary;//存放user的信息
 @property (nonatomic ,strong) NSMutableArray *coursesArray;//存放所有课程
-@property (nonatomic ,strong) UIWebView *webView;//加载课表，加载完之后获取源码
 @property (nonatomic ,strong) User *user;
 @property (nonatomic ,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic ,strong) NSMutableDictionary *courseDictionary;//存放一个课程详情
@@ -35,15 +32,7 @@
 -(instancetype)init
 {
     if (self = [super init]) {
-        [[NSNotificationCenter defaultCenter]
-         addObserverForName:@"WeekViewToCourseDVC"
-         object:nil
-         queue:nil
-         usingBlock:^(NSNotification * _Nonnull note) {
-             self.userDictionary = note.userInfo[@"userDictionary"];
-         }];
-        self.webView = [[UIWebView alloc] init];
-        self.webView.delegate = self;
+    
     }
     return self;
 }
@@ -101,59 +90,64 @@
     return _coursesArray;
 }
 
-//第一次登录，需要下载所有数据
--(void)downloadWithUserId:(NSString *)userId userPassWord:(NSString *)userPassWord
-{
-    [self.userDictionary setValue:userId  forKey:USER_ID];
-    [self.userDictionary setValue:userPassWord forKey:USER_PASSWORD];
-    [self loadWebView];
-}
-
-//加载UIWebView
--(void)loadWebView
-{
-    NSURL *url = [NSURL URLWithString:COURSE_URL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self.webView loadRequest:request];
-}
-
-//web View 加载完毕
--(void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
-    NSLog(@"webViewHTML = %@",string);
-    [self analyzeCoursesHtmlData:string];
-    
-    if (self.type != DownloadCourses) {//如果只是下载课表就不执行
-        [self startRequestGradeHtmlData];
-        [self sendNotificationToCourseTable];
-        [self.delegate downloadFinish:self];
-    }
-}
-
 //处理完数据发送通知到前台
 -(void)sendNotificationToCourseTable
 {
     NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToForegroundTable"
+     postNotificationName:@"sendContextToCourseTable"
      object:self
      userInfo:userInfo];
 }
 
-#pragma - mark Gradetable
--(void)startRequestGradeHtmlData
+-(void)sendNotificationToGradeTable
 {
-    Networking *networking = [[Networking alloc] init];
-    networking.delegate = self;
-    [networking requestGradeHtmlData];
+    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToGradeTable"
+     object:self
+     userInfo:userInfo];
 }
+
+//登录的时候，请求所有用户数据
+-(void)loginAnalyzeUserWithGradeHtmlData:(NSData *)htmlData userId:(NSString *)userId password:(NSString *)userPassword
+{
+    [self.userDictionary setValue:userId  forKey:USER_ID];
+    [self.userDictionary setValue:userPassword forKey:USER_PASSWORD];
+    [self analyzeGradeHtmlData:htmlData];
+}
+
+#pragma - mark Gradetable
 
 -(void)analyzeGradeHtmlData:(NSData *)htmlData
 {
-   
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@id='gradeTable']/tr[position()>1]/td"];
+    
+    if (!self.user) {//第一次登录，保存用户
+        NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//div[@align='center']"];
+        NSString *userName = nil;
+        for (TFHppleElement *element in userNameArray) {
+            if ([[element content] containsString:[self.userDictionary valueForKey:USER_ID]]) {
+                NSArray *userNameDetail = [[element content] componentsSeparatedByString:@" "];
+                if ([userNameDetail count] > 2) {
+                    userName = [[[userNameDetail objectAtIndex:1] componentsSeparatedByString:@":"] lastObject];
+                    if (LX_DEBUG) {
+                        NSLog(@"%@--%@--userName = %@",NSStringFromClass([self class]), NSStringFromSelector(_cmd),userName);
+                    }
+                } else {
+                    userName = @"无名";
+                }
+            }
+        }
+        [self.userDictionary setValue:userName forKey:USER_NAME];
+        AppDelegate *app = [self returnApp];
+        app.user = [User userWithName:self.userDictionary inManagedObjectContext:self.managedObjectContext];
+        /*
+         <table id="gradeBar"></table>
+         <div align="center">Student No:0231 Name:李 Department:电子电气工程学院 Major:电气工程及其自动化 Major Field:无</div>
+         */
+    }
    
     if (![elements count]) {
         if (LX_DEBUG) {
@@ -216,30 +210,21 @@
             default:
                 break;
         }
-        
         key++;
     }
     //数据保存到数据库
     [Grade loadGradeFromFlickrArray:self.gradeArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
+    [self sendNotificationToGradeTable];
 }
 
 #pragma - mark Coursetable
 //开始获取用户的数据，并创建用户self.user
--(void)analyzeCoursesHtmlData:(NSString *)HTMLData
+-(void)analyzeCoursesHtmlData:(NSData *)htmlData
 {
     
-    NSData *htmlData= [HTMLData dataUsingEncoding:NSUTF8StringEncoding];
-    
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    if (!self.user) {//第一次登录，保存用户
-        NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//table[@id='myBar']/tbody/tr/td[2]/b"];
-        TFHppleElement *element = [userNameArray firstObject];
-        NSString *userName = [[[element content] componentsSeparatedByString:@":"] lastObject];
-        [self.userDictionary setValue:userName forKey:USER_NAME];
-        AppDelegate *app = [self returnApp];
-        app.user = [User userWithName:self.userDictionary inManagedObjectContext:self.managedObjectContext];
-    }
+    
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='listTable']/tbody/tr[position()>2]/td"];
     if ([elements count]) {
         if (LX_DEBUG) {
@@ -280,6 +265,7 @@
     //数据保存到数据库
     [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
     [self.managedObjectContext save:NULL];
+    [self sendNotificationToCourseTable];
 }
 
 //分析找到的一门新课程
@@ -305,7 +291,7 @@
             [self.courseDictionary setValue:[NSNumber numberWithInteger:self.sectionEnd] forKey:COURSE_SECTIONEND];
             [self.courseDictionary setValue:[NSNumber numberWithInteger:2015] forKey:COURSE_STARTSCHOOLYEAR];//学年
             [self.courseDictionary setValue:[NSNumber numberWithInteger:2] forKey:COURSE_SEMESTER];//学期
-            [self.courseDictionary setValue:self.userDictionary forKey:COURSE_WHOCOURSE];//用户
+            [self.courseDictionary setValue:self.user.userId forKey:COURSE_WHOCOURSE];//用户
             
             [self analyzeCourseNameAndTeacherWith:courseDetail];
         } else {
@@ -429,17 +415,4 @@
     }
     return string;
 }
-
-#pragma - mark NetworkingDelegate
-
--(void)requestFinish:(Networking *)networking returnString:(NSString *)returnString
-{
-    [self analyzeGradeHtmlData:[returnString dataUsingEncoding:NSUTF8StringEncoding]];
-}
-
--(void)requestFail:(Networking *)networking error:(NSString *)error
-{
-    
-}
-
 @end

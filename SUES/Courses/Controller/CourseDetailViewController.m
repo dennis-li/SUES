@@ -22,8 +22,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //注册通知
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configCourseMessage:) name:@"WeekViewToCourseDVC" object:nil];
     [[NSNotificationCenter defaultCenter]
      addObserverForName:@"WeekViewToCourseDVC"
      object:nil
@@ -82,6 +80,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    CATransition *transition = [CATransition animation];
+    [transition setDuration:0.5f];
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromRight;
+    [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
 
 /*

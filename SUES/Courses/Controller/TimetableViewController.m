@@ -14,7 +14,6 @@
 #import "CreateContext.h"
 #import "Courses+Flickr.h"
 #import "AppDelegate.h"
-#import "UpdateUserView.h"
 #import "SwipeView.h"
 
 
@@ -26,10 +25,8 @@
 @property (nonatomic,strong) NSString *urlString;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) WeekView *weekView;
-@property (nonatomic,strong) UpdateUserView *addUserView;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic, strong) NSString *userId;
-@property (nonatomic,strong) UpdateUserView *signInView;
 @end
 
 @implementation TimetableViewController
@@ -116,7 +113,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    CATransition *transition = [CATransition animation];
+    [transition setDuration:0.5f];
+    transition.type = kCATransitionMoveIn;
+    transition.subtype = kCATransitionFromRight;
+    [self.tabBarController.view.layer addAnimation:transition forKey:nil];
+}
 
 
 

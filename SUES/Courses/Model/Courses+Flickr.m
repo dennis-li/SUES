@@ -44,7 +44,7 @@
         course.smartPeriod = gradeDictionary[COURSE_SMARTPERIOD];
         course.startSchoolYear = gradeDictionary[COURSE_STARTSCHOOLYEAR];
         course.semester = gradeDictionary[COURSE_SEMESTER];
-        course.whoCourse = [User userWithName:gradeDictionary[COURSE_WHOCOURSE] inManagedObjectContext:context];
+        course.whoCourse = [User searchUserWithId:gradeDictionary[COURSE_WHOCOURSE] inManagedObjectContext:context];
 #warning period
         course.period = period;
     }

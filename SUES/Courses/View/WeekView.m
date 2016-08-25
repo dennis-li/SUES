@@ -219,7 +219,6 @@ static const CGFloat GRID_HEIGHT = 50.0f;
         
         //发送通知
         [self sendNotificationToCourseDetailViewCtroller:model];
-        
         [self.ctrl.navigationController pushViewController:courseDVC animated:YES];
     }else if ([obj isKindOfClass:[NSMutableArray class]]){
         
@@ -230,12 +229,17 @@ static const CGFloat GRID_HEIGHT = 50.0f;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapbrowserBackgroundView)];
         [browserBackgroundView addGestureRecognizer:tapGesture];
         self.browserBackgroundView = browserBackgroundView;
-        [self.superview addSubview:browserBackgroundView];
         
-        BrowserView *browser = [[BrowserView alloc] initWithFrame:CGRectMake(0, 200, ScreenWidth, BrowserHeight) models:(NSMutableArray *)obj currentIndex:1];
+        BrowserView *browser = [[BrowserView alloc] initWithFrame:CGRectMake(-ScreenWidth, 200, ScreenWidth, BrowserHeight) models:(NSMutableArray *)obj currentIndex:1];
         browser.delegate = self;
-        [self.superview addSubview:browser];
         self.browser = browser;
+        [self addSubview:browserBackgroundView];
+        [self addSubview:browser];
+        [UIView animateWithDuration:0.5f delay:0.5 options:UIViewAnimationOptionTransitionFlipFromTop animations:^{
+            self.browser.frame = CGRectMake(0, 200, ScreenWidth, BrowserHeight);
+        } completion:^(BOOL finished) {
+            NSLog(@"动画结束");
+        }];
     }
 }
 

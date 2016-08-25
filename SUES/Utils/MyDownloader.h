@@ -25,13 +25,19 @@ typedef NS_ENUM(NSUInteger, DownloadType) {
 
 @end
 
-@interface MyDownloader : NSObject<NSURLConnectionDataDelegate>
+@interface MyDownloader : NSObject
 
 //代理属性
 @property (nonatomic,weak)id<MyDownloaderDelegate>delegate;
 //类型
 @property (nonatomic,assign)DownloadType type;
 
-//第一次下载
--(void)downloadWithUserId:(NSString *)userId userPassWord:(NSString *)userPassWord;
+//登录时，分析的数据
+-(void)loginAnalyzeUserWithGradeHtmlData:(NSData *)htmlData userId:(NSString *)userId password:(NSString *)userPassword;
+
+//把下载的课表存到数据库
+-(void)analyzeCoursesHtmlData:(NSData *)htmlData;
+
+//把下载的成绩存到数据库
+-(void)analyzeGradeHtmlData:(NSData *)htmlData;
 @end
