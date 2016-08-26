@@ -15,8 +15,12 @@
 		5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E131D6D57D40049FE84 /* TimetableModel.m */; };
 		5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E151D6D57D40049FE84 /* timetableViewModel.m */; };
 		5C089E191D6D584E0049FE84 /* WeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E181D6D584E0049FE84 /* WeekView.m */; };
-		5C089E4C1D6E92490049FE84 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E4B1D6E92490049FE84 /* MineViewController.m */; };
 		5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089E511D6E94500049FE84 /* MessageViewController.m */; };
+		5C089F071D70313E0049FE84 /* MineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F041D70313E0049FE84 /* MineViewController.m */; };
+		5C089F081D70313E0049FE84 /* MyUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F061D70313E0049FE84 /* MyUtil.m */; };
+		5C089F0B1D7031BF0049FE84 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F0A1D7031BF0049FE84 /* BaseViewController.m */; };
+		5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F0D1D7049BF0049FE84 /* MenuView.m */; };
+		5C089F111D704A270049FE84 /* UsersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F101D704A270049FE84 /* UsersView.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -90,10 +94,18 @@
 		5C089E141D6D57D40049FE84 /* timetableViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timetableViewModel.h; sourceTree = "<group>"; };
 		5C089E151D6D57D40049FE84 /* timetableViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timetableViewModel.m; sourceTree = "<group>"; };
 		5C089E181D6D584E0049FE84 /* WeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekView.m; sourceTree = "<group>"; };
-		5C089E4A1D6E92490049FE84 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
-		5C089E4B1D6E92490049FE84 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
 		5C089E501D6E94500049FE84 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		5C089E511D6E94500049FE84 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
+		5C089F031D70313E0049FE84 /* MineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineViewController.h; sourceTree = "<group>"; };
+		5C089F041D70313E0049FE84 /* MineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineViewController.m; sourceTree = "<group>"; };
+		5C089F051D70313E0049FE84 /* MyUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MyUtil.h; path = ../Mine/Controller/MyUtil.h; sourceTree = "<group>"; };
+		5C089F061D70313E0049FE84 /* MyUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MyUtil.m; path = ../Mine/Controller/MyUtil.m; sourceTree = "<group>"; };
+		5C089F091D7031BF0049FE84 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		5C089F0A1D7031BF0049FE84 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		5C089F0C1D7049BF0049FE84 /* MenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuView.h; sourceTree = "<group>"; };
+		5C089F0D1D7049BF0049FE84 /* MenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuView.m; sourceTree = "<group>"; };
+		5C089F0F1D704A270049FE84 /* UsersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersView.h; sourceTree = "<group>"; };
+		5C089F101D704A270049FE84 /* UsersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersView.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -251,6 +263,8 @@
 				5C944FD31D61F862000BBEB7 /* BrowserView.m */,
 				5C944FD61D61F862000BBEB7 /* WeekView.h */,
 				5C089E181D6D584E0049FE84 /* WeekView.m */,
+				5C089F0F1D704A270049FE84 /* UsersView.h */,
+				5C089F101D704A270049FE84 /* UsersView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -378,8 +392,8 @@
 		5C089E3E1D6E91430049FE84 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5C089E4A1D6E92490049FE84 /* MineViewController.h */,
-				5C089E4B1D6E92490049FE84 /* MineViewController.m */,
+				5C089F031D70313E0049FE84 /* MineViewController.h */,
+				5C089F041D70313E0049FE84 /* MineViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -407,6 +421,8 @@
 		5C4641191D688BE2007289EA /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				5C089F0C1D7049BF0049FE84 /* MenuView.h */,
+				5C089F0D1D7049BF0049FE84 /* MenuView.m */,
 				5C46411A1D688BE2007289EA /* Hpple */,
 				5C089D6B1D6AD4430049FE84 /* MBProgressHUD */,
 				5C4641211D688BE2007289EA /* SwipeView */,
@@ -513,6 +529,8 @@
 		5C944FC51D61F862000BBEB7 /* baseNav */ = {
 			isa = PBXGroup;
 			children = (
+				5C089F091D7031BF0049FE84 /* BaseViewController.h */,
+				5C089F0A1D7031BF0049FE84 /* BaseViewController.m */,
 				5C944FC61D61F862000BBEB7 /* BaseNavigationController.h */,
 				5C944FC71D61F862000BBEB7 /* BaseNavigationController.m */,
 				5C944FC81D61F862000BBEB7 /* MainTabBarController.h */,
@@ -524,6 +542,8 @@
 		5C944FE21D61F862000BBEB7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5C089F051D70313E0049FE84 /* MyUtil.h */,
+				5C089F061D70313E0049FE84 /* MyUtil.m */,
 				5C4640FA1D66F4B5007289EA /* CreateContext.h */,
 				5C4640FB1D66F4B5007289EA /* CreateContext.m */,
 				5C089D591D6A8B240049FE84 /* MyDownloader.h */,
@@ -838,13 +858,14 @@
 				5C9450361D63F1B9000BBEB7 /* Courses+CoreDataProperties.m in Sources */,
 				5C9450031D6217AC000BBEB7 /* GrayViewController.m in Sources */,
 				5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */,
-				5C089E4C1D6E92490049FE84 /* MineViewController.m in Sources */,
+				5C089F071D70313E0049FE84 /* MineViewController.m in Sources */,
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C94503B1D63F1B9000BBEB7 /* User.m in Sources */,
 				5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */,
 				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
 				5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
+				5C089F081D70313E0049FE84 /* MyUtil.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,
 				5C9450351D63F1B9000BBEB7 /* CoreDataTableViewController.m in Sources */,
 				5C944FE41D61F862000BBEB7 /* BaseNavigationController.m in Sources */,
@@ -853,9 +874,12 @@
 				5C4641091D67F0E8007289EA /* UpdateUser.m in Sources */,
 				5C4641051D66F651007289EA /* User+Create.m in Sources */,
 				5C4641241D688BE2007289EA /* TFHpple.m in Sources */,
+				5C089F111D704A270049FE84 /* UsersView.m in Sources */,
+				5C089F0B1D7031BF0049FE84 /* BaseViewController.m in Sources */,
 				5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */,
 				5C9450391D63F1B9000BBEB7 /* Grade.m in Sources */,
 				5C94503E1D63F2E2000BBEB7 /* SUES.xcdatamodeld in Sources */,
+				5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */,
 				5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */,
 				5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */,
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,

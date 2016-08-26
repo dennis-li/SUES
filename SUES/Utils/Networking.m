@@ -144,6 +144,7 @@
         if (self.type == RefreshGrade) {
             [self.downloader analyzeGradeHtmlData:htmlData];
         } else {//把成绩存到数据库
+            [self returnApp].user = nil;//添加新用户
             [self.downloader loginAnalyzeUserWithGradeHtmlData:htmlData userId:self.userId password:self.userPassword];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -163,7 +164,7 @@
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    NSLog(@"webView.Error = %@`",error);
+    self.requestFinish(nil,@"请检查网络");
 }
 
 #pragma - mark 保存课表到数据库

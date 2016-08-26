@@ -27,10 +27,10 @@
 //创建视图控制器
 -(void)createViewControllers
 {
-    NSArray *ctrlArray = @[@"TimetableViewController",@"GradeTableViewController",@"MineViewController",@"GrayViewController",@"MessageViewController"];
-    NSArray *titleArray = @[@"课表",@"成绩",@"待定",@"待定",@"待定"];
-    NSArray *imageArray = @[@"tab_news_normal",@"tab_selectCar_normal",@"tab_preferentialCar_normal",@"tab_forum_normal",@"tab_forum_normal"];
-    NSArray *selctImageArray = @[@"tab_news_highlighted",@"tab_selectCar_highlighted",@"tab_preferentialCar_highlighted",@"tab_forum_highlighted",@"tab_forum_highlighted"];
+    NSArray *ctrlArray = @[@"TimetableViewController",@"GradeTableViewController",@"MessageViewController",@"MineViewController"];
+    NSArray *titleArray = @[@"课表",@"成绩",@"信息",@"我的"];
+    NSArray *imageArray = @[@"tab_news_normal",@"tab_selectCar_normal",@"tab_preferentialCar_normal",@"tab_forum_normal"];
+    NSArray *selctImageArray = @[@"tab_news_highlighted",@"tab_selectCar_highlighted",@"tab_preferentialCar_highlighted",@"tab_forum_highlighted"];
     NSMutableArray *array = [NSMutableArray array];
     for (int i=0; i<ctrlArray.count; i++) {
         

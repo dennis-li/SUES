@@ -18,7 +18,7 @@
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
--(void)changeRootCtroller;
+-(void)changeRootCtroller:(BOOL)isLogin;
 
 
 @end

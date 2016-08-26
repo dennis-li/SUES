@@ -13,10 +13,17 @@
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 #import "Networking.h"
-
+#import "MyUtil.h"
+#import "MenuView.h"
+#import "UsersView.h"
 
 @interface TimetableViewController ()
-@property (nonatomic,strong) Networking *networking;
+@property (nonatomic,assign) CGFloat statusHeight;
+@property (nonatomic,assign) CGFloat navHeight;
+@property (nonatomic,assign) CGFloat tabBarHeight;
+@property (nonatomic,strong) UsersView *usersView;//显示所有用户
+@property (nonatomic,strong) MenuView *menu;//usersView的载体
+@property (nonatomic,strong) Networking *networking;//网络活动
 @property (nonatomic,strong) WeekView *weekView;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic, strong) NSString *userId;
@@ -30,21 +37,19 @@
     [self observerNotification];
     self.view.backgroundColor=[UIColor blueColor];
     //获取当前状态栏的高度
-    CGRect statusRect = [[UIApplication sharedApplication]statusBarFrame];
-    NSLog(@"状态栏高度：%f",statusRect.size.height);
+    self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
     //获取导航栏的高度
-    CGRect navRect = self.navigationController.navigationBar.frame;
-    NSLog(@"导航栏高度：%f",navRect.size.height);
-    
-    CGRect tabBarRect = self.tabBarController.tabBar.frame;
-    NSLog(@"标签栏高度：%f",tabBarRect.size.height);
+    self.navHeight = self.navigationController.navigationBar.frame.size.height;
+    //标签栏高度
+    self.tabBarHeight = self.tabBarController.tabBar.frame.size.height;
     [self createRefreshButton];
-    WeekView *weekView = [[WeekView alloc]initWithFrame:CGRectMake(0, statusRect.size.height+navRect.size.height, self.view.frame.size.width, self.view.frame.size.height-(statusRect.size.height+navRect.size.height+tabBarRect.size.height))];
+    WeekView *weekView = [[WeekView alloc]initWithFrame:CGRectMake(0, self.statusHeight+self.navHeight, self.view.frame.size.width, self.view.frame.size.height-(self.statusHeight+self.tabBarHeight))];
     self.weekView = weekView;
     
     [self refreshWeekView];
     
-    [self createNextWeekButton];
+    [self createNextWeekButton];//下一周按钮
+    [self createUsersButton];
 
 }
 
@@ -158,4 +163,23 @@
     [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
 
+-(void)createUsersButton
+{
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"myForum" title:nil target:self action:@selector(back)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.leftBarButtonItem = item;
+    
+    UsersView *usersView = [[UsersView alloc]initWithFrame:CGRectMake(0, self.statusHeight+self.navHeight, [[UIScreen mainScreen] bounds].size.width * 0.8, [[UIScreen mainScreen] bounds].size.height)];
+    MenuView *menu = [MenuView MenuViewWithDependencyView:self.view MenuView:usersView isShowCoverView:NO];
+    self.menu = menu;
+}
+
+-(void)back
+{
+    if (self.menu.coverView.alpha > 0) {
+        [self.menu hidenWithAnimation];
+    } else {
+        [self.menu show];
+    }
+}
 @end

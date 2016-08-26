@@ -11,8 +11,10 @@
 #import <AFNetworking.h>
 #import "MBProgressHUD.h"
 #import "Networking.h"
+#import "MyUtil.h"
 
 @interface loginViewController ()<UIGestureRecognizerDelegate>
+@property (nonatomic,strong) AppDelegate *app;
 @property (nonatomic,strong) NSString *userId;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic,strong) MBProgressHUD *hud;
@@ -24,13 +26,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self createBackButton];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
     tap.delegate = self;
     self.passwordTF.secureTextEntry = YES;
+}
+
+-(AppDelegate *)app
+{
+    return [[UIApplication sharedApplication] delegate];
+}
+
+-(void)createBackButton
+{
+    if (self.app.user) {
+        UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"myForum" title:nil target:self action:@selector(back)];
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+}
+
+-(void)back
+{
+    [self.app changeRootCtroller:YES];
 }
 
 -(Networking *)networking
@@ -75,8 +96,7 @@
         self.networking.requestFinish = ^(NSString *requestString,NSString *error){
             [weakSelf.hud hideAnimated:YES];
             if (!error) {
-                AppDelegate *app = [[UIApplication sharedApplication] delegate];
-                [app changeRootCtroller];
+                [weakSelf.app changeRootCtroller:YES];
             }else {
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
                 hud.mode = MBProgressHUDModeText;

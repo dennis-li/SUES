@@ -1,13 +1,13 @@
 //
 //  MineViewController.h
-//  SUES
+//  SohuByObject_C
 //
-//  Created by lixu on 16/8/25.
+//  Created by lixu on 16/4/8.
 //  Copyright © 2016年 lixu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BaseViewController.h"
 
-@interface MineViewController : UIViewController
+@interface MineViewController : BaseViewController
 
 @end

@@ -16,6 +16,9 @@
 #import "MBProgressHUD.h"
 
 @interface GradeTableViewController ()
+@property (nonatomic,assign) CGFloat statusHeight;
+@property (nonatomic,assign) CGFloat navHeight;
+@property (nonatomic,assign) CGFloat tabBarHeight;
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic,strong) User *user;
 @end
@@ -25,6 +28,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    //获取当前状态栏的高度
+    self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
+    //获取导航栏的高度
+    self.navHeight = self.navigationController.navigationBar.frame.size.height;
+    //标签栏高度
+    self.tabBarHeight = self.tabBarController.tabBar.frame.size.height;
+    
     [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
 }

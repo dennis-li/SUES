@@ -87,7 +87,7 @@
     CATransition *transition = [CATransition animation];
     [transition setDuration:0.5f];
     transition.type = kCATransitionMoveIn;
-    transition.subtype = kCATransitionFromRight;
+    transition.subtype = kCATransitionFromLeft;
     [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
 

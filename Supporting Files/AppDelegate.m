@@ -41,23 +41,30 @@
     
     if ([courseArray count]) {
         self.user = [courseArray lastObject];
-        [self changeRootCtroller];
+        [self changeRootCtroller:YES];
     }
 }
 
--(void)changeRootCtroller
+-(void)changeRootCtroller:(BOOL)isLogin
 {
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:250.0f/255.0f green:210.0f/255.0f blue:40.0f/255.0f alpha:1.0f]];
-    MainTabBarController *tabCtrl = [[MainTabBarController alloc] init];
-    self.window.rootViewController = tabCtrl;
-
+    UIViewController *rootVCT = nil;
+    if (isLogin) {
+        MainTabBarController *tabCtrl = [[MainTabBarController alloc] init];
+        self.window.rootViewController = tabCtrl;
+        rootVCT = tabCtrl;
+    }else {
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        self.window.rootViewController = [storyBoard instantiateInitialViewController];
+        rootVCT = [storyBoard instantiateInitialViewController];
+    }
     [UIView transitionWithView:[[UIApplication sharedApplication].delegate window]
                       duration:1
                        options:UIViewAnimationOptionTransitionFlipFromLeft
                     animations:^{
                         BOOL oldState=[UIView areAnimationsEnabled];
                         [UIView setAnimationsEnabled:NO];
-                        [[[UIApplication sharedApplication].delegate window] setRootViewController:tabCtrl];
+                        [[[UIApplication sharedApplication].delegate window] setRootViewController:rootVCT];
                         [UIView setAnimationsEnabled:oldState];
                         
                     }
