@@ -27,6 +27,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="semester" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="startSchoolYear" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="yearAndSemester" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="whoGrade" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="grade" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES">
@@ -37,8 +38,8 @@
         <relationship name="grade" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Grade" inverseName="whoGrade" inverseEntity="Grade" syncable="YES"/>
     </entity>
     <elements>
-        <element name="User" positionX="108" positionY="9" width="128" height="118"/>
         <element name="Courses" positionX="-56" positionY="9" width="128" height="223"/>
-        <element name="Grade" positionX="279" positionY="9" width="128" height="238"/>
+        <element name="Grade" positionX="279" positionY="9" width="128" height="255"/>
+        <element name="User" positionX="108" positionY="9" width="128" height="118"/>
     </elements>
 </model>

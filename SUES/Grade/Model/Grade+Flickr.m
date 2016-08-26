@@ -32,15 +32,14 @@
         grade = [matches firstObject];
         grade.courseCode = gradeDictionary[COURSE_CODE];
         grade.category = gradeDictionary[GRADE_CATEGORY];
-        grade.name = gradeDictionary[COURSE_NAME];
+        grade.name = [gradeDictionary[COURSE_NAME] stringByAppendingString:@"+"];
         grade.credit = gradeDictionary[GRADE_CREDIT];
         grade.midTermGrade = gradeDictionary[GRADE_MIDTERMGRADE];
         grade.finalLevel = gradeDictionary[GRADE_FINALLEVEL];
         grade.makeupExamGrade = gradeDictionary[GRADE_MAKEUPEXAMGRADE];
         grade.finalGrade = gradeDictionary[GRADE_FINALGRADE];
         grade.gradePoint = gradeDictionary[GRADE_GRADEPOINT];
-        grade.startSchoolYear = [NSNumber numberWithInteger: [gradeDictionary[COURSE_STARTSCHOOLYEAR] integerValue] +1];
-        grade.semester = gradeDictionary[COURSE_SEMESTER];
+        
     } else {
         //最后返回的可能是空数组
         grade = [NSEntityDescription insertNewObjectForEntityForName:@"Grade" inManagedObjectContext:context];
@@ -56,6 +55,7 @@
         grade.gradePoint = gradeDictionary[GRADE_GRADEPOINT];
         grade.startSchoolYear = gradeDictionary[COURSE_STARTSCHOOLYEAR];
         grade.semester = gradeDictionary[COURSE_SEMESTER];
+        grade.yearAndSemester = gradeDictionary[COURSE_YEARANDSEMESTER];
         grade.whoGrade = [User searchUserWithId:gradeDictionary[GRADE_WHOGRADE] inManagedObjectContext:context];
     }
     return grade;

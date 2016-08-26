@@ -27,6 +27,7 @@
 //公共部分
 #define COURSE_SEMESTER @"semester"
 #define COURSE_STARTSCHOOLYEAR @"startSchoolYear"
+#define COURSE_YEARANDSEMESTER @"yearAndSemester"
 #define COURSE_NAME @"name"
 #define COURSE_ID @"courseId"
 

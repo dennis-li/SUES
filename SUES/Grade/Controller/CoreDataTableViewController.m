@@ -58,59 +58,34 @@
     }
 }
 
--(NSMutableDictionary *)dataDictionary
-{
-    if (!_dataDictionary) {
-        _dataDictionary = [[NSMutableDictionary alloc] init];
-    }
-    return _dataDictionary;
-}
 
 #pragma mark - UITableViewDataSource
-//把成绩分组
--(void)createDataSource
-{
-    NSArray *dataArray = [self.fetchedResultsController fetchedObjects];
-    NSMutableSet *dataSet = [[NSMutableSet alloc] init];
-    for (Grade *grade in dataArray) {
-        NSString *sectionName = [[grade.startSchoolYear stringValue] stringByAppendingString:[NSString stringWithFormat:@"/%ld-%@",[grade.startSchoolYear integerValue]+1,[grade.semester stringValue]]];
-        [dataSet addObject:sectionName];
-        if (![self.dataDictionary objectForKey:sectionName]) {
-            NSMutableArray *sectionArray = [[NSMutableArray alloc] init];
-            [self.dataDictionary setValue:sectionArray forKey:sectionName];
-        }
-        NSMutableArray *sectionArray = [self.dataDictionary objectForKey:sectionName];
-        [sectionArray addObject:grade];
-    }
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:NO];//yes升序排列，no,降序排列
-    self.sectionName = [[dataSet allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sort, nil]];
-}
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [self.sectionName count];
-//    NSInteger sections = [[self.fetchedResultsController sections] count];
-//    return sections;
+    NSInteger sections = [[self.fetchedResultsController sections] count];
+    return sections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *sectionArray = [self.dataDictionary objectForKey:[self.sectionName objectAtIndex:section]];
-    return [sectionArray count];
     
-//    NSInteger rows = 0;
-//    if ([[self.fetchedResultsController sections] count] > 0) {
-//        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-//        rows = [sectionInfo numberOfObjects];
-//    }
-//    return rows;
+    NSInteger rows = 0;
+    if ([[self.fetchedResultsController sections] count] > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+        rows = [sectionInfo numberOfObjects];
+    }
+    return rows;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [self.sectionName objectAtIndex:section];
-//    return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
+    NSString *yearAndSemester = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
+    NSArray *dataArray = [yearAndSemester componentsSeparatedByString:@" "];
+    NSInteger year = [[dataArray firstObject] integerValue] + 1;
+    yearAndSemester = [[dataArray firstObject] stringByAppendingString:[NSString stringWithFormat:@"/%ld %@",year,[dataArray lastObject]]];
+    return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index

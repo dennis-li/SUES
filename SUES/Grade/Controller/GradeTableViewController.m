@@ -45,15 +45,16 @@
     __weak GradeTableViewController *weakSelf = self;
     Networking *networking = [[Networking alloc] init];
     networking.requestFinish = ^(NSString *requestString,NSString *error){
+        if (LX_DEBUG) {
+            NSLog(@"refreshGrade: It's work!");
+        }
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
         hud.mode = MBProgressHUDModeText;
-        
-        hud.offset = CGPointMake(0.f, MBProgressMaxOffset);
-        [hud hideAnimated:YES afterDelay:0.5f];
+        hud.offset = CGPointMake(0.f, -0.f);
+        [hud hideAnimated:YES afterDelay:0.8f];
         if (error) {
             hud.label.text = NSLocalizedString(error, @"HUD message title");
         }else {
-//            [self.tableView reloadData];
             hud.label.text = NSLocalizedString(requestString, @"HUD message title");
         }
     };
@@ -76,12 +77,16 @@
     _managedObjectContext = managedObjectContext;
     NSFetchRequest *gradeRequest = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
     gradeRequest.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@", self.user];
-    gradeRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"startSchoolYear"
-                                                              ascending:NO
-                                                               selector:@selector(localizedStandardCompare:)]];
+    NSSortDescriptor *typeDescriptor = [[NSSortDescriptor alloc] initWithKey:@"yearAndSemester" ascending:NO];
+    NSSortDescriptor *nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:typeDescriptor, nameDescriptor, nil];
+    [gradeRequest setSortDescriptors:sortDescriptors];
+//    gradeRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"yearAndSemester"
+//                                                              ascending:NO
+//                                                               selector:@selector(localizedStandardCompare:)]];
     
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:gradeRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
-    [self createDataSource];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:gradeRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"yearAndSemester" cacheName:nil];
+//    [self createDataSource];
     [self.tableView reloadData];
 }
 
@@ -105,8 +110,7 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"PublicCell" owner:nil options:nil] firstObject];
     }
-    NSArray *sectinArray = [self.dataDictionary objectForKey:[self.sectionName objectAtIndex:indexPath.section]];
-    Grade *grade = [sectinArray objectAtIndex:indexPath.row];
+    Grade *grade = [self.fetchedResultsController objectAtIndexPath:indexPath];
     [cell configModel:grade];
     return cell;
 }

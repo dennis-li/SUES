@@ -205,6 +205,8 @@
                 NSString *year = [[[semesterAndYear firstObject] componentsSeparatedByString:@"-"] firstObject];
                 [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[year integerValue]] forKey:COURSE_STARTSCHOOLYEAR];//学年
                 [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[[semesterAndYear lastObject] integerValue]] forKey:COURSE_SEMESTER];//学期
+                
+                [gradeCourseDictionary setValue:[element content] forKey:COURSE_YEARANDSEMESTER];
             }
                 break;
             default:
@@ -290,6 +292,7 @@
             [self.coursesArray addObject:self.courseDictionary];
             [self.courseDictionary setValue:[NSNumber numberWithInteger:self.sectionStart] forKey:COURSE_SECTIONSTART];//第几节开始上课
             [self.courseDictionary setValue:[NSNumber numberWithInteger:self.sectionEnd] forKey:COURSE_SECTIONEND];
+#warning 学年，学期需匹配
             [self.courseDictionary setValue:[NSNumber numberWithInteger:2015] forKey:COURSE_STARTSCHOOLYEAR];//学年
             [self.courseDictionary setValue:[NSNumber numberWithInteger:2] forKey:COURSE_SEMESTER];//学期
             [self.courseDictionary setValue:self.user.userId forKey:COURSE_WHOCOURSE];//用户

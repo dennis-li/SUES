@@ -98,6 +98,7 @@
             switch (self.type) {
                 case RefreshGrade:
                     [self requestGradeHtmlData];
+                    self.requestFinish(@"成绩已刷新",nil);
                     break;
                 case RefreshCourse:
                     self.webView.delegate = self;
@@ -162,7 +163,7 @@
 #pragma - mark MydownloaderDelegate
 -(void)downloadFinish:(MyDownloader *)downloader
 {
-    self.requestFinish(@"数据已更新",nil);
+    
 }
 
 -(void)downloadFail:(MyDownloader *)downloader error:(NSError *)error
