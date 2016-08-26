@@ -100,15 +100,6 @@
      userInfo:userInfo];
 }
 
--(void)sendNotificationToGradeTable
-{
-    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToGradeTable"
-     object:self
-     userInfo:userInfo];
-}
-
 //登录的时候，请求所有用户数据
 -(void)loginAnalyzeUserWithGradeHtmlData:(NSData *)htmlData userId:(NSString *)userId password:(NSString *)userPassword
 {

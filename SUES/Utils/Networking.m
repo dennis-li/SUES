@@ -14,7 +14,6 @@
 #import "User.h"
 
 @interface Networking ()<MyDownloaderDelegate,UIWebViewDelegate>
-
 @property (nonatomic,strong)MyDownloader *downloader;
 @property (nonatomic,strong)UIWebView *webView;
 @property (nonatomic,strong)User *user;
@@ -65,11 +64,20 @@
     return _webView;
 }
 
-
+//登录
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword
 {
     self.userId = userId;
     self.userPassword = userPassword;
+    [self verifyUserIdAndPassword];
+}
+
+//刷新数据
+-(void)refreshHtmlDataWithNetworkingType:(NetworkingType)type
+{
+    self.type = type;
+    self.userId = self.user.userId;
+    self.userPassword = self.user.password;
     [self verifyUserIdAndPassword];
 }
 
@@ -104,9 +112,9 @@
                     self.webView.delegate = self;
                     break;
                     
-                default:
+                default://登录的时候，执行这里
                     [self requestGradeHtmlData];
-                    self.webView.delegate = self;
+                    self.webView.delegate = self;//加载UIWebView,加载结束自动调用delegate方法
                     break;
             }
             
@@ -121,15 +129,7 @@
 }
 
 #pragma - mark 请求成绩数据
-//刷新成绩
--(void)requestGradeHtmlDataWithNetworkingType:(NetworkingType)type
-{
-    self.type = type;
-    self.userId = self.user.userId;
-    self.userPassword = self.user.password;
-    [self verifyUserIdAndPassword];
-}
-
+//请求成绩
 -(void)requestGradeHtmlData
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -143,7 +143,7 @@
 #warning - mark 以后任务多了，可以换成switch
         if (self.type == RefreshGrade) {
             [self.downloader analyzeGradeHtmlData:htmlData];
-        } else {
+        } else {//把成绩存到数据库
             [self.downloader loginAnalyzeUserWithGradeHtmlData:htmlData userId:self.userId password:self.userPassword];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -156,8 +156,19 @@
 {
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
     NSLog(@"CourseHTML = %@",string);
-    [self.downloader analyzeCoursesHtmlData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-    self.requestFinish(@" ",nil);
+    //把课表存到数据库
+    [self saveCourseToCoreData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+    [self.webView removeFromSuperview];
+}
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"webView.Error = %@`",error);
+}
+
+#pragma - mark 保存课表到数据库
+-(void)saveCourseToCoreData:(NSData *)htmlData
+{
+    [self.downloader analyzeCoursesHtmlData:htmlData];
 }
 
 #pragma - mark MydownloaderDelegate

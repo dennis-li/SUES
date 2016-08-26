@@ -21,8 +21,9 @@
     if (!gradeDictionary[COURSE_NAME]) {
         return nil;
     }
+    User *user = [User searchUserWithId:gradeDictionary[COURSE_WHOCOURSE] inManagedObjectContext:context];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Courses"];
-    request.predicate = [NSPredicate predicateWithFormat:@"period = %@",period];
+    request.predicate = [NSPredicate predicateWithFormat:@"period = %@ AND whoCourse = %@",period,user];
     
     
     NSError *error;
@@ -31,6 +32,7 @@
         //handle error
     } else if ([matches count]){
         course = [matches firstObject];
+        course.name = [gradeDictionary[COURSE_NAME] stringByAppendingString:@"&&"];
     } else {
         //最后返回的可能是空数组
         course = [NSEntityDescription insertNewObjectForEntityForName:@"Courses" inManagedObjectContext:context];

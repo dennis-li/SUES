@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, NetworkingType) {
 //登录请求
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword;
 
-//成绩请求
--(void)requestGradeHtmlDataWithNetworkingType:(NetworkingType)type;
+//刷新数据
+-(void)refreshHtmlDataWithNetworkingType:(NetworkingType)type;
 
 @end

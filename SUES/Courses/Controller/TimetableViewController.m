@@ -8,22 +8,15 @@
 
 #import "TimetableViewController.h"
 #import "WeekView.h"
-#import <AFNetworking.h>
-#import "TFHpple.h"
 #import "Public.h"
-#import "CreateContext.h"
 #import "Courses+Flickr.h"
 #import "AppDelegate.h"
-#import "SwipeView.h"
+#import "MBProgressHUD.h"
+#import "Networking.h"
 
 
 @interface TimetableViewController ()
-
-@property (nonatomic,strong) NSMutableArray *coursesArray;
-@property (nonatomic,strong) NSMutableDictionary *courseDictionary;
-@property (nonatomic,strong) NSMutableDictionary *userDictionary;
-@property (nonatomic,strong) NSString *urlString;
-@property (nonatomic,strong) UIWebView *webView;
+@property (nonatomic,strong) Networking *networking;
 @property (nonatomic,strong) WeekView *weekView;
 @property (nonatomic,strong) NSString *userPassWord;
 @property (nonatomic, strong) NSString *userId;
@@ -45,7 +38,7 @@
     
     CGRect tabBarRect = self.tabBarController.tabBar.frame;
     NSLog(@"标签栏高度：%f",tabBarRect.size.height);
-    
+    [self createRefreshButton];
     WeekView *weekView = [[WeekView alloc]initWithFrame:CGRectMake(0, statusRect.size.height+navRect.size.height, self.view.frame.size.width, self.view.frame.size.height-(statusRect.size.height+navRect.size.height+tabBarRect.size.height))];
     self.weekView = weekView;
     
@@ -53,6 +46,14 @@
     
     [self createNextWeekButton];
 
+}
+
+-(Networking *)networking
+{
+    if (!_networking) {
+        _networking = [[Networking alloc] init];
+    }
+    return _networking;
 }
 
 -(User *)user
@@ -64,11 +65,33 @@
     return _user;
 }
 
+//刷新成绩
+-(void)createRefreshButton
+{
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+    [btn setTitle:@"刷新" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(requestNetworking) forControlEvents:UIControlEventTouchUpInside];
+    [btn setTintColor:[UIColor blackColor]];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+}
+
+-(void)requestNetworking
+{
+    __weak TimetableViewController *weakSelf = self;
+    self.networking.requestFinish = ^(NSString *requestString,NSString *error){
+        if (error) {
+            MBProgressHUD *hud = [weakSelf displayHud];
+            hud.label.text = NSLocalizedString(error, @"HUD message title");
+        }
+    };
+    [self.networking refreshHtmlDataWithNetworkingType:RefreshCourse];
+}
+
 -(void)observerNotification
 {
     
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToForegroundTable"
+     addObserverForName:@"sendContextToCourseTable"
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {
@@ -82,7 +105,10 @@
 {
     NSLog(@"setContext");
     _managedObjectContext = managedObjectContext;
+    self.weekView.currentWeek = @"0";
     [self refreshWeekView];
+    MBProgressHUD *hud = [self displayHud];
+    hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
 }
 
 //切换周数，按钮
@@ -108,6 +134,16 @@
     weekView.user = self.user;
 }
 
+//显示一个弹窗
+-(MBProgressHUD *)displayHud
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.offset = CGPointMake(0.f, -0.f);
+    [hud hideAnimated:YES afterDelay:0.8f];
+    return hud;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -121,7 +157,5 @@
     transition.subtype = kCATransitionFromRight;
     [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
-
-
 
 @end

@@ -24,10 +24,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self observerNotification];
     // Do any additional setup after loading the view.
     [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
+}
+
+-(User *)user
+{
+    if (!_user) {
+        AppDelegate *app = [[UIApplication sharedApplication] delegate];
+        _user = app.user;
+    }
+    return _user;
 }
 
 //刷新成绩
@@ -58,18 +66,7 @@
             hud.label.text = NSLocalizedString(requestString, @"HUD message title");
         }
     };
-    [networking requestGradeHtmlDataWithNetworkingType:RefreshGrade];
-}
-
--(void)observerNotification
-{
-    [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToGradeTable"
-     object:nil
-     queue:nil
-     usingBlock:^(NSNotification * _Nonnull note) {
-         self.managedObjectContext = note.userInfo[@"context"];
-     }];
+    [networking refreshHtmlDataWithNetworkingType:RefreshGrade];
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
@@ -89,17 +86,6 @@
 //    [self createDataSource];
     [self.tableView reloadData];
 }
-
--(User *)user
-{
-    if (!_user) {
-        AppDelegate *app = [[UIApplication sharedApplication] delegate];
-        _user = app.user;
-    }
-    return _user;
-}
-
-
 
 #pragma -mark UITableViewCell delegate
 //显示数据
