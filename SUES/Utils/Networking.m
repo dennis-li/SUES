@@ -159,6 +159,7 @@
     //把课表存到数据库
     [self saveCourseToCoreData:[string dataUsingEncoding:NSUTF8StringEncoding]];
     [self.webView removeFromSuperview];
+    self.requestFinish(@" ",nil);
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
