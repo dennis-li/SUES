@@ -1,0 +1,99 @@
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="pragma" content="no-cache">
+            <meta http-equiv="cache-control" content="no-cache">
+                <meta http-equiv="expires" content="0">
+                    <title>上海工程技术大学大学教学管理信息系统</title>
+                    <link href="/eams/static/css/default.css" rel="stylesheet" type="text/css">
+                        <link href="/eams/static/css/messages.css" rel="stylesheet" type="text/css">
+                            <link href="/eams/static/css/toolBar.css" rel="stylesheet" type="text/css">
+                                <script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/StringUtils.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/common/Common.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/common/Table.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/common/ToolBar.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/My97DatePicker/WdatePicker.js"></script><link href="http://jxxt.sues.edu.cn/eams/static/scripts/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css"><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/jquery-1.8.1.js"></script><link rel="stylesheet" href="/eams/static/scripts/validation/validate.css"><script type="text/javascript" src="/eams/static/scripts/validation/jquery.validate.js"></script><link rel="stylesheet" type="text/css" href="/eams/static/scripts/colorbox/css/colorbox.css"><script type="text/javascript" src="/eams/static/scripts/colorbox/jquery.colorbox.js"></script><script>
+                                    function calendar(){
+                                        WdatePicker({dateFmt:'yyyy-MM-dd'});
+                                    }
+                                </script><script language="JavaScript" type="text/JavaScript" src="/eams/dwr/engine.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/dwr/util.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/prototypes.js"></script><script language="JavaScript" type="text/JavaScript" src="/eams/static/scripts/common/Menu.js"></script><script>
+                                    if (window.addEventListener) {window.addEventListener("load", adaptFrameSize, false);}else if (window.attachEvent) {window.attachEvent("onload", adaptFrameSize);}else {window.onload = adaptFrameSize;}
+                                    </script></head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--deprecated menus.js-->
+
+
+
+<body marginwidth="0" marginheight="0"><div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" style="padding-bottom: 42px; padding-right: 42px; display: none;"><div id="cboxWrapper" style=""><div style=""><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxLoadedContent" class="" style="width: 0px; height: 0px; overflow: hidden;"></div><div id="cboxLoadingOverlay" class="" style=""></div><div id="cboxLoadingGraphic" class="" style=""></div><div id="cboxTitle" class="" style=""></div><div id="cboxCurrent" class="" style=""></div><div id="cboxNext" class="" style=""></div><div id="cboxPrevious" class="" style=""></div><div id="cboxSlideshow" class="" style=""></div><div id="cboxClose" class="" style=""></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none;"></div></div>
+    <table id="examActivityBar" width="100%" class="toolBar"><tbody><tr align="center"><td align="left"><img class="icon" src="/eams/static/images/action/info.gif"><b>未查看确认</b></td><td></td><td class="padding" width="1%" title="查看确认"><img class="icon" src="/eams/static/images/action/action.gif" alt="查看确认">查看确认</td><td class="padding" width="1%" title="打印"><img class="icon" src="/eams/static/images/action/print.gif" alt="打印">打印</td></tr><tr><td class="keyLine" colspan="40"><img height="2" width="100%" align="top" src="/eams/static/images/action/keyline.gif"></td></tr></tbody></table>
+    <script>
+        var bar=new ToolBar('examActivityBar','未查看确认',null,true,false);
+        bar.setMessage('');
+        bar.addItem("查看确认", "sendLog()");
+        bar.addItem("打印","print()");
+        function sendLog(){
+            var form =document.getElementById("examTakeForm");
+            var examTakeIds =document.getElementById("examTakeIds").value;
+            if(null==examTakeIds || examTakeIds==""){
+                alert("所有考试记录均已查看");
+                return;
+            }
+            form.action="stdExamTable.action?method=saveExamTakeLog";
+            form.submit();
+        }
+    </script>
+    
+    <table width="100%" class="listTable" id="listTable">
+        <tbody><tr align="center" class="darkColumn">
+            <td width="15%">课程名称</td>
+            <td width="10%">考试日期</td>
+            <td width="25%">考试安排</td>
+            <td width="8%">考试地点</td>
+        </tr>
+        <tr class="brightStyle" align="center" onmouseover="swapOverTR(this,this.className)" onmouseout="swapOutTR(this)">
+            <td>电机及其拖动基础</td>
+            <td>
+                
+                2016-09-08
+            </td>
+            <td>星期四  10:30</td>
+            <td>F206多</td>
+        </tr>
+        </tbody></table>
+    
+    
+    
+    <img src="static/images/action/keyline.gif" height="2" width="100%" align="top">
+        
+        
+        
+        
+        <img src="static/images/action/info.gif"><font size="2"><b>已查看确认</b></font>
+            
+            
+            
+            <table width="100%" class="listTable" id="listTable">
+                <tbody><tr align="center" class="darkColumn">
+                    <td width="15%">课程名称</td>
+                    <td width="10%">考试日期</td>
+                    <td width="25%">考试安排</td>
+                    <td width="8%">考试地点</td>
+                </tr>
+                </tbody></table>
+            <p>请记录以上考试安排</p>
+            <form id="examTakeForm" name="examTakeForm" method="post" action="stdExamTable.action?method=saveExamTakeLog" onsubmit="return false;">
+                <input id="examTakeIds" name="examTakeIds" type="hidden" value="2516248">
+                    <input id="semester.id" name="semester.id" type="hidden" value="402">
+                        <input id="examType.id" name="examType.id" type="hidden" value="3">
+                            </form>
+            
+        <div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"><iframe src="http://jxxt.sues.edu.cn/eams/static/scripts/My97DatePicker/My97DatePicker.htm" frameborder="0" border="0" scrolling="no" style="width: 186px; height: 199px;"></iframe></div></body></html>

@@ -21,6 +21,7 @@
 		5C089F0B1D7031BF0049FE84 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F0A1D7031BF0049FE84 /* BaseViewController.m */; };
 		5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F0D1D7049BF0049FE84 /* MenuView.m */; };
 		5C089F111D704A270049FE84 /* UsersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F101D704A270049FE84 /* UsersView.m */; };
+		5C089F131D7080030049FE84 /* Exam.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C089F121D7080030049FE84 /* Exam.html */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -106,6 +107,7 @@
 		5C089F0D1D7049BF0049FE84 /* MenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuView.m; sourceTree = "<group>"; };
 		5C089F0F1D704A270049FE84 /* UsersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersView.h; sourceTree = "<group>"; };
 		5C089F101D704A270049FE84 /* UsersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersView.m; sourceTree = "<group>"; };
+		5C089F121D7080030049FE84 /* Exam.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Exam.html; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 			children = (
 				5C9450011D6217AC000BBEB7 /* GrayViewController.h */,
 				5C9450021D6217AC000BBEB7 /* GrayViewController.m */,
+				5C089F121D7080030049FE84 /* Exam.html */,
 			);
 			path = Delete;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 			files = (
 				5C9450521D658BFE000BBEB7 /* PublicCell.xib in Resources */,
 				5C944F881D61E926000BBEB7 /* LaunchScreen.storyboard in Resources */,
+				5C089F131D7080030049FE84 /* Exam.html in Resources */,
 				5C944F851D61E926000BBEB7 /* Assets.xcassets in Resources */,
 				5C944F801D61E926000BBEB7 /* Main.storyboard in Resources */,
 			);
