@@ -21,6 +21,8 @@
 @property (nonatomic,assign) CGFloat statusHeight;
 @property (nonatomic,assign) CGFloat navHeight;
 @property (nonatomic,assign) CGFloat tabBarHeight;
+@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic,strong) User *user;
 @property (nonatomic,strong) UsersView *usersView;//显示所有用户
 @property (nonatomic,strong) MenuView *menu;//usersView的载体
 @property (nonatomic,strong) Networking *networking;//网络活动
@@ -63,11 +65,12 @@
 
 -(User *)user
 {
-    if (!_user) {
-        AppDelegate *app = [[UIApplication sharedApplication] delegate];
-        _user = app.user;
-    }
-    return _user;
+    return [self returnApp].user;
+}
+
+-(AppDelegate *)returnApp
+{
+    return [[UIApplication sharedApplication] delegate];
 }
 
 //刷新成绩

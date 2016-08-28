@@ -12,6 +12,7 @@
 #import "MyDownloader.h"
 #import "AppDelegate.h"
 #import "User.h"
+#import "TFHpple.h"
 
 @interface Networking ()<MyDownloaderDelegate,UIWebViewDelegate>
 @property (nonatomic,strong)MyDownloader *downloader;
@@ -34,10 +35,7 @@
 
 -(User *)user
 {
-    if (!_user) {
-        _user = [self returnApp].user;
-    }
-    return _user;
+    return [self returnApp].user;
 }
 
 -(AppDelegate *)returnApp
@@ -57,9 +55,7 @@
 {
     if (!_webView) {
         _webView = [[UIWebView alloc] init];
-        NSURL *url = [NSURL URLWithString:COURSE_URL];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [_webView loadRequest:request];
+        _webView.delegate = self;
     }
     return _webView;
 }
@@ -103,19 +99,10 @@
         
         NSLog(@"result = %@",result);
         if ([result containsString:@"handleLoginSuccessed"]) {
-            switch (self.type) {
-                case RefreshGrade:
-                    [self requestGradeHtmlData];
-                    self.requestFinish(@"成绩已刷新",nil);
-                    break;
-                case RefreshCourse:
-                    self.webView.delegate = self;
-                    break;
-                    
-                default://登录的时候，执行这里
-                    [self requestGradeHtmlData];
-                    self.webView.delegate = self;//加载UIWebView,加载结束自动调用delegate方法
-                    break;
+            if (self.type == RefreshCourse) {
+                [self requestCoursesHtmlData];
+            } else {
+                [self requestGradeHtmlData];
             }
             
         } else if ([result containsString:@"handleLoginFailure"]) {
@@ -146,13 +133,41 @@
         } else {//把成绩存到数据库
             [self returnApp].user = nil;//添加新用户
             [self.downloader loginAnalyzeUserWithGradeHtmlData:htmlData userId:self.userId password:self.userPassword];
+            [self requestCoursesHtmlData];//接着下载课表数据
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         self.requestFinish(nil,@"服务器繁忙");
     }];
 }
 
-#pragma - mark UIWebViewDelegate
+#pragma - mark UIWebView
+-(void)requestCoursesHtmlData
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:COURSE_GET_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSData *htmlData=[result dataUsingEncoding:NSUTF8StringEncoding];
+        TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='frameTable']/tr/td/iframe"];
+        NSLog(@"courseURL = %@",result);
+        for (TFHppleElement *element in elements) {
+            if ([[element objectForKey:@"id"] isEqualToString:@"contentListFrame"]) {
+                NSLog(@"url = %@",[element objectForKey:@"src"]);
+                NSString *coursesURL = [element objectForKey:@"src"];
+                NSURL *url = [NSURL URLWithString:[SUES_URL stringByAppendingString:coursesURL]];
+                NSURLRequest *request = [NSURLRequest requestWithURL:url];
+                [self.webView loadRequest:request];//加载UIWebView,加载结束自动调用delegate方法
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+        
+    
+}
+
 -(void)webViewDidFinishLoad:(UIWebView *)webView//加载完成，分析网页内容
 {
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];

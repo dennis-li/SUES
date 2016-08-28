@@ -60,5 +60,4 @@
         [self courseWithFlickrInfo:course inManagedObjectContext:context];
     }
 }
-
 @end

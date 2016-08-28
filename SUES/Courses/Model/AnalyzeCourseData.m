@@ -1,50 +1,34 @@
 //
-//  MyDownloader.m
-//  SohuByObject_C
+//  AnalyzeCourseData.m
+//  SUES
 //
-//  Created by lixu on 16/4/25.
+//  Created by lixu on 16/8/28.
 //  Copyright © 2016年 lixu. All rights reserved.
 //
 
-#import "MyDownloader.h"
+#import "AnalyzeCourseData.h"
 #import "TFHpple.h"
 #import "Public.h"
 #import "User+Create.h"
 #import "Courses+Flickr.h"
-#import "Grade+Flickr.h"
 #import "AppDelegate.h"
 
-
-@interface MyDownloader ()
-@property (nonatomic ,strong) NSMutableArray *gradeArray;//存放所有的成绩
-@property (nonatomic ,strong) NSMutableDictionary *userDictionary;//存放user的信息
+@interface AnalyzeCourseData ()
 @property (nonatomic ,strong) NSMutableArray *coursesArray;//存放所有课程
 @property (nonatomic ,strong) User *user;
-@property (nonatomic ,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic ,strong) NSMutableDictionary *courseDictionary;//存放一个课程详情
 @property (nonatomic ,assign) NSInteger sectionStart;//从第几节开始上课
 @property (nonatomic ,assign) NSInteger sectionEnd;
 @property (nonatomic ,strong) NSString *week;//课程的Day，那天上课
 @end
 
-@implementation MyDownloader
-
--(instancetype)init
-{
-    if (self = [super init]) {
-    
-    }
-    return self;
-}
-
--(NSManagedObjectContext *)managedObjectContext
-{
-    return [self returnApp].managedObjectContext;
-}
-
+@implementation AnalyzeCourseData
 -(User *)user
 {
-    return [self returnApp].user;
+    if (!_user) {
+        _user = [self returnApp].user;
+    }
+    return _user;
 }
 
 -(AppDelegate *)returnApp
@@ -60,22 +44,6 @@
     return _courseDictionary;
 }
 
--(NSMutableDictionary *)userDictionary
-{
-    if (!_userDictionary) {
-        _userDictionary = [[NSMutableDictionary alloc] init];
-    }
-    return _userDictionary;
-}
-
--(NSMutableArray *)gradeArray
-{
-    if (!_gradeArray) {
-        _gradeArray = [[NSMutableArray alloc ] init];
-    }
-    return _gradeArray;
-}
-
 -(NSMutableArray *)coursesArray
 {
     if (!_coursesArray) {
@@ -84,130 +52,7 @@
     return _coursesArray;
 }
 
-//处理完数据发送通知到前台
--(void)sendNotificationToCourseTable
-{
-    NSDictionary *userInfo = @{@"context" : self.managedObjectContext};
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToCourseTable"
-     object:self
-     userInfo:userInfo];
-}
-
-//登录的时候，请求所有用户数据
--(void)loginAnalyzeUserWithGradeHtmlData:(NSData *)htmlData userId:(NSString *)userId password:(NSString *)userPassword
-{
-    [self.userDictionary setValue:userId  forKey:USER_ID];
-    [self.userDictionary setValue:userPassword forKey:USER_PASSWORD];
-    [self analyzeGradeHtmlData:htmlData];
-}
-
-#pragma - mark Gradetable
-
--(void)analyzeGradeHtmlData:(NSData *)htmlData
-{
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@id='gradeTable']/tr[position()>1]/td"];
-    
-    if (!self.user) {//第一次登录，保存用户
-        NSArray *userNameArray = [xpathParser searchWithXPathQuery:@"//div[@align='center']"];
-        NSString *userName = nil;
-        for (TFHppleElement *element in userNameArray) {
-            if ([[element content] containsString:[self.userDictionary valueForKey:USER_ID]]) {
-                NSArray *userNameDetail = [[element content] componentsSeparatedByString:@" "];
-                if ([userNameDetail count] > 2) {
-                    userName = [[[userNameDetail objectAtIndex:2] componentsSeparatedByString:@":"] lastObject];
-                    if (LX_DEBUG) {
-                        NSLog(@"%@--%@--userName = %@",NSStringFromClass([self class]), NSStringFromSelector(_cmd),userName);
-                    }
-                } else {
-                    userName = @"无名";
-                }
-            }
-        }
-        [self.userDictionary setValue:userName forKey:USER_NAME];
-        AppDelegate *app = [self returnApp];
-        app.user = [User userWithName:self.userDictionary inManagedObjectContext:self.managedObjectContext];
-        /*
-         <table id="gradeBar"></table>
-         <div align="center">Student No:0231 Name:李 Department:电子电气工程学院 Major:电气工程及其自动化 Major Field:无</div>
-         */
-    }
-   
-    if (![elements count]) {
-        if (LX_DEBUG) {
-            NSLog(@"[%@->%@] requestGradeData",NSStringFromClass([self class]), NSStringFromSelector(_cmd));
-        }
-    }
-    [self saveGradeData:elements];
-}
-
-
--(void)saveGradeData:(NSArray *)gradeData
-{
-    NSMutableDictionary *gradeCourseDictionary;
-    NSInteger key = 0;
-    for (TFHppleElement *element in gradeData) {
-        if (!(key % 11)) {
-            gradeCourseDictionary = [self createACourseDictionary];
-            [self.gradeArray addObject:gradeCourseDictionary];
-            [gradeCourseDictionary setValue:self.user.userId forKey:GRADE_WHOGRADE];
-        }
-        switch (key % 11) {
-            case 0:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_CODE];//课程代码
-                break;
-            case 1:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_ID];//课程序号
-                break;
-            case 2:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:COURSE_NAME];//课程名称
-                break;
-            case 3:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CATEGORY];//课程类别
-                break;
-            case 4:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_CREDIT];//学分
-                break;
-            case 5:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MIDTERMGRADE];//期中成绩
-                break;
-            case 6:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALLEVEL];//期末总评
-                break;
-            case 7:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_MAKEUPEXAMGRADE];//补考成绩
-                break;
-            case 8:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_FINALGRADE];//期末成绩
-                break;
-            case 9:
-                [gradeCourseDictionary setValue:[[element content] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:GRADE_GRADEPOINT];//学分
-                break;
-            case 10:
-            {
-                NSArray *semesterAndYear =  [[element content] componentsSeparatedByString:@" "];
-                NSString *year = [[[semesterAndYear firstObject] componentsSeparatedByString:@"-"] firstObject];
-                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[year integerValue]] forKey:COURSE_STARTSCHOOLYEAR];//学年
-                [gradeCourseDictionary setValue:[NSNumber numberWithInteger:[[semesterAndYear lastObject] integerValue]] forKey:COURSE_SEMESTER];//学期
-                
-                [gradeCourseDictionary setValue:[element content] forKey:COURSE_YEARANDSEMESTER];
-            }
-                break;
-            default:
-                break;
-        }
-        key++;
-    }
-    //数据保存到数据库
-    
-    [Grade loadGradeFromFlickrArray:self.gradeArray intoManagedObjectContext:self.managedObjectContext];
-    [self.managedObjectContext save:NULL];
-    [self.delegate downloadFinish:self];
-}
-
-#pragma - mark Coursetable
-//开始获取用户的数据，并创建用户self.user
+//解析课表数据
 -(void)analyzeCoursesHtmlData:(NSData *)htmlData
 {
     
@@ -251,9 +96,19 @@
         }
     }
     //数据保存到数据库
-    [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.managedObjectContext];
-    [self.managedObjectContext save:NULL];
+    [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.user.managedObjectContext];
+    [self.user.managedObjectContext save:NULL];
     [self sendNotificationToCourseTable];
+}
+
+//处理完数据发送通知到前台
+-(void)sendNotificationToCourseTable
+{
+    NSDictionary *userInfo = @{@"context" : self.user.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToCourseTable"
+     object:self
+     userInfo:userInfo];
 }
 
 //分析找到的一门新课程

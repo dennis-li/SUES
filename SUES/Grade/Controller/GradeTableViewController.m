@@ -41,11 +41,12 @@
 
 -(User *)user
 {
-    if (!_user) {
-        AppDelegate *app = [[UIApplication sharedApplication] delegate];
-        _user = app.user;
-    }
-    return _user;
+    return [self returnApp].user;
+}
+
+-(AppDelegate *)returnApp
+{
+    return [[UIApplication sharedApplication] delegate];
 }
 
 //刷新成绩

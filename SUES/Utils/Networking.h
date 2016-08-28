@@ -1,7 +1,8 @@
 //
 //  Networking.h
 //  SUES
-//
+//password = 19940429;
+//userId = 023113102;
 //  Created by lixu on 16/8/23.
 //  Copyright © 2016年 lixu. All rights reserved.
 //
@@ -20,6 +21,7 @@ typedef NS_ENUM(NSUInteger, NetworkingType) {
 
 //回调信息
 @property (nonatomic,copy) void (^requestFinish)(NSString *requestString,NSString *error);
+@property (nonatomic,copy) void (^requestHtmlData)(NSData *coursesData,NSData *gradeData);
 
 //登录请求
 -(void)loginRequestWithUserName:(NSString *)userId password:(NSString *)userPassword;

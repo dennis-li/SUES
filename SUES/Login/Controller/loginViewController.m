@@ -77,8 +77,8 @@
 //    NSString *username = self.usernameTF.text;
 //    NSString *password = self.passwordTF.text;
     
-    NSString *username = @"023113141";
-    NSString *password = @"lidaye1991";
+    NSString *username = @"023113102";
+    NSString *password = @"19940429";
     
     self.userId = username;
     self.userPassWord = password;

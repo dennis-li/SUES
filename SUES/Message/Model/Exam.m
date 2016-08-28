@@ -1,17 +1,15 @@
 //
-//  User.m
+//  Exam.m
 //  
 //
 //  Created by lixu on 16/8/27.
 //
 //
 
-#import "User.h"
-#import "Courses.h"
 #import "Exam.h"
-#import "Grade.h"
+#import "User.h"
 
-@implementation User
+@implementation Exam
 
 // Insert code here to add functionality to your managed object subclass
 

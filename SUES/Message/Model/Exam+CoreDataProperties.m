@@ -1,5 +1,5 @@
 //
-//  User+CoreDataProperties.m
+//  Exam+CoreDataProperties.m
 //  
 //
 //  Created by lixu on 16/8/27.
@@ -9,15 +9,14 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "User+CoreDataProperties.h"
+#import "Exam+CoreDataProperties.h"
 
-@implementation User (CoreDataProperties)
+@implementation Exam (CoreDataProperties)
 
-@dynamic name;
-@dynamic password;
-@dynamic userId;
-@dynamic courses;
-@dynamic grade;
-@dynamic exam;
+@dynamic examName;
+@dynamic examDate;
+@dynamic examPlan;
+@dynamic examLocale;
+@dynamic whoExam;
 
 @end

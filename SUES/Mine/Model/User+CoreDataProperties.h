@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.h
 //  
 //
-//  Created by lixu on 16/8/16.
+//  Created by lixu on 16/8/27.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *userId;
 @property (nullable, nonatomic, retain) NSSet<Courses *> *courses;
 @property (nullable, nonatomic, retain) NSSet<Grade *> *grade;
+@property (nullable, nonatomic, retain) NSSet<Exam *> *exam;
 
 @end
 
@@ -34,6 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeGradeObject:(Grade *)value;
 - (void)addGrade:(NSSet<Grade *> *)values;
 - (void)removeGrade:(NSSet<Grade *> *)values;
+
+- (void)addExamObject:(Exam *)value;
+- (void)removeExamObject:(Exam *)value;
+- (void)addExam:(NSSet<Exam *> *)values;
+- (void)removeExam:(NSSet<Exam *> *)values;
 
 @end
 

@@ -60,7 +60,8 @@
 #define USER_ID @"userId"
 
 //课表URL
-#define COURSE_URL @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=courseTable&setting.forSemester=0&setting.kind=std&semester.id=402&ids=72123730&ignoreHead=1"
+#define COURSE_GET_URL @"http://jxxt.sues.edu.cn/eams/courseTableForStd.action?method=stdHome"
+#define SUES_URL @"http://jxxt.sues.edu.cn/eams/"
 
 //成绩URL
 #define GRADE_URL @"http://jxxt.sues.edu.cn/eams/personGrade.action?method=historyCourseGrade"

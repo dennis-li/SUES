@@ -11,6 +11,5 @@
 #import <CoreData/CoreData.h>
 
 @interface TimetableViewController : UIViewController
-@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic,strong) User *user;
+
 @end
