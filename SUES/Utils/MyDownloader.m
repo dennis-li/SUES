@@ -142,7 +142,6 @@
     [self saveGradeData:elements];
 }
 
-
 -(void)saveGradeData:(NSArray *)gradeData
 {
     NSMutableDictionary *gradeCourseDictionary;

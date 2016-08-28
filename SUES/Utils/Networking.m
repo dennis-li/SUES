@@ -9,13 +9,12 @@
 #import "Networking.h"
 #import <AFNetworking.h>
 #import "Public.h"
-#import "MyDownloader.h"
 #import "AppDelegate.h"
 #import "User.h"
 #import "TFHpple.h"
 
-@interface Networking ()<MyDownloaderDelegate,UIWebViewDelegate>
-@property (nonatomic,strong)MyDownloader *downloader;
+@interface Networking ()<UIWebViewDelegate>
+@property (nonatomic,strong)NSData *gradeHtmlData;
 @property (nonatomic,strong)UIWebView *webView;
 @property (nonatomic,strong)User *user;
 @property (nonatomic,strong)NSString *userId;
@@ -43,14 +42,6 @@
     return [[UIApplication sharedApplication] delegate];
 }
 
--(MyDownloader *)downloader
-{
-    if (!_downloader) {
-        _downloader = [[MyDownloader alloc] init];
-    }
-    return _downloader;
-}
-
 -(UIWebView *)webView
 {
     if (!_webView) {
@@ -68,10 +59,9 @@
     [self verifyUserIdAndPassword];
 }
 
-//刷新数据
--(void)refreshHtmlDataWithNetworkingType:(NetworkingType)type
+//请求刷新数据
+-(void)requestRefresh
 {
-    self.type = type;
     self.userId = self.user.userId;
     self.userPassword = self.user.password;
     [self verifyUserIdAndPassword];
@@ -99,12 +89,7 @@
         
         NSLog(@"result = %@",result);
         if ([result containsString:@"handleLoginSuccessed"]) {
-            if (self.type == RefreshCourse) {
-                [self requestCoursesHtmlData];
-            } else {
-                [self requestGradeHtmlData];
-            }
-            
+            self.requestFinish(@"yes",nil);//学号密码验证成功
         } else if ([result containsString:@"handleLoginFailure"]) {
             self.requestFinish(nil,@"密码或用户名错误");
         } else{
@@ -113,6 +98,24 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         self.requestFinish(nil,@"检查网络");
     }];
+}
+
+//请求数据类型
+-(void)requestUserDataWithType:(NetworkingType)type
+{
+    self.type = type;
+    switch (type) {
+        case RequestALlData:
+        case RefreshGrade:
+            [self requestGradeHtmlData];
+            break;
+        case RefreshCourse:
+            [self requestCoursesHtmlData];
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma - mark 请求成绩数据
@@ -125,14 +128,16 @@
     [manager GET:GRADE_URL parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *result = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSData *htmlData = [result dataUsingEncoding:NSUTF8StringEncoding];
+        self.gradeHtmlData = htmlData;
         if(LX_DEBUG)
             NSLog(@"resutl..grade = %@",result);
 #warning - mark 以后任务多了，可以换成switch
         if (self.type == RefreshGrade) {
-            [self.downloader analyzeGradeHtmlData:htmlData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.requestHtmlData(self.gradeHtmlData,nil);
+            });
         } else {//把成绩存到数据库
-            [self returnApp].user = nil;//添加新用户
-            [self.downloader loginAnalyzeUserWithGradeHtmlData:htmlData userId:self.userId password:self.userPassword];
+            
             [self requestCoursesHtmlData];//接着下载课表数据
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -162,10 +167,8 @@
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        self.requestHtmlData(nil,nil);
     }];
-        
-    
 }
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView//加载完成，分析网页内容
@@ -173,30 +176,12 @@
     NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
     NSLog(@"CourseHTML = %@",string);
     //把课表存到数据库
-    [self saveCourseToCoreData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+//    [self saveCourseToCoreData:[string dataUsingEncoding:NSUTF8StringEncoding]];
     [self.webView removeFromSuperview];
-    self.requestFinish(@" ",nil);
+    self.requestHtmlData(self.gradeHtmlData,[string dataUsingEncoding:NSUTF8StringEncoding]);
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     self.requestFinish(nil,@"请检查网络");
 }
-
-#pragma - mark 保存课表到数据库
--(void)saveCourseToCoreData:(NSData *)htmlData
-{
-    [self.downloader analyzeCoursesHtmlData:htmlData];
-}
-
-#pragma - mark MydownloaderDelegate
--(void)downloadFinish:(MyDownloader *)downloader
-{
-    
-}
-
--(void)downloadFail:(MyDownloader *)downloader error:(NSError *)error
-{
-    
-}
-
 @end

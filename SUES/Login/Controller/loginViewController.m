@@ -12,6 +12,8 @@
 #import "MBProgressHUD.h"
 #import "Networking.h"
 #import "MyUtil.h"
+#import "AnalyzeGradeData.h"
+#import "AnalyzeCourseData.h"
 
 @interface loginViewController ()<UIGestureRecognizerDelegate>
 @property (nonatomic,strong) AppDelegate *app;
@@ -83,20 +85,19 @@
     self.userId = username;
     self.userPassWord = password;
     
-    [self downloadUserData];
+    [self networkingRequest];
 }
 
 
 //HUD提示框
-- (void)downloadUserData {
+- (void)networkingRequest {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     self.hud = hud;
     dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
         __weak loginViewController *weakSelf = self;
         self.networking.requestFinish = ^(NSString *requestString,NSString *error){
-            [weakSelf.hud hideAnimated:YES];
             if (!error) {
-                [weakSelf.app changeRootCtroller:YES];
+                [weakSelf requestUserData];
             }else {
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
@@ -107,6 +108,20 @@
         };
         [self.networking loginRequestWithUserName:self.userId password:self.userPassWord];
     });
+}
+
+-(void)requestUserData
+{
+    __weak loginViewController *weakSelf = self;
+    self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
+        AnalyzeGradeData *analyzeGrade = [[AnalyzeGradeData alloc] init];
+        AnalyzeCourseData *analyzeCourses = [[AnalyzeCourseData alloc] init];
+        [analyzeGrade analyzeGradeHtmlData:gradeData userId:weakSelf.userId userPassword:weakSelf.userPassWord];
+        [analyzeCourses analyzeCoursesHtmlData:coursesData];
+        [weakSelf.hud hideAnimated:YES];
+        [weakSelf.app changeRootCtroller:YES];
+    };
+    [self.networking requestUserDataWithType:RequestALlData];//请求所有的数据
 }
 
 @end

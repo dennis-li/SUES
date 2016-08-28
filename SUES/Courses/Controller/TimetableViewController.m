@@ -16,6 +16,7 @@
 #import "MyUtil.h"
 #import "MenuView.h"
 #import "UsersView.h"
+#import "AnalyzeCourseData.h"
 
 @interface TimetableViewController ()
 @property (nonatomic,assign) CGFloat statusHeight;
@@ -87,12 +88,20 @@
 {
     __weak TimetableViewController *weakSelf = self;
     self.networking.requestFinish = ^(NSString *requestString,NSString *error){
-        if (error) {
-            MBProgressHUD *hud = [weakSelf displayHud];
-            hud.label.text = NSLocalizedString(error, @"HUD message title");
+        if (!error) {
+            [weakSelf requestRefreshCourseData];
         }
     };
-    [self.networking refreshHtmlDataWithNetworkingType:RefreshCourse];
+    [self.networking requestRefresh];
+}
+
+-(void)requestRefreshCourseData
+{
+    self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
+        AnalyzeCourseData *analyzeCourses = [[AnalyzeCourseData alloc] init];
+        [analyzeCourses analyzeCoursesHtmlData:coursesData];
+    };
+    [self.networking requestUserDataWithType:RefreshCourse];
 }
 
 -(void)observerNotification

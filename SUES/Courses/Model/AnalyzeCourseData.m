@@ -52,10 +52,19 @@
     return _coursesArray;
 }
 
+//处理完数据发送通知到前台
+-(void)sendNotificationToCourseTable
+{
+    NSDictionary *userInfo = @{@"context" : self.user.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToCourseTable"
+     object:self
+     userInfo:userInfo];
+}
+
 //解析课表数据
 -(void)analyzeCoursesHtmlData:(NSData *)htmlData
 {
-    
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='listTable']/tbody/tr[position()>2]/td"];
@@ -99,16 +108,6 @@
     [Courses loadCourseFromFlickrArray:self.coursesArray intoManagedObjectContext:self.user.managedObjectContext];
     [self.user.managedObjectContext save:NULL];
     [self sendNotificationToCourseTable];
-}
-
-//处理完数据发送通知到前台
--(void)sendNotificationToCourseTable
-{
-    NSDictionary *userInfo = @{@"context" : self.user.managedObjectContext};
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToCourseTable"
-     object:self
-     userInfo:userInfo];
 }
 
 //分析找到的一门新课程

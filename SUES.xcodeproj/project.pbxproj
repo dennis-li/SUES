@@ -27,6 +27,7 @@
 		5C089F211D7166370049FE84 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F1E1D7166370049FE84 /* User+CoreDataProperties.m */; };
 		5C089F221D7166370049FE84 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F201D7166370049FE84 /* User.m */; };
 		5C089F2A1D72D8D80049FE84 /* AnalyzeCourseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */; };
+		5C089F2D1D72EECE0049FE84 /* AnalyzeGradeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -121,6 +122,8 @@
 		5C089F201D7166370049FE84 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5C089F281D72D8D80049FE84 /* AnalyzeCourseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeCourseData.h; sourceTree = "<group>"; };
 		5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeCourseData.m; sourceTree = "<group>"; };
+		5C089F2B1D72EECE0049FE84 /* AnalyzeGradeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeGradeData.h; sourceTree = "<group>"; };
+		5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeGradeData.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -312,6 +315,8 @@
 				5C4641001D66F651007289EA /* Grade+Flickr.m */,
 				5C94502F1D63F1B9000BBEB7 /* Grade.h */,
 				5C9450301D63F1B9000BBEB7 /* Grade.m */,
+				5C089F2B1D72EECE0049FE84 /* AnalyzeGradeData.h */,
+				5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -900,6 +905,7 @@
 				5C089F0B1D7031BF0049FE84 /* BaseViewController.m in Sources */,
 				5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */,
 				5C9450391D63F1B9000BBEB7 /* Grade.m in Sources */,
+				5C089F2D1D72EECE0049FE84 /* AnalyzeGradeData.m in Sources */,
 				5C94503E1D63F2E2000BBEB7 /* SUES.xcdatamodeld in Sources */,
 				5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */,
 				5C089F1B1D7164BB0049FE84 /* Exam+CoreDataProperties.m in Sources */,

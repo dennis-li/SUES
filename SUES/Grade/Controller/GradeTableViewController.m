@@ -14,6 +14,7 @@
 #import "MyDownloader.h"
 #import "Networking.h"
 #import "MBProgressHUD.h"
+#import "AnalyzeGradeData.h"
 
 @interface GradeTableViewController ()
 @property (nonatomic,assign) CGFloat statusHeight;
@@ -21,6 +22,7 @@
 @property (nonatomic,assign) CGFloat tabBarHeight;
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic,strong) User *user;
+@property (nonatomic,strong) Networking *networking;
 @end
 
 @implementation GradeTableViewController
@@ -39,6 +41,14 @@
     self.managedObjectContext = self.user.managedObjectContext;
 }
 
+-(Networking *)networking
+{
+    if (!_networking) {
+        _networking = [[Networking alloc] init];
+    }
+    return _networking;
+}
+
 -(User *)user
 {
     return [self returnApp].user;
@@ -54,30 +64,43 @@
 {
     UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
     [btn setTitle:@"刷新" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(refreshGrade) forControlEvents:UIControlEventTouchUpInside];
+    [btn addTarget:self action:@selector(requestNetworking) forControlEvents:UIControlEventTouchUpInside];
     [btn setTintColor:[UIColor blackColor]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
--(void)refreshGrade
+//请求更新
+-(void)requestNetworking
 {
     __weak GradeTableViewController *weakSelf = self;
-    Networking *networking = [[Networking alloc] init];
-    networking.requestFinish = ^(NSString *requestString,NSString *error){
-        if (LX_DEBUG) {
-            NSLog(@"refreshGrade: It's work!");
+    self.networking.requestFinish = ^(NSString *requestString,NSString *error){
+        if (!error) {
+            [weakSelf requestRefreshGradeData];
+        } else {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.offset = CGPointMake(0.f, -0.f);
+            [hud hideAnimated:YES afterDelay:0.8f];
+            hud.label.text = NSLocalizedString(error, @"HUD message title");
         }
+    };
+    [self.networking requestRefresh];
+}
+
+//请求更新的数据
+-(void)requestRefreshGradeData
+{
+    __weak GradeTableViewController *weakSelf = self;
+    self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
+        AnalyzeGradeData *analyzeGrade = [[AnalyzeGradeData alloc] init];
+        [analyzeGrade analyzeGradeHtmlData:gradeData];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.offset = CGPointMake(0.f, -0.f);
         [hud hideAnimated:YES afterDelay:0.8f];
-        if (error) {
-            hud.label.text = NSLocalizedString(error, @"HUD message title");
-        }else {
-            hud.label.text = NSLocalizedString(requestString, @"HUD message title");
-        }
+        hud.label.text = NSLocalizedString(@"成绩已更新", @"HUD message title");
     };
-    [networking refreshHtmlDataWithNetworkingType:RefreshGrade];
+    [self.networking requestUserDataWithType:RefreshGrade];
 }
 
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
