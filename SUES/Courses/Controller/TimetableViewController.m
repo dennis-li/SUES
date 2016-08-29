@@ -24,6 +24,7 @@
 @property (nonatomic,assign) CGFloat tabBarHeight;
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic,strong) User *user;
+@property (nonatomic,assign) BOOL isRefresh;//判断是否是刷新，需要hud提示框提示数据已更新
 @property (nonatomic,strong) UsersView *usersView;//显示所有用户
 @property (nonatomic,strong) MenuView *menu;//usersView的载体
 @property (nonatomic,strong) Networking *networking;//网络活动
@@ -38,7 +39,6 @@
     [super viewDidLoad];
     NSLog(@"viewDid");
     [self observerNotification];
-    self.view.backgroundColor=[UIColor blueColor];
     //获取当前状态栏的高度
     self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
     //获取导航栏的高度
@@ -50,12 +50,12 @@
     self.weekView = weekView;
     
     [self refreshWeekView];
-    
     [self createNextWeekButton];//下一周按钮
-    [self createUsersButton];
+    [self createUsersButton];//显示所有用户
 
 }
 
+//网络活动
 -(Networking *)networking
 {
     if (!_networking) {
@@ -84,17 +84,26 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
+//请求刷新
 -(void)requestNetworking
 {
     __weak TimetableViewController *weakSelf = self;
     self.networking.requestFinish = ^(NSString *requestString,NSString *error){
         if (!error) {
+            weakSelf.isRefresh = YES;
             [weakSelf requestRefreshCourseData];
+        } else {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
+            hud.mode = MBProgressHUDModeText;
+            hud.offset = CGPointMake(0.f, -0.f);
+            [hud hideAnimated:YES afterDelay:0.8f];
+            hud.label.text = NSLocalizedString(error, @"HUD message title");
         }
     };
     [self.networking requestRefresh];
 }
 
+//刷新请求成功，开始请求数据
 -(void)requestRefreshCourseData
 {
     self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
@@ -104,28 +113,16 @@
     [self.networking requestUserDataWithType:RefreshCourse];
 }
 
--(void)observerNotification
-{
-    
-    [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToCourseTable"
-     object:nil
-     queue:nil
-     usingBlock:^(NSNotification * _Nonnull note) {
-         NSLog(@"notification");
-         self.managedObjectContext = note.userInfo[@"context"];
-         NSLog(@"notificationContext");
-     }];
-}
-
 -(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    NSLog(@"setContext");
     _managedObjectContext = managedObjectContext;
     self.weekView.currentWeek = @"0";
     [self refreshWeekView];
-    MBProgressHUD *hud = [self displayHud];
-    hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
+    if (self.isRefresh) {
+        MBProgressHUD *hud = [self displayHud];
+        hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
+        self.isRefresh = NO;
+    }
 }
 
 //切换周数，按钮
@@ -138,6 +135,7 @@
     self.navigationItem.titleView = btn;
 }
 
+//更新课表
 -(void)refreshWeekView
 {
     CGRect rect = self.weekView.frame;
@@ -166,7 +164,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated//转场动画
 {
     CATransition *transition = [CATransition animation];
     [transition setDuration:0.5f];
@@ -175,9 +173,10 @@
     [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
 
+//显示用户列表
 -(void)createUsersButton
 {
-    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"myForum" title:nil target:self action:@selector(back)];
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"myForum" title:nil target:self action:@selector(displayOrHide)];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = item;
     
@@ -186,7 +185,7 @@
     self.menu = menu;
 }
 
--(void)back
+-(void)displayOrHide
 {
     if (self.menu.coverView.alpha > 0) {
         [self.menu hidenWithAnimation];
@@ -194,4 +193,18 @@
         [self.menu show];
     }
 }
+
+//注册通知
+-(void)observerNotification
+{
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:@"sendContextToForeground"
+     object:nil
+     queue:nil
+     usingBlock:^(NSNotification * _Nonnull note) {
+         self.managedObjectContext = note.userInfo[@"context"];
+     }];
+}
+
 @end

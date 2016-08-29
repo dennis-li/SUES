@@ -122,7 +122,7 @@
         <!--登陆界面-->
         <scene sceneID="Mv2-nL-3Sb">
             <objects>
-                <viewController id="d6y-6x-fdU" customClass="loginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" id="d6y-6x-fdU" customClass="loginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jzw-SL-iN2"/>
                         <viewControllerLayoutGuide type="bottom" id="HwL-6q-tpx"/>

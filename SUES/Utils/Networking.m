@@ -14,8 +14,9 @@
 #import "TFHpple.h"
 
 @interface Networking ()<UIWebViewDelegate>
-@property (nonatomic,strong)NSData *gradeHtmlData;
 @property (nonatomic,strong)UIWebView *webView;
+@property (nonatomic,assign)BOOL isLoad;
+@property (nonatomic,strong)NSData *gradeHtmlData;
 @property (nonatomic,strong)User *user;
 @property (nonatomic,strong)NSString *userId;
 @property (nonatomic,strong)NSString *userPassword;
@@ -67,9 +68,19 @@
     [self verifyUserIdAndPassword];
 }
 
+-(void)cleanCookie
+{
+    NSArray *array =  [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:SUES_URL]];
+    for (NSHTTPCookie *cookie in array)
+    {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+}
+
 //验证用户信息
 -(void)verifyUserIdAndPassword
 {
+    [self cleanCookie];
     NSDictionary *parameters = @{@"Login.Token1":self.userId,
                                  @"Login.Token2":self.userPassword,
                                  @"capatcha":FORM_CAPATCHA,
@@ -173,12 +184,15 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView//加载完成，分析网页内容
 {
-    NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
-    NSLog(@"CourseHTML = %@",string);
-    //把课表存到数据库
-//    [self saveCourseToCoreData:[string dataUsingEncoding:NSUTF8StringEncoding]];
-    [self.webView removeFromSuperview];
-    self.requestHtmlData(self.gradeHtmlData,[string dataUsingEncoding:NSUTF8StringEncoding]);
+    NSString *readyState = [webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
+    
+    BOOL complete = [readyState isEqualToString:@"complete"];
+    if (complete) {
+        NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];
+        NSLog(@"CourseHTML = %@",string);
+        [self.webView removeFromSuperview];
+        self.requestHtmlData(self.gradeHtmlData,[string dataUsingEncoding:NSUTF8StringEncoding]);
+    }
 }
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {

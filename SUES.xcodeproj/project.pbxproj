@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4C275531CC7198DC9E7CFBF0 /* libPods-SUES.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6DD14BDC2EBF81AD0F44D1 /* libPods-SUES.a */; };
-		5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D5A1D6A8B240049FE84 /* MyDownloader.m */; };
 		5C089D6A1D6AB8A40049FE84 /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D691D6AB8A40049FE84 /* loginViewController.m */; };
 		5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D6D1D6AD4540049FE84 /* MBProgressHUD.m */; };
 		5C089D831D6C10D90049FE84 /* Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089D821D6C10D90049FE84 /* Networking.m */; };
@@ -86,8 +85,6 @@
 		334CF17FA43AFA6485A29719 /* Pods-SUESTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUESTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SUESTests/Pods-SUESTests.release.xcconfig"; sourceTree = "<group>"; };
 		55DA6D03DA19DD2A45029C9F /* Pods-SUES.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUES.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SUES/Pods-SUES.debug.xcconfig"; sourceTree = "<group>"; };
 		597E1444BBEC45FAF0564A6E /* Pods-SUES.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SUES.release.xcconfig"; path = "Pods/Target Support Files/Pods-SUES/Pods-SUES.release.xcconfig"; sourceTree = "<group>"; };
-		5C089D591D6A8B240049FE84 /* MyDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDownloader.h; sourceTree = "<group>"; };
-		5C089D5A1D6A8B240049FE84 /* MyDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDownloader.m; sourceTree = "<group>"; };
 		5C089D681D6AB8A40049FE84 /* loginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loginViewController.h; sourceTree = "<group>"; };
 		5C089D691D6AB8A40049FE84 /* loginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = loginViewController.m; sourceTree = "<group>"; };
 		5C089D6C1D6AD4540049FE84 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -568,8 +565,6 @@
 				5C089F061D70313E0049FE84 /* MyUtil.m */,
 				5C4640FA1D66F4B5007289EA /* CreateContext.h */,
 				5C4640FB1D66F4B5007289EA /* CreateContext.m */,
-				5C089D591D6A8B240049FE84 /* MyDownloader.h */,
-				5C089D5A1D6A8B240049FE84 /* MyDownloader.m */,
 				5C089D811D6C10D90049FE84 /* Networking.h */,
 				5C089D821D6C10D90049FE84 /* Networking.m */,
 				5C944FE31D61F862000BBEB7 /* Public.h */,
@@ -881,7 +876,6 @@
 			files = (
 				5C9450361D63F1B9000BBEB7 /* Courses+CoreDataProperties.m in Sources */,
 				5C9450031D6217AC000BBEB7 /* GrayViewController.m in Sources */,
-				5C089D5B1D6A8B240049FE84 /* MyDownloader.m in Sources */,
 				5C089F071D70313E0049FE84 /* MineViewController.m in Sources */,
 				5C9450511D658BFE000BBEB7 /* PublicCell.m in Sources */,
 				5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */,

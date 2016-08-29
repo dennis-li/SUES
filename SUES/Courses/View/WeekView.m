@@ -50,7 +50,7 @@ static const CGFloat GRID_HEIGHT = 50.0f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.backgroundColor = [UIColor grayColor];
     }
     return self;
 }

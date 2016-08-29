@@ -10,6 +10,7 @@
 #import "MyUtil.h"
 #import "Public.h"
 #import "AppDelegate.h"
+#import "loginViewController.h"
 
 @interface MineViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,assign) CGFloat statusHeight;
@@ -99,8 +100,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
-        AppDelegate *app = [[UIApplication sharedApplication] delegate];
-        [app changeRootCtroller:NO];
+        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        loginViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"LoginVC"];
+        [self.navigationController pushViewController:courseDVC animated:YES];
     }
 }
 

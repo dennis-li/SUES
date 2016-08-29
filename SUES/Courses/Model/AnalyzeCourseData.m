@@ -57,7 +57,7 @@
 {
     NSDictionary *userInfo = @{@"context" : self.user.managedObjectContext};
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"sendContextToCourseTable"
+     postNotificationName:@"sendContextToForeground"
      object:self
      userInfo:userInfo];
 }
@@ -76,6 +76,7 @@
     [self saveCourseData:elements];
 }
 
+//保存数据到数据库
 -(void)saveCourseData:(NSArray *)elements
 {
     NSInteger whichLesson = 0;

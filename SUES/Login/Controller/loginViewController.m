@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self createBackButton];
+//    [self createBackButton];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
@@ -60,6 +60,7 @@
 {
     if (!_networking) {
         _networking = [[Networking alloc] init];
+        NSLog(@"keynetworking.init");
     }
     return _networking;
 }
@@ -76,11 +77,11 @@
 }
 
 - (IBAction)Login:(id)sender {
-//    NSString *username = self.usernameTF.text;
-//    NSString *password = self.passwordTF.text;
+    NSString *username = self.usernameTF.text;
+    NSString *password = self.passwordTF.text;
     
-    NSString *username = @"023113102";
-    NSString *password = @"19940429";
+//    NSString *username = @"023113102";
+//    NSString *password = @"19940429";
     
     self.userId = username;
     self.userPassWord = password;
@@ -99,6 +100,7 @@
             if (!error) {
                 [weakSelf requestUserData];
             }else {
+                [weakSelf.hud hideAnimated:YES];
                 MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:weakSelf.navigationController.view animated:YES];
                 hud.mode = MBProgressHUDModeText;
                 hud.label.text = NSLocalizedString(error, @"HUD message title");
@@ -112,14 +114,18 @@
 
 -(void)requestUserData
 {
+    self.app.user = nil;//原来的user置为nil
     __weak loginViewController *weakSelf = self;
     self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
         AnalyzeGradeData *analyzeGrade = [[AnalyzeGradeData alloc] init];
         AnalyzeCourseData *analyzeCourses = [[AnalyzeCourseData alloc] init];
         [analyzeGrade analyzeGradeHtmlData:gradeData userId:weakSelf.userId userPassword:weakSelf.userPassWord];
         [analyzeCourses analyzeCoursesHtmlData:coursesData];
-        [weakSelf.hud hideAnimated:YES];
-        [weakSelf.app changeRootCtroller:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.hud hideAnimated:YES];
+            [weakSelf.app changeRootCtroller:YES];
+        });
+        
     };
     [self.networking requestUserDataWithType:RequestALlData];//请求所有的数据
 }

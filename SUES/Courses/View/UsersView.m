@@ -12,6 +12,7 @@
 #import "User.h"
 
 @interface UsersView ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) AppDelegate *app;
 @property (nonatomic,strong) NSArray *imageArray;
 @property (nonatomic,strong) NSArray *usersArray;
 @end
@@ -28,12 +29,20 @@
     return self;
 }
 
+-(AppDelegate *)app
+{
+    if (!_app) {
+        _app = [[UIApplication sharedApplication] delegate];
+    }
+    return _app;
+}
+
 -(void)createData
 {
     self.imageArray = @[@"myFavo",@"myForum",@"myOrder",@"myNews",@"drawlots"];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    AppDelegate *app = [[UIApplication sharedApplication] delegate];
-    self.usersArray = [app.managedObjectContext executeFetchRequest:request error:nil];
+    
+    self.usersArray = [self.app.managedObjectContext executeFetchRequest:request error:nil];
 }
 
 -(void)createTableView
@@ -69,8 +78,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    self.app.user = [self.usersArray objectAtIndex:indexPath.row];
+    [self sendNotificationToCourseTable];
 }
+
+//处理完数据发送通知到前台
+-(void)sendNotificationToCourseTable
+{
+    NSDictionary *userInfo = @{@"context" : self.app.user.managedObjectContext};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendContextToForeground"
+     object:self
+     userInfo:userInfo];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

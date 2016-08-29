@@ -11,7 +11,6 @@
 #import "Grade.h"
 #import "PublicCell.h"
 #import "AppDelegate.h"
-#import "MyDownloader.h"
 #import "Networking.h"
 #import "MBProgressHUD.h"
 #import "AnalyzeGradeData.h"
@@ -30,6 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self observerNotification];
     //获取当前状态栏的高度
     self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
     //获取导航栏的高度
@@ -57,6 +57,19 @@
 -(AppDelegate *)returnApp
 {
     return [[UIApplication sharedApplication] delegate];
+}
+
+//注册通知
+-(void)observerNotification
+{
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:@"sendContextToForeground"
+     object:nil
+     queue:nil
+     usingBlock:^(NSNotification * _Nonnull note) {
+         self.managedObjectContext = note.userInfo[@"context"];
+     }];
 }
 
 //刷新成绩
