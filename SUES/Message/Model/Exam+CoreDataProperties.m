@@ -2,7 +2,7 @@
 //  Exam+CoreDataProperties.m
 //  
 //
-//  Created by lixu on 16/8/27.
+//  Created by lixu on 16/8/31.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,10 +13,12 @@
 
 @implementation Exam (CoreDataProperties)
 
-@dynamic examName;
 @dynamic examDate;
-@dynamic examPlan;
 @dynamic examLocale;
+@dynamic examName;
+@dynamic examPlan;
+@dynamic semesterId;
+@dynamic examCategory;
 @dynamic whoExam;
 
 @end

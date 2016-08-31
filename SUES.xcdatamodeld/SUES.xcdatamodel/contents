@@ -15,10 +15,12 @@
         <relationship name="whoCourse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="courses" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Exam" representedClassName="Exam" syncable="YES">
+        <attribute name="examCategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="examDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="examLocale" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="examName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="examPlan" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="semesterId" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="whoExam" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="exam" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Grade" representedClassName="Grade" syncable="YES">
@@ -47,8 +49,8 @@
     </entity>
     <elements>
         <element name="Courses" positionX="-56" positionY="9" width="128" height="223"/>
+        <element name="Exam" positionX="270" positionY="54" width="128" height="150"/>
         <element name="Grade" positionX="270" positionY="207" width="128" height="255"/>
         <element name="User" positionX="108" positionY="74" width="128" height="133"/>
-        <element name="Exam" positionX="270" positionY="54" width="128" height="118"/>
     </elements>
 </model>

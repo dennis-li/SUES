@@ -54,6 +54,15 @@
 #define GRADE_GRADEPOINT @"gradePoint"
 #define GRADE_WHOGRADE @"whoGrade"
 
+//考试
+#define EXAM_DATE @"examDate"
+#define EXAM_NAME @"examName"
+#define EXAM_PLAN @"examPlan"
+#define EXAM_LOCALE @"examLocale"
+#define EXAM_CATEGORY @"examCategory"
+#define EXAM_SEMESTERID @"examSemesterID"
+#define EXAM_WHOEXAM @"whoExam"
+
 //用户
 #define USER_NAME @"name"
 #define USER_PASSWORD @"password"
@@ -66,6 +75,9 @@
 //成绩URL
 #define GRADE_URL @"http://jxxt.sues.edu.cn/eams/personGrade.action?method=historyCourseGrade"
 
+//考试
+#define EXAM_URL @"http://jxxt.sues.edu.cn/eams/stdExamTable.action?method=examTable&semester.id=%@&examType.id=%ld"
+#define REQUEST_EXAM_DATA @"request exam data"
 
 //登录表单补充数据
 #define FORM_CAPATCHA  @""

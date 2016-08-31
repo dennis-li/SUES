@@ -27,6 +27,8 @@
 		5C089F221D7166370049FE84 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F201D7166370049FE84 /* User.m */; };
 		5C089F2A1D72D8D80049FE84 /* AnalyzeCourseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */; };
 		5C089F2D1D72EECE0049FE84 /* AnalyzeGradeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */; };
+		5C089F801D76BFEC0049FE84 /* Exam+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F7D1D76BFEC0049FE84 /* Exam+Flickr.m */; };
+		5C089F811D76BFEC0049FE84 /* AnalyzeExamData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F7F1D76BFEC0049FE84 /* AnalyzeExamData.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -121,6 +123,10 @@
 		5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeCourseData.m; sourceTree = "<group>"; };
 		5C089F2B1D72EECE0049FE84 /* AnalyzeGradeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeGradeData.h; sourceTree = "<group>"; };
 		5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeGradeData.m; sourceTree = "<group>"; };
+		5C089F7C1D76BFEC0049FE84 /* Exam+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Exam+Flickr.h"; sourceTree = "<group>"; };
+		5C089F7D1D76BFEC0049FE84 /* Exam+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Exam+Flickr.m"; sourceTree = "<group>"; };
+		5C089F7E1D76BFEC0049FE84 /* AnalyzeExamData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeExamData.h; sourceTree = "<group>"; };
+		5C089F7F1D76BFEC0049FE84 /* AnalyzeExamData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeExamData.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -426,6 +432,10 @@
 				5C089F181D7164BB0049FE84 /* Exam+CoreDataProperties.m */,
 				5C089F191D7164BB0049FE84 /* Exam.h */,
 				5C089F1A1D7164BB0049FE84 /* Exam.m */,
+				5C089F7C1D76BFEC0049FE84 /* Exam+Flickr.h */,
+				5C089F7D1D76BFEC0049FE84 /* Exam+Flickr.m */,
+				5C089F7E1D76BFEC0049FE84 /* AnalyzeExamData.h */,
+				5C089F7F1D76BFEC0049FE84 /* AnalyzeExamData.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -903,7 +913,9 @@
 				5C94503E1D63F2E2000BBEB7 /* SUES.xcdatamodeld in Sources */,
 				5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */,
 				5C089F1B1D7164BB0049FE84 /* Exam+CoreDataProperties.m in Sources */,
+				5C089F801D76BFEC0049FE84 /* Exam+Flickr.m in Sources */,
 				5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */,
+				5C089F811D76BFEC0049FE84 /* AnalyzeExamData.m in Sources */,
 				5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */,
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,
 				5C9450371D63F1B9000BBEB7 /* Courses.m in Sources */,

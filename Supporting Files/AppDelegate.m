@@ -10,11 +10,11 @@
 #import "MainTabBarController.h"
 #import "CreateContext.h"
 #import "Public.h"
-#import <AFNetworking.h>
+#import "TFHpple.h"
 
 @interface AppDelegate ()<NSURLSessionDownloadDelegate>
 @property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
+@property (strong, nonatomic) NSURLSession *flickrDownloadSession;
 @end
 
 @implementation AppDelegate
@@ -24,6 +24,17 @@
         _managedObjectContext = [CreateContext createContext];
     }
     return _managedObjectContext;
+}
+
+- (NSURLSession *)flickrDownloadSession
+{
+    if (!_flickrDownloadSession) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            _flickrDownloadSession = [NSURLSession sharedSession];
+        });
+    }
+    return _flickrDownloadSession;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -71,7 +82,178 @@
                     completion:NULL];
 }
 
-//允许在后台做一些事情
+#pragma -mark 考试安排
+//清除cookie
+-(void)cleanCookie
+{
+    NSArray *array =  [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:SUES_URL]];
+    for (NSHTTPCookie *cookie in array)
+    {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+}
+
+//请求考试安排数据，的前期请求
+-(void)requestSemesterIDAndStudentID
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);//一次只能做一个任务
+        [self verifyRequest:^(NSString *error) {//登录服务器
+            if (error) {
+                dispatch_semaphore_signal(semaphore);
+                [NSThread exit];
+            }else {
+                dispatch_semaphore_signal(semaphore);
+            }
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);//上一个任务做完，接着做下一个
+        [self startSemesterAndStudentIdData:^(NSString *error) {//请求当前学期号，用户服务器学生号
+            if (error) {
+                dispatch_semaphore_signal(semaphore);
+                [NSThread exit];
+            }else {
+                dispatch_semaphore_signal(semaphore);
+            }
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        dispatch_async(dispatch_get_main_queue(), ^{//请求考试安排数据
+            [self startRequestExamData];
+        });
+    });
+}
+
+-(void)verifyRequest:(void(^)(NSString *error))requestMessage//向服务器验证登录信息
+{
+    [self cleanCookie];
+    NSURL *url = [NSURL URLWithString:@"http://my.sues.edu.cn/userPasswordValidate.portal"];
+    
+    //2.构造Request
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.timeoutInterval = 10;
+    
+    NSDictionary *parameters = @{@"Login.Token1":@"023113141",
+                                 @"Login.Token2":@"lidaye1991",
+                                 @"capatcha":FORM_CAPATCHA,
+                                 @"goto":FORM_SUCCESS,
+                                 @"gotoOnFaili":FORM_GOTOONFILI
+                                 };
+    // 4.2、遍历字典，以“key=value&”的方式创建参数字符串。
+    NSMutableString *parameterString = [NSMutableString string];
+    for (NSString *key in parameters.allKeys) {
+        [parameterString appendFormat:@"%@=%@&", key, parameters[key]];
+    }
+    NSData *parametersData = [[parameterString substringToIndex:parameterString.length - 1] dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = parametersData;
+    
+    NSURLSessionDataTask *task = [self.flickrDownloadSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        if ([result containsString:@"handleLoginSuccessed"]) {
+            requestMessage(nil);
+        } else if ([result containsString:@"handleLoginFailure"]) {
+            requestMessage(@"密码或用户名错误");
+        } else {
+            requestMessage(@"请检查网络");
+        }
+        
+    }];
+    [task resume];
+}
+
+-(void)startSemesterAndStudentIdData:(void(^)(NSString *error))requestMessage
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:COURSE_GET_URL]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    NSURLSessionDownloadTask *task = [self.flickrDownloadSession downloadTaskWithRequest:request
+                                                                       completionHandler:^(NSURL *localFile, NSURLResponse *response, NSError *error) {
+                                                                           if (error) {
+                                                                               requestMessage(error.localizedDescription);
+                                                                           } else {
+                                                                               NSString *result = [NSString stringWithContentsOfURL:localFile encoding:NSUTF8StringEncoding error:nil];
+                                                                               [self analyzeUserStudentIDAndSmesterID:result requestMessage:requestMessage];
+                                                                           }
+                                                                       }];
+    [task resume];
+}
+
+
+//解析学期号，服务器学号
+-(void)analyzeUserStudentIDAndSmesterID:(NSString *)htmlString
+                         requestMessage:(void(^)(NSString *error))requestMessage
+
+{
+    NSData *htmlData=[htmlString dataUsingEncoding:NSUTF8StringEncoding];
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@class='frameTable']/tr/td/iframe"];
+    for (TFHppleElement *element in elements) {
+        if ([[element objectForKey:@"id"] isEqualToString:@"contentListFrame"]) {
+            NSLog(@"url = %@",[element objectForKey:@"src"]);
+            NSString *coursesURL = [element objectForKey:@"src"];
+            NSLog(@"courseURL = %@",coursesURL);
+            NSArray *idsArray = [coursesURL componentsSeparatedByString:@"&"];
+            for (NSString *idsString in idsArray) {
+                NSArray *idsDetailArray = [idsString componentsSeparatedByString:@"="];
+                if ([[idsDetailArray firstObject] containsString:@"semester.id"]) {
+                    if (LX_DEBUG) {
+                        NSLog(@"semesterID = %@",[idsDetailArray lastObject]);
+                    }
+                    self.semesterID = [idsDetailArray lastObject];
+                } else if([[idsDetailArray firstObject] isEqualToString:@"ids"]) {
+                    if (LX_DEBUG) {
+                        NSLog(@"studentID = %@",[idsDetailArray lastObject]);
+                    }
+                    self.studentID = [idsDetailArray lastObject];
+                }
+            }
+        }
+    }
+    requestMessage(nil);
+}
+
+//请求考试安排数据
+-(void)startRequestExamData
+{
+    dispatch_group_t downloadGroup = dispatch_group_create();
+    
+    dispatch_apply(4, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) {
+        
+        dispatch_group_enter(downloadGroup);//调度组
+        if (i > 0) {
+            [self requestExamDataWithSemesterID:self.semesterID examType:i requestMessage:^(NSString *requestMessage, NSString *error) {
+                dispatch_group_leave(downloadGroup);
+            }];
+        }else {
+            NSString *semesterId = [NSString stringWithFormat:@"%ld",[self.semesterID integerValue]-1];
+            //1表示期末考试
+            [self requestExamDataWithSemesterID:semesterId examType:1l requestMessage:^(NSString *requestMessage, NSString *error) {
+                dispatch_group_leave(downloadGroup);
+            }];
+        }
+    });
+    
+    dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), ^{//调度组所有任务结束
+        NSLog(@"all.request");
+    });
+}
+
+//请求对应类型的考试安排
+-(void)requestExamDataWithSemesterID:(NSString *)semesterID examType:(NSInteger)examType requestMessage:(void(^)(NSString *requestMessage,NSString *error))requestMessage
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:EXAM_URL,semesterID,examType]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    NSURLSessionDownloadTask *task = [self.flickrDownloadSession downloadTaskWithRequest:request
+                                                                       completionHandler:^(NSURL *localFile, NSURLResponse *response, NSError *error) {
+                                                                           if (error) {
+                                                                           } else {
+                                                                               NSString *result = [NSString stringWithContentsOfURL:localFile encoding:NSUTF8StringEncoding error:nil];
+                                                                               requestMessage(result,nil);
+                                                                               NSLog(@"exam = %@",result);
+                                                                           }
+                                                                       }];
+    [task resume];
+}
+
+#pragma - mark 允许在后台做一些事情
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     NSLog(@"startBackRequestData");
@@ -106,17 +288,6 @@
     } else {
         completionHandler(UIBackgroundFetchResultNoData); // no app-switcher update if no database!
     }
-}
-
-
--(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    
-}
-
--(void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler
-{
-    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

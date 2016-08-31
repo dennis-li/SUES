@@ -17,6 +17,10 @@
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
+//软件要随时知道现在的学期号semesterID,和用户的服务器学号studentID
+@property (strong, nonatomic) NSString *semesterID;
+@property (strong, nonatomic) NSString *studentID;
+
 -(void)changeRootCtroller:(BOOL)isLogin;
 
 
