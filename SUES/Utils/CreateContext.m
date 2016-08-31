@@ -27,13 +27,15 @@
 
 +(NSManagedObjectContext *)createContext
 {
+    static NSManagedObjectContext *context = nil;
     static CreateContext *manager = nil;
     static dispatch_once_t oneceToken;
     
     dispatch_once(&oneceToken, ^{
         manager = [[self alloc] init];
+        context = [manager createMainQueueManagedObjectContext];
     });
-    return [manager createMainQueueManagedObjectContext];
+    return context;
 }
 
 - (NSManagedObjectContext *)createMainQueueManagedObjectContext

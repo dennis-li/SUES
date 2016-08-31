@@ -14,5 +14,5 @@
 @property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
 
 //解析考试安排
--(void)analyzeExamHtmlData:(NSData *)htmlData examType:(NSString *)type semesterId:(NSString *)semesterId;
+-(void)analyzeExamHtmlData:(NSData *)htmlData userId:(NSString *)userId examType:(NSString *)type semesterId:(NSString *)semesterId;
 @end

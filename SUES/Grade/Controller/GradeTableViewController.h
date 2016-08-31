@@ -11,6 +11,4 @@
 
 @interface GradeTableViewController : CoreDataTableViewController
 
-
-
 @end

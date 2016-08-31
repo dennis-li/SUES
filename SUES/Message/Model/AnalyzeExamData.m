@@ -28,7 +28,7 @@
 }
 
 //解析考试安排
--(void)analyzeExamHtmlData:(NSData *)htmlData examType:(NSString *)type semesterId:(NSString *)semesterId
+-(void)analyzeExamHtmlData:(NSData *)htmlData userId:(NSString *)userId examType:(NSString *)type semesterId:(NSString *)semesterId
 {
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[@id='listTable']/tr[position()>1]/td"];
@@ -36,11 +36,13 @@
     NSMutableArray *examArray = [self createExamArray];
     NSInteger key = 0;
     for (TFHppleElement *element in elements) {
+        NSLog(@"element.content = %@",[element content]);
         if (!(key % 4)) {
             examDictionary = [self createExamDictionary];
             [examArray addObject:examDictionary];
             [examDictionary setValue:type forKey:EXAM_CATEGORY];//考试类型
             [examDictionary setValue:semesterId forKey:EXAM_SEMESTERID];//学期号
+            [examDictionary setValue:userId forKey:EXAM_WHOEXAM];
         }
         switch (key % 4) {
             case 0:
@@ -59,11 +61,14 @@
             default:
                 break;
         }
+        key++;
     }
-    [self.managedObjectContext performBlock:^{
-        [Exam loadExamFromFlickrArray:examArray intoManagedObjectContext:self.managedObjectContext];
-        [self.managedObjectContext save:NULL];
-    }];
+    if ([examArray count]) {
+        [self.managedObjectContext performBlock:^{
+            [Exam loadExamFromFlickrArray:examArray intoManagedObjectContext:self.managedObjectContext];
+            [self.managedObjectContext save:NULL];
+        }];
+    }
 }
 /*
  <table width="100%" class="listTable" id="listTable">

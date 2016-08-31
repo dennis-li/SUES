@@ -40,7 +40,6 @@
 
 - (void)setFetchedResultsController:(NSFetchedResultsController *)newfrc
 {
-//    [self createDataSource];
     NSFetchedResultsController *oldfrc = _fetchedResultsController;
     if (newfrc != oldfrc) {
         _fetchedResultsController = newfrc;
@@ -81,11 +80,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *yearAndSemester = [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-    NSArray *dataArray = [yearAndSemester componentsSeparatedByString:@" "];
-    NSInteger year = [[dataArray firstObject] integerValue] + 1;
-    yearAndSemester = [[dataArray firstObject] stringByAppendingString:[NSString stringWithFormat:@"/%ld %@",year,[dataArray lastObject]]];
-    return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
+    return [self createTitleForHeader:[[[self.fetchedResultsController sections] objectAtIndex:section] name]];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index

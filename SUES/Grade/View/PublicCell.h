@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "Grade+Flickr.h"
+#import "Grade.h"
+#import "Exam.h"
 
 @interface PublicCell : UITableViewCell
 
@@ -17,5 +18,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *courseCredit;
 @property (weak, nonatomic) IBOutlet UILabel *courseFinalGrade;
 @property (weak, nonatomic) IBOutlet UILabel *gradePoint;
--(void)configModel:(Grade *)grade;
+-(void)configModel:(id)model;
 @end

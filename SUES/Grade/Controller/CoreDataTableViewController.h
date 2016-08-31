@@ -17,5 +17,5 @@
 @property (nonatomic,strong) NSMutableDictionary *dataDictionary;
 @property (nonatomic,strong) NSArray *sectionName;
 - (void)performFetch;
--(void)createDataSource;
+-(NSString *)createTitleForHeader:(NSString *)baseTitle;
 @end

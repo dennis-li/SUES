@@ -134,6 +134,12 @@
     [self.tableView reloadData];
 }
 
+//创建分组的标题
+-(NSString *)createTitleForHeader:(NSString *)baseTitle
+{
+    return baseTitle;
+}
+
 #pragma -mark UITableViewCell delegate
 //显示数据
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

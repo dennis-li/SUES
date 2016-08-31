@@ -6,8 +6,8 @@
 //  Copyright © 2016年 lixu. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CoreDataTableViewController.h"
 
-@interface MessageViewController : UIViewController
+@interface MessageViewController : CoreDataTableViewController
 
 @end

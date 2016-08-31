@@ -81,7 +81,12 @@
                 <outlet property="courseCredit" destination="I7P-ei-kYt" id="eaa-iW-0bz"/>
                 <outlet property="courseFinalGrade" destination="JkV-ig-Wxb" id="y11-zY-Srd"/>
                 <outlet property="courseName" destination="aUJ-rM-VvA" id="nvD-au-6xq"/>
+                <outlet property="fistLabel" destination="fNx-V5-2gU" id="2iK-t2-32M"/>
+                <outlet property="fiveLabel" destination="MxN-en-YPQ" id="mqM-OW-yla"/>
+                <outlet property="fourLabel" destination="VY2-GQ-ebs" id="Rqp-G0-Eb9"/>
                 <outlet property="gradePoint" destination="soK-yx-Urk" id="WcR-hF-DnL"/>
+                <outlet property="threeLabel" destination="9zU-zJ-kRR" id="uCS-Xq-Jw1"/>
+                <outlet property="twoLabel" destination="g7g-6I-tvw" id="uVo-bh-f93"/>
             </connections>
             <point key="canvasLocation" x="255.5" y="242"/>
         </tableViewCell>

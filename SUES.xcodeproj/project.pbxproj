@@ -174,8 +174,8 @@
 		5C944FE31D61F862000BBEB7 /* Public.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Public.h; sourceTree = "<group>"; };
 		5C9450011D6217AC000BBEB7 /* GrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrayViewController.h; sourceTree = "<group>"; };
 		5C9450021D6217AC000BBEB7 /* GrayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrayViewController.m; sourceTree = "<group>"; };
-		5C9450271D63F1B9000BBEB7 /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
-		5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
+		5C9450271D63F1B9000BBEB7 /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataTableViewController.h; path = ../Grade/Controller/CoreDataTableViewController.h; sourceTree = "<group>"; };
+		5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataTableViewController.m; path = ../Grade/Controller/CoreDataTableViewController.m; sourceTree = "<group>"; };
 		5C9450291D63F1B9000BBEB7 /* Courses+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+CoreDataProperties.h"; sourceTree = "<group>"; };
 		5C94502A1D63F1B9000BBEB7 /* Courses+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Courses+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C94502B1D63F1B9000BBEB7 /* Courses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Courses.h; sourceTree = "<group>"; };
@@ -301,8 +301,6 @@
 		5C089D8D1D6C4D070049FE84 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5C9450271D63F1B9000BBEB7 /* CoreDataTableViewController.h */,
-				5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */,
 				5C9450461D653D43000BBEB7 /* GradeTableViewController.h */,
 				5C9450471D653D43000BBEB7 /* GradeTableViewController.m */,
 			);
@@ -558,6 +556,8 @@
 		5C944FC51D61F862000BBEB7 /* baseNav */ = {
 			isa = PBXGroup;
 			children = (
+				5C9450271D63F1B9000BBEB7 /* CoreDataTableViewController.h */,
+				5C9450281D63F1B9000BBEB7 /* CoreDataTableViewController.m */,
 				5C089F091D7031BF0049FE84 /* BaseViewController.h */,
 				5C089F0A1D7031BF0049FE84 /* BaseViewController.m */,
 				5C944FC61D61F862000BBEB7 /* BaseNavigationController.h */,

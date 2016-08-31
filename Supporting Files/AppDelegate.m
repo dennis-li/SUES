@@ -11,6 +11,7 @@
 #import "CreateContext.h"
 #import "Public.h"
 #import "TFHpple.h"
+#import "AnalyzeExamData.h"
 
 @interface AppDelegate ()<NSURLSessionDownloadDelegate>
 @property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -132,8 +133,8 @@
     request.HTTPMethod = @"POST";
     request.timeoutInterval = 10;
     
-    NSDictionary *parameters = @{@"Login.Token1":@"023113141",
-                                 @"Login.Token2":@"lidaye1991",
+    NSDictionary *parameters = @{@"Login.Token1":self.user.userId,
+                                 @"Login.Token2":self.user.password,
                                  @"capatcha":FORM_CAPATCHA,
                                  @"goto":FORM_SUCCESS,
                                  @"gotoOnFaili":FORM_GOTOONFILI
@@ -213,6 +214,8 @@
 //请求考试安排数据
 -(void)startRequestExamData
 {
+    AnalyzeExamData *analyzeExamData = [[AnalyzeExamData alloc] init];
+    analyzeExamData.managedObjectContext = self.managedObjectContext;
     dispatch_group_t downloadGroup = dispatch_group_create();
     
     dispatch_apply(4, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) {
@@ -220,12 +223,14 @@
         dispatch_group_enter(downloadGroup);//调度组
         if (i > 0) {
             [self requestExamDataWithSemesterID:self.semesterID examType:i requestMessage:^(NSString *requestMessage, NSString *error) {
+                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:self.user.userId examType:[NSString stringWithFormat:@"%ld",i] semesterId:self.semesterID];
                 dispatch_group_leave(downloadGroup);
             }];
         }else {
             NSString *semesterId = [NSString stringWithFormat:@"%ld",[self.semesterID integerValue]-1];
             //1表示期末考试
-            [self requestExamDataWithSemesterID:semesterId examType:1l requestMessage:^(NSString *requestMessage, NSString *error) {
+            [self requestExamDataWithSemesterID:semesterId examType:3l requestMessage:^(NSString *requestMessage, NSString *error) {
+                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:self.user.userId examType:[NSString stringWithFormat:@"%ld",3l] semesterId:semesterId];
                 dispatch_group_leave(downloadGroup);
             }];
         }
@@ -247,7 +252,6 @@
                                                                            } else {
                                                                                NSString *result = [NSString stringWithContentsOfURL:localFile encoding:NSUTF8StringEncoding error:nil];
                                                                                requestMessage(result,nil);
-                                                                               NSLog(@"exam = %@",result);
                                                                            }
                                                                        }];
     [task resume];
