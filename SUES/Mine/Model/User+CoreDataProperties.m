@@ -2,7 +2,7 @@
 //  User+CoreDataProperties.m
 //  
 //
-//  Created by lixu on 16/8/27.
+//  Created by lixu on 16/9/2.
 //
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -17,7 +17,8 @@
 @dynamic password;
 @dynamic userId;
 @dynamic courses;
-@dynamic grade;
 @dynamic exam;
+@dynamic grade;
+@dynamic answerQuestion;
 
 @end

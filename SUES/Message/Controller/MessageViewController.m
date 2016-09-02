@@ -7,10 +7,12 @@
 //
 
 #import "MessageViewController.h"
+#import "AnswerQeustionViewController.h"
 #import "AppDelegate.h"
 #import "Public.h"
 #import "Exam.h"
 #import "PublicCell.h"
+#import "AnswerQuestion.h"
 
 @interface MessageViewController ()
 @property (nonatomic,assign) CGFloat statusHeight;
@@ -35,6 +37,7 @@
     
     [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
+    self.navigationItem.title = @"考试安排";
 }
 
 -(User *)user
@@ -107,6 +110,21 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 200;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Exam *exam = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"AnswerQuestion"];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ AND whoAnswerQuestion = %@ AND semesterId = %@", exam.examName,exam.whoExam,exam.semesterId];
+    NSArray *courseArray = [self.user.managedObjectContext executeFetchRequest:request error:nil];
+    if ([courseArray count]) {
+        AnswerQuestion *answerQuestion = [courseArray firstObject];
+        //考试对应的答疑情况
+        AnswerQeustionViewController *answerQusetionVCT = [[AnswerQeustionViewController alloc] init];
+        answerQusetionVCT.answerQuestion = answerQuestion;
+        [self.navigationController pushViewController:answerQusetionVCT animated:YES];
+    }
 }
 
 #pragma - mark UITabBarController animated

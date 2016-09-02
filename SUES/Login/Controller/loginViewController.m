@@ -124,7 +124,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.hud hideAnimated:YES];
             [weakSelf.app changeRootCtroller:YES];
-            [weakSelf.app requestSemesterIDAndStudentID];//请求考试安排
+            [weakSelf.app requestSemesterIDAndStudentID:weakSelf.app.user];//请求考试安排
         });
         
     };

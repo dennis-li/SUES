@@ -12,6 +12,7 @@
 #import "Public.h"
 #import "TFHpple.h"
 #import "AnalyzeExamData.h"
+#import "AnalyzeAnswerQuestionData.h"
 
 @interface AppDelegate ()<NSURLSessionDownloadDelegate>
 @property (readwrite, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -48,7 +49,6 @@
 -(void)checkLogin
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
-    //    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
     NSArray *courseArray = [self.managedObjectContext executeFetchRequest:request error:nil];
     
     if ([courseArray count]) {
@@ -95,7 +95,7 @@
 }
 
 //请求考试安排数据，的前期请求
--(void)requestSemesterIDAndStudentID
+-(void)requestSemesterIDAndStudentID:(User *)user
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);//一次只能做一个任务
@@ -118,12 +118,14 @@
         }];
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         dispatch_async(dispatch_get_main_queue(), ^{//请求考试安排数据
-            [self startRequestExamData];
+            [self startRequestAnswerQuestionData:user];
+            [self startRequestExamData:user];
         });
     });
 }
 
--(void)verifyRequest:(void(^)(NSString *error))requestMessage//向服务器验证登录信息
+//向服务器验证登录信息
+-(void)verifyRequest:(void(^)(NSString *error))requestMessage
 {
     [self cleanCookie];
     NSURL *url = [NSURL URLWithString:@"http://my.sues.edu.cn/userPasswordValidate.portal"];
@@ -144,7 +146,9 @@
     for (NSString *key in parameters.allKeys) {
         [parameterString appendFormat:@"%@=%@&", key, parameters[key]];
     }
-    NSData *parametersData = [[parameterString substringToIndex:parameterString.length - 1] dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *str = [parameterString substringToIndex:parameterString.length - 1];
+    NSString *requestString = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet characterSetWithCharactersInString:@"`#+-!?*@%$~^_{}\"[]|\\<> "].invertedSet];//对特殊字符进行编码
+    NSData *parametersData = [requestString dataUsingEncoding:NSUTF8StringEncoding];
     request.HTTPBody = parametersData;
     
     NSURLSessionDataTask *task = [self.flickrDownloadSession dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -161,6 +165,7 @@
     [task resume];
 }
 
+#pragma - mark 请求并解析学期号，服务器学号
 -(void)startSemesterAndStudentIdData:(void(^)(NSString *error))requestMessage
 {
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:COURSE_GET_URL]];
@@ -176,7 +181,6 @@
                                                                        }];
     [task resume];
 }
-
 
 //解析学期号，服务器学号
 -(void)analyzeUserStudentIDAndSmesterID:(NSString *)htmlString
@@ -211,8 +215,8 @@
     requestMessage(nil);
 }
 
-//请求考试安排数据
--(void)startRequestExamData
+#pragma - mark 请求并解析学期号，服务器学号
+-(void)startRequestExamData:(User *)user
 {
     AnalyzeExamData *analyzeExamData = [[AnalyzeExamData alloc] init];
     analyzeExamData.managedObjectContext = self.managedObjectContext;
@@ -223,14 +227,14 @@
         dispatch_group_enter(downloadGroup);//调度组
         if (i > 0) {
             [self requestExamDataWithSemesterID:self.semesterID examType:i requestMessage:^(NSString *requestMessage, NSString *error) {
-                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:self.user.userId examType:[NSString stringWithFormat:@"%ld",i] semesterId:self.semesterID];
+                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:user.userId examType:[NSString stringWithFormat:@"%ld",i] semesterId:self.semesterID];
                 dispatch_group_leave(downloadGroup);
             }];
         }else {
             NSString *semesterId = [NSString stringWithFormat:@"%ld",[self.semesterID integerValue]-1];
             //1表示期末考试
             [self requestExamDataWithSemesterID:semesterId examType:3l requestMessage:^(NSString *requestMessage, NSString *error) {
-                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:self.user.userId examType:[NSString stringWithFormat:@"%ld",3l] semesterId:semesterId];
+                [analyzeExamData analyzeExamHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:user.userId examType:[NSString stringWithFormat:@"%ld",3l] semesterId:semesterId];
                 dispatch_group_leave(downloadGroup);
             }];
         }
@@ -252,6 +256,42 @@
                                                                            } else {
                                                                                NSString *result = [NSString stringWithContentsOfURL:localFile encoding:NSUTF8StringEncoding error:nil];
                                                                                requestMessage(result,nil);
+                                                                           }
+                                                                       }];
+    [task resume];
+}
+
+#pragma -mark 请求并解析答疑安排
+-(void)startRequestAnswerQuestionData:(User *)user
+{
+    AnalyzeAnswerQuestionData *analyzeAnswerQuestionData = [[AnalyzeAnswerQuestionData alloc] init];
+    analyzeAnswerQuestionData.managedObjectContext = self.managedObjectContext;
+    dispatch_group_t downloadGroup = dispatch_group_create();
+    
+    dispatch_apply(2, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(size_t i) {
+        NSString *semester = [NSString stringWithFormat:@"%ld",[self.semesterID integerValue]-i];
+        dispatch_group_enter(downloadGroup);//调度组
+        [self requestAnswerQuestionDataWithSemesterID:semester requestMessage:^(NSString *requestMessage, NSString *error) {
+            [analyzeAnswerQuestionData analyzeAnswerQuestionHtmlData:[requestMessage dataUsingEncoding:NSUTF8StringEncoding] userId:user.userId semesterId:semester];
+            dispatch_group_leave(downloadGroup);
+        }];
+    });
+    
+    dispatch_group_notify(downloadGroup, dispatch_get_main_queue(), ^{//调度组所有任务结束
+        NSLog(@"all.request");
+    });
+}
+
+-(void)requestAnswerQuestionDataWithSemesterID:(NSString *)semesterID requestMessage:(void(^)(NSString *requestMessage,NSString *error))requestMessage
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:ANSWER_QUESTION_PLAN,semesterID]];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    NSURLSessionDownloadTask *task = [self.flickrDownloadSession downloadTaskWithRequest:request
+                                                                       completionHandler:^(NSURL *localFile, NSURLResponse *response, NSError *error) {
+                                                                           if (error) {
+                                                                           } else {
+                                                                               NSString *result = [NSString stringWithContentsOfURL:localFile encoding:NSUTF8StringEncoding error:nil];
+                                                                               NSLog(@"answerQuestion.html = %@",result);                     requestMessage(result,nil);
                                                                            }
                                                                        }];
     [task resume];

@@ -1,5 +1,5 @@
 //
-//  User.h
+//  AnswerQuestion.h
 //  
 //
 //  Created by lixu on 16/9/2.
@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class AnswerQuestion, Courses, Exam, Grade;
+@class User;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface User : NSManagedObject
+@interface AnswerQuestion : NSManagedObject
 
 // Insert code here to declare functionality of your managed object subclass
 
@@ -21,4 +21,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import "User+CoreDataProperties.h"
+#import "AnswerQuestion+CoreDataProperties.h"

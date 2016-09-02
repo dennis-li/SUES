@@ -1,18 +1,15 @@
 //
-//  User.m
+//  AnswerQuestion.m
 //  
 //
 //  Created by lixu on 16/9/2.
 //
 //
 
-#import "User.h"
 #import "AnswerQuestion.h"
-#import "Courses.h"
-#import "Exam.h"
-#import "Grade.h"
+#import "User.h"
 
-@implementation User
+@implementation AnswerQuestion
 
 // Insert code here to add functionality to your managed object subclass
 

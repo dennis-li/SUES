@@ -41,7 +41,6 @@
         exam.examLocale = examDictionary[EXAM_LOCALE];
         exam.examCategory = examDictionary[EXAM_CATEGORY];
     }
-    NSLog(@"exam.name = %@",exam.examName);
     return exam;
 }
 

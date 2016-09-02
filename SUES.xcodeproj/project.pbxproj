@@ -23,12 +23,17 @@
 		5C089F131D7080030049FE84 /* Exam.html in Resources */ = {isa = PBXBuildFile; fileRef = 5C089F121D7080030049FE84 /* Exam.html */; };
 		5C089F1B1D7164BB0049FE84 /* Exam+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F181D7164BB0049FE84 /* Exam+CoreDataProperties.m */; };
 		5C089F1C1D7164BB0049FE84 /* Exam.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F1A1D7164BB0049FE84 /* Exam.m */; };
-		5C089F211D7166370049FE84 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F1E1D7166370049FE84 /* User+CoreDataProperties.m */; };
-		5C089F221D7166370049FE84 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F201D7166370049FE84 /* User.m */; };
 		5C089F2A1D72D8D80049FE84 /* AnalyzeCourseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */; };
 		5C089F2D1D72EECE0049FE84 /* AnalyzeGradeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F2C1D72EECE0049FE84 /* AnalyzeGradeData.m */; };
 		5C089F801D76BFEC0049FE84 /* Exam+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F7D1D76BFEC0049FE84 /* Exam+Flickr.m */; };
 		5C089F811D76BFEC0049FE84 /* AnalyzeExamData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089F7F1D76BFEC0049FE84 /* AnalyzeExamData.m */; };
+		5C089FB31D796B3A0049FE84 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FB01D796B3A0049FE84 /* User.m */; };
+		5C089FB41D796B3A0049FE84 /* User+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FB21D796B3A0049FE84 /* User+CoreDataProperties.m */; };
+		5C089FB91D796B540049FE84 /* AnswerQuestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FB61D796B540049FE84 /* AnswerQuestion.m */; };
+		5C089FBA1D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FB81D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m */; };
+		5C089FBF1D796C230049FE84 /* AnswerQuestion+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FBC1D796C230049FE84 /* AnswerQuestion+Flickr.m */; };
+		5C089FC01D796C230049FE84 /* AnalyzeAnswerQuestionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FBE1D796C230049FE84 /* AnalyzeAnswerQuestionData.m */; };
+		5C089FC61D7986E30049FE84 /* AnswerQeustionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C089FC51D7986E30049FE84 /* AnswerQeustionViewController.m */; };
 		5C4640FC1D66F4B5007289EA /* CreateContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FB1D66F4B5007289EA /* CreateContext.m */; };
 		5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4640FE1D66F651007289EA /* Courses+Flickr.m */; };
 		5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641001D66F651007289EA /* Grade+Flickr.m */; };
@@ -115,10 +120,6 @@
 		5C089F181D7164BB0049FE84 /* Exam+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Exam+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C089F191D7164BB0049FE84 /* Exam.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exam.h; sourceTree = "<group>"; };
 		5C089F1A1D7164BB0049FE84 /* Exam.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Exam.m; sourceTree = "<group>"; };
-		5C089F1D1D7166370049FE84 /* User+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+CoreDataProperties.h"; sourceTree = "<group>"; };
-		5C089F1E1D7166370049FE84 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+CoreDataProperties.m"; sourceTree = "<group>"; };
-		5C089F1F1D7166370049FE84 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		5C089F201D7166370049FE84 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		5C089F281D72D8D80049FE84 /* AnalyzeCourseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeCourseData.h; sourceTree = "<group>"; };
 		5C089F291D72D8D80049FE84 /* AnalyzeCourseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeCourseData.m; sourceTree = "<group>"; };
 		5C089F2B1D72EECE0049FE84 /* AnalyzeGradeData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeGradeData.h; sourceTree = "<group>"; };
@@ -127,6 +128,20 @@
 		5C089F7D1D76BFEC0049FE84 /* Exam+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Exam+Flickr.m"; sourceTree = "<group>"; };
 		5C089F7E1D76BFEC0049FE84 /* AnalyzeExamData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeExamData.h; sourceTree = "<group>"; };
 		5C089F7F1D76BFEC0049FE84 /* AnalyzeExamData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeExamData.m; sourceTree = "<group>"; };
+		5C089FAF1D796B3A0049FE84 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		5C089FB01D796B3A0049FE84 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		5C089FB11D796B3A0049FE84 /* User+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "User+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5C089FB21D796B3A0049FE84 /* User+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "User+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5C089FB51D796B540049FE84 /* AnswerQuestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerQuestion.h; sourceTree = "<group>"; };
+		5C089FB61D796B540049FE84 /* AnswerQuestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerQuestion.m; sourceTree = "<group>"; };
+		5C089FB71D796B540049FE84 /* AnswerQuestion+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnswerQuestion+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5C089FB81D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AnswerQuestion+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5C089FBB1D796C230049FE84 /* AnswerQuestion+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AnswerQuestion+Flickr.h"; sourceTree = "<group>"; };
+		5C089FBC1D796C230049FE84 /* AnswerQuestion+Flickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AnswerQuestion+Flickr.m"; sourceTree = "<group>"; };
+		5C089FBD1D796C230049FE84 /* AnalyzeAnswerQuestionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyzeAnswerQuestionData.h; sourceTree = "<group>"; };
+		5C089FBE1D796C230049FE84 /* AnalyzeAnswerQuestionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyzeAnswerQuestionData.m; sourceTree = "<group>"; };
+		5C089FC41D7986E30049FE84 /* AnswerQeustionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerQeustionViewController.h; sourceTree = "<group>"; };
+		5C089FC51D7986E30049FE84 /* AnswerQeustionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerQeustionViewController.m; sourceTree = "<group>"; };
 		5C4640FA1D66F4B5007289EA /* CreateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateContext.h; sourceTree = "<group>"; };
 		5C4640FB1D66F4B5007289EA /* CreateContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateContext.m; sourceTree = "<group>"; };
 		5C4640FD1D66F651007289EA /* Courses+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Courses+Flickr.h"; sourceTree = "<group>"; };
@@ -380,6 +395,8 @@
 			children = (
 				5C089E501D6E94500049FE84 /* MessageViewController.h */,
 				5C089E511D6E94500049FE84 /* MessageViewController.m */,
+				5C089FC41D7986E30049FE84 /* AnswerQeustionViewController.h */,
+				5C089FC51D7986E30049FE84 /* AnswerQeustionViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -406,10 +423,10 @@
 		5C089E3F1D6E91430049FE84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5C089F1D1D7166370049FE84 /* User+CoreDataProperties.h */,
-				5C089F1E1D7166370049FE84 /* User+CoreDataProperties.m */,
-				5C089F1F1D7166370049FE84 /* User.h */,
-				5C089F201D7166370049FE84 /* User.m */,
+				5C089FAF1D796B3A0049FE84 /* User.h */,
+				5C089FB01D796B3A0049FE84 /* User.m */,
+				5C089FB11D796B3A0049FE84 /* User+CoreDataProperties.h */,
+				5C089FB21D796B3A0049FE84 /* User+CoreDataProperties.m */,
 				5C4641011D66F651007289EA /* User+Create.h */,
 				5C4641021D66F651007289EA /* User+Create.m */,
 			);
@@ -426,6 +443,7 @@
 		5C089F151D71644D0049FE84 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5C089FAE1D796A4A0049FE84 /* AnswerQuestion */,
 				5C089F171D7164BB0049FE84 /* Exam+CoreDataProperties.h */,
 				5C089F181D7164BB0049FE84 /* Exam+CoreDataProperties.m */,
 				5C089F191D7164BB0049FE84 /* Exam.h */,
@@ -443,6 +461,21 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5C089FAE1D796A4A0049FE84 /* AnswerQuestion */ = {
+			isa = PBXGroup;
+			children = (
+				5C089FB51D796B540049FE84 /* AnswerQuestion.h */,
+				5C089FB61D796B540049FE84 /* AnswerQuestion.m */,
+				5C089FB71D796B540049FE84 /* AnswerQuestion+CoreDataProperties.h */,
+				5C089FB81D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m */,
+				5C089FBB1D796C230049FE84 /* AnswerQuestion+Flickr.h */,
+				5C089FBC1D796C230049FE84 /* AnswerQuestion+Flickr.m */,
+				5C089FBD1D796C230049FE84 /* AnalyzeAnswerQuestionData.h */,
+				5C089FBE1D796C230049FE84 /* AnalyzeAnswerQuestionData.m */,
+			);
+			path = AnswerQuestion;
 			sourceTree = "<group>";
 		};
 		5C4641191D688BE2007289EA /* Tools */ = {
@@ -891,16 +924,16 @@
 				5C089E521D6E94500049FE84 /* MessageViewController.m in Sources */,
 				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
 				5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */,
-				5C089F221D7166370049FE84 /* User.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
 				5C089F081D70313E0049FE84 /* MyUtil.m in Sources */,
-				5C089F211D7166370049FE84 /* User+CoreDataProperties.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,
 				5C089F1C1D7164BB0049FE84 /* Exam.m in Sources */,
 				5C9450351D63F1B9000BBEB7 /* CoreDataTableViewController.m in Sources */,
 				5C944FE41D61F862000BBEB7 /* BaseNavigationController.m in Sources */,
+				5C089FC01D796C230049FE84 /* AnalyzeAnswerQuestionData.m in Sources */,
 				5C9450481D653D43000BBEB7 /* GradeTableViewController.m in Sources */,
 				5C4641251D688BE2007289EA /* TFHppleElement.m in Sources */,
+				5C089FB91D796B540049FE84 /* AnswerQuestion.m in Sources */,
 				5C089F2A1D72D8D80049FE84 /* AnalyzeCourseData.m in Sources */,
 				5C4641091D67F0E8007289EA /* UpdateUser.m in Sources */,
 				5C4641051D66F651007289EA /* User+Create.m in Sources */,
@@ -914,9 +947,13 @@
 				5C089F0E1D7049BF0049FE84 /* MenuView.m in Sources */,
 				5C089F1B1D7164BB0049FE84 /* Exam+CoreDataProperties.m in Sources */,
 				5C089F801D76BFEC0049FE84 /* Exam+Flickr.m in Sources */,
+				5C089FB31D796B3A0049FE84 /* User.m in Sources */,
 				5C4641031D66F651007289EA /* Courses+Flickr.m in Sources */,
+				5C089FB41D796B3A0049FE84 /* User+CoreDataProperties.m in Sources */,
+				5C089FBF1D796C230049FE84 /* AnswerQuestion+Flickr.m in Sources */,
 				5C089F811D76BFEC0049FE84 /* AnalyzeExamData.m in Sources */,
 				5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */,
+				5C089FBA1D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m in Sources */,
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,
 				5C9450371D63F1B9000BBEB7 /* Courses.m in Sources */,
 				5C944FE51D61F862000BBEB7 /* MainTabBarController.m in Sources */,
@@ -928,6 +965,7 @@
 				5C089E171D6D57D40049FE84 /* timetableViewModel.m in Sources */,
 				5C944FE91D61F862000BBEB7 /* BrowserView.m in Sources */,
 				5C4641041D66F651007289EA /* Grade+Flickr.m in Sources */,
+				5C089FC61D7986E30049FE84 /* AnswerQeustionViewController.m in Sources */,
 				5C4641271D688BE2007289EA /* SwipeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

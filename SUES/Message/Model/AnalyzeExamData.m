@@ -36,7 +36,6 @@
     NSMutableArray *examArray = [self createExamArray];
     NSInteger key = 0;
     for (TFHppleElement *element in elements) {
-        NSLog(@"element.content = %@",[element content]);
         if (!(key % 4)) {
             examDictionary = [self createExamDictionary];
             [examArray addObject:examDictionary];

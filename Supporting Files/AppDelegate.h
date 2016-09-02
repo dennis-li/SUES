@@ -24,6 +24,6 @@
 -(void)changeRootCtroller:(BOOL)isLogin;
 
 //请求考试安排
--(void)requestSemesterIDAndStudentID;
+-(void)requestSemesterIDAndStudentID:(User *)user;
 @end
 

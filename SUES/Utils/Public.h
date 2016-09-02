@@ -63,6 +63,17 @@
 #define EXAM_SEMESTERID @"examSemesterID"
 #define EXAM_WHOEXAM @"whoExam"
 
+//答疑
+#define ANSWERQUESTION_DATE @"answerQuestionDate"
+#define ANSWERQUESTION_LOCALE @"answerQuestionLocale"
+#define ANSWERQUESTION_CREDIT @"answerQuestionCredit"
+#define ANSWERQUESTION_SEMESTERID @"answerQuestionSemesterId"
+#define ANSWERQUESTION_COURSE_CODE @"answerQuestionCourseCode"
+#define ANSWERQUESTION_NAME @"answerQuestionName"
+#define ANSWERQUESTION_TEACHER @"answerQuestionTeacher"
+#define ANSWERQUESTION_TIME @"answerQuestionTime"
+#define ANSWERQUESTION_WHO @"whoAnswerQuestion"
+
 //用户
 #define USER_NAME @"name"
 #define USER_PASSWORD @"password"
@@ -77,6 +88,9 @@
 
 //考试
 #define EXAM_URL @"http://jxxt.sues.edu.cn/eams/stdExamTable.action?method=examTable&semester.id=%@&examType.id=%ld"
+//答疑
+#define ANSWER_QUESTION_PLAN @"http://jxxt.sues.edu.cn/eams/stdQandA.action?method=showQandAForStd&semester.id=%@"
+
 #define REQUEST_EXAM_DATA @"request exam data"
 
 //登录表单补充数据

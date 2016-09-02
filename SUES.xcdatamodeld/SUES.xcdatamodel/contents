@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15B42" minimumToolsVersion="Automatic">
+    <entity name="AnswerQuestion" representedClassName="AnswerQuestion" syncable="YES">
+        <attribute name="courseCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="credit" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="semesterId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="teacher" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="whoAnswerQuestion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="answerQuestion" inverseEntity="User" syncable="YES"/>
+    </entity>
     <entity name="Courses" representedClassName="Courses" syncable="YES">
         <attribute name="courseId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -43,14 +54,16 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="answerQuestion" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AnswerQuestion" inverseName="whoAnswerQuestion" inverseEntity="AnswerQuestion" syncable="YES"/>
         <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Courses" inverseName="whoCourse" inverseEntity="Courses" syncable="YES"/>
         <relationship name="exam" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exam" inverseName="whoExam" inverseEntity="Exam" syncable="YES"/>
         <relationship name="grade" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Grade" inverseName="whoGrade" inverseEntity="Grade" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Courses" positionX="-56" positionY="9" width="128" height="223"/>
-        <element name="Exam" positionX="270" positionY="54" width="128" height="150"/>
-        <element name="Grade" positionX="270" positionY="207" width="128" height="255"/>
-        <element name="User" positionX="108" positionY="74" width="128" height="133"/>
+        <element name="AnswerQuestion" positionX="-45" positionY="-45" width="128" height="178"/>
+        <element name="Courses" positionX="-38" positionY="207" width="128" height="225"/>
+        <element name="Exam" positionX="295" positionY="-24" width="128" height="150"/>
+        <element name="Grade" positionX="304" positionY="222" width="128" height="255"/>
+        <element name="User" positionX="124" positionY="72" width="128" height="148"/>
     </elements>
 </model>
