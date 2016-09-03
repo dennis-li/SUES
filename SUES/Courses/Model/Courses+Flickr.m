@@ -23,7 +23,7 @@
     }
     User *user = [User searchUserWithId:gradeDictionary[COURSE_WHOCOURSE] inManagedObjectContext:context];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Courses"];
-    request.predicate = [NSPredicate predicateWithFormat:@"period = %@ AND whoCourse = %@",period,user];
+    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@ AND period = %@",user,period];
     
     
     NSError *error;

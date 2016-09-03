@@ -21,7 +21,7 @@
         return nil;
     }
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Grade"];
-    request.predicate = [NSPredicate predicateWithFormat:@"courseId = %@ AND whoGrade = %@ AND courseCode = %@",courseId,user,gradeDictionary[COURSE_CODE]];
+    request.predicate = [NSPredicate predicateWithFormat:@"whoGrade = %@ AND courseId = %@ AND courseCode = %@",user,courseId,gradeDictionary[COURSE_CODE]];
     
     
     NSError *error;

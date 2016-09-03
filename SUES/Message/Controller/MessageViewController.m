@@ -116,7 +116,7 @@
 {
     Exam *exam = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"AnswerQuestion"];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@ AND whoAnswerQuestion = %@ AND semesterId = %@", exam.examName,exam.whoExam,exam.semesterId];
+    request.predicate = [NSPredicate predicateWithFormat:@"whoAnswerQuestion = %@ AND name = %@ AND semesterId = %@",exam.whoExam, exam.examName,exam.semesterId];
     NSArray *courseArray = [self.user.managedObjectContext executeFetchRequest:request error:nil];
     if ([courseArray count]) {
         AnswerQuestion *answerQuestion = [courseArray firstObject];
