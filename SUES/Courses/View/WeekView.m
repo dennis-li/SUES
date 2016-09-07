@@ -50,7 +50,8 @@ static const CGFloat GRID_HEIGHT = 50.0f;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor grayColor];
+        self.userInteractionEnabled = YES;
+        self.image = [UIImage imageNamed:@"backgroud2"];
     }
     return self;
 }

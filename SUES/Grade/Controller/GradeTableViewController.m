@@ -39,6 +39,7 @@
     
     [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
+    self.tabBarItem.title = @"成绩";
 }
 
 -(Networking *)networking

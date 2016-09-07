@@ -38,6 +38,7 @@
     [self createRefreshButton];
     self.managedObjectContext = self.user.managedObjectContext;
     self.navigationItem.title = @"考试安排";
+    self.tabBarItem.title = @"考试";
 }
 
 -(User *)user

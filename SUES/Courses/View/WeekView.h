@@ -10,7 +10,7 @@
 #import "TimetableViewController.h"
 #import "User.h"
 
-@interface WeekView : UIView
+@interface WeekView : UIImageView
 
 @property (nonatomic,strong)TimetableViewController *ctrl;
 @property (nonatomic,strong) User *user;

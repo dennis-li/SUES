@@ -27,10 +27,10 @@
 //创建视图控制器
 -(void)createViewControllers
 {
-    NSArray *ctrlArray = @[@"TimetableViewController",@"GradeTableViewController",@"MessageViewController",@"MineViewController"];
-    NSArray *titleArray = @[@"课表",@"成绩",@"信息",@"我的"];
-    NSArray *imageArray = @[@"tab_news_normal",@"tab_selectCar_normal",@"tab_preferentialCar_normal",@"tab_forum_normal"];
-    NSArray *selctImageArray = @[@"tab_news_highlighted",@"tab_selectCar_highlighted",@"tab_preferentialCar_highlighted",@"tab_forum_highlighted"];
+    NSArray *ctrlArray = @[@"CourseViewController",@"GradeTableViewController",@"MessageViewController",@"MineViewController"];
+    NSArray *titleArray = @[@"课表",@"成绩",@"考试",@"设置"];
+    NSArray *imageArray = @[@"document_normal",@"check_normal",@"exam_normal",@"gear_normal"];
+    NSArray *selctImageArray = @[@"document",@"check",@"exam",@"gear"];
     NSMutableArray *array = [NSMutableArray array];
     for (int i=0; i<ctrlArray.count; i++) {
         
@@ -38,12 +38,15 @@
         Class cls = NSClassFromString(ctrlArray[i]);
         UIViewController *vc  = [[cls alloc] init];
         vc.tabBarItem.title = titleArray[i];
+        
         vc.tabBarItem.image = [[UIImage imageNamed:imageArray[i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         vc.tabBarItem.selectedImage = [[UIImage imageNamed:selctImageArray[i]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:vc];
         [array addObject:navCtrl];
     }
     self.viewControllers = array;
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor grayColor],NSForegroundColorAttributeName,nil]forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor orangeColor],NSForegroundColorAttributeName,nil]forState:UIControlStateSelected];
 }
 
 - (void)didReceiveMemoryWarning {

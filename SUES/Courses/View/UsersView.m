@@ -39,7 +39,7 @@
 
 -(void)createData
 {
-    self.imageArray = @[@"myFavo",@"myForum",@"myOrder",@"myNews",@"drawlots"];
+    self.imageArray = @[@"myFavo",@"myForum",@"myOrder",@"myNews",@"drawlots",@"myFavo",@"myForum",@"myOrder",@"myNews",@"drawlots"];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"User"];
     
     self.usersArray = [self.app.managedObjectContext executeFetchRequest:request error:nil];

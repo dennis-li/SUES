@@ -59,7 +59,7 @@
 
 -(void)changeRootCtroller:(BOOL)isLogin
 {
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:250.0f/255.0f green:210.0f/255.0f blue:40.0f/255.0f alpha:1.0f]];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:250.0f/255.0f green:210.0f/255.0f blue:40.0f/255.0f alpha:1.0f]];
     UIViewController *rootVCT = nil;
     if (isLogin) {
         MainTabBarController *tabCtrl = [[MainTabBarController alloc] init];

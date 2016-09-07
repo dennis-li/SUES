@@ -77,11 +77,9 @@
 //刷新成绩
 -(void)createRefreshButton
 {
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-    [btn setTitle:@"刷新" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(requestNetworking) forControlEvents:UIControlEventTouchUpInside];
-    [btn setTintColor:[UIColor blackColor]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 0, 30, 28) type:UIButtonTypeCustom bgImageName:@"arrow-down" title:nil target:self action:@selector(requestNetworking)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 //请求刷新
@@ -176,7 +174,7 @@
 //显示用户列表
 -(void)createUsersButton
 {
-    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"myForum" title:nil target:self action:@selector(displayOrHide)];
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"users" title:nil target:self action:@selector(displayOrHide)];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = item;
     
