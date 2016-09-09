@@ -185,7 +185,9 @@
 -(void)webViewDidFinishLoad:(UIWebView *)webView//加载完成，分析网页内容
 {
     NSString *readyState = [webView stringByEvaluatingJavaScriptFromString:@"document.readyState"];
-    
+    if (LX_DEBUG) {
+        NSLog(@"webViewDidFinish");
+    }
     BOOL complete = [readyState isEqualToString:@"complete"];
     if (complete) {
         NSString *string = [self.webView stringByEvaluatingJavaScriptFromString: @"document.body.innerHTML"];

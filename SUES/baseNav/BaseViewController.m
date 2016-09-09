@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "MyUtil.h"
+#import "AppDelegate.h"
 
 @interface BaseViewController ()
 
@@ -18,17 +19,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    //获取当前状态栏的高度
+    self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
+    //获取导航栏的高度
+    self.navHeight = self.navigationController.navigationBar.frame.size.height;
+    //标签栏高度
+    self.tabBarHeight = self.tabBarController.tabBar.frame.size.height;
+    self.screenWidth = [UIScreen mainScreen].bounds.size.width;
+    self.screenHeight = [UIScreen mainScreen].bounds.size.height;
     //设置基本视图控制器基本颜色
     self.view.backgroundColor = [UIColor whiteColor];
+}
+
+-(User *)user
+{
+    return [self returnApp].user;
+}
+
+-(AppDelegate *)returnApp
+{
+    return [[UIApplication sharedApplication] delegate];
 }
 
 //添加标题
 -(void)addNavTitle:(NSString *)title
 {
-    UILabel *label = [MyUtil createLabelFrame:CGRectMake(80, 0, 215, 44) title:title];
+    UILabel *label = [MyUtil createLabelFrame:CGRectMake(ScreenWidth/3, 0, ScreenWidth/3, self.navHeight) title:title];//label占屏幕宽度1/3
     label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:28];
+    label.font = [UIFont systemFontOfSize:self.navHeight/2];
+    label.textColor = [UIColor grayColor];
     self.navigationItem.titleView = label;
 }
 

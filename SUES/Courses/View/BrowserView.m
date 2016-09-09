@@ -82,9 +82,7 @@
     _scrollView.contentInset = UIEdgeInsetsMake(0, kScrollViewContentOffset, 0, kScrollViewContentOffset);//跟上下左右的边距,以便滑动到最两端的图片能显示到中间
     //    _scrollView.contentInset = UIEdgeInsetsMake(0, 20, 0, 20);//跟上下左右的边距
     _scrollView.contentSize = CGSizeMake((kItemWidth + kItemSpacing) * self.models.count + kItemSpacing, BrowserHeight);
-    if (LX_DEBUG) {
-        NSLog(@"_scrollView.contentOffset = %@",NSStringFromCGPoint(_scrollView.contentOffset));
-    }
+ 
     NSInteger i = 0;
     _items = [NSMutableArray array];
     for (TimetableModel *movie in self.models) {
@@ -94,6 +92,8 @@
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, kItemWidth, kItemHeight)];
         button.backgroundColor = [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:0.7];
         button.layer.borderWidth = 1.0;
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 10;
         
         button.userInteractionEnabled = YES;
         button.tag = i + kBaseTag;
@@ -107,6 +107,7 @@
         i++;
     }
 }
+
 
 #pragma mark - Layout
 /*

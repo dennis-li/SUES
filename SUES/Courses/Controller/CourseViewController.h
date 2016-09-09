@@ -8,7 +8,6 @@
 
 #import "BaseViewController.h"
 #import "User+Create.h"
-#import <CoreData/CoreData.h>
 
 @interface CourseViewController : BaseViewController
 

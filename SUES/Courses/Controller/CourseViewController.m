@@ -7,51 +7,35 @@
 //
 
 #import "CourseViewController.h"
-#import "WeekView.h"
 #import "Public.h"
 #import "Courses+Flickr.h"
 #import "AppDelegate.h"
-#import "MBProgressHUD.h"
 #import "Networking.h"
-#import "MyUtil.h"
 #import "MenuView.h"
 #import "UsersView.h"
 #import "AnalyzeCourseData.h"
+#import "TimetableModel.h"
+#import "CourseView.h"
+#import "SwipeView.h"
 
-@interface CourseViewController ()
-@property (nonatomic,assign) CGFloat statusHeight;
-@property (nonatomic,assign) CGFloat navHeight;
-@property (nonatomic,assign) CGFloat tabBarHeight;
-@property (nonatomic,strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic,strong) User *user;
+@interface CourseViewController ()<SwipeViewDelegate,SwipeViewDataSource>
 @property (nonatomic,assign) BOOL isRefresh;//判断是否是刷新，需要hud提示框提示数据已更新
 @property (nonatomic,strong) UsersView *usersView;//显示所有用户
 @property (nonatomic,strong) MenuView *menu;//usersView的载体
 @property (nonatomic,strong) Networking *networking;//网络活动
-@property (nonatomic,strong) WeekView *weekView;
-@property (nonatomic,strong) NSString *userPassWord;
-@property (nonatomic, strong) NSString *userId;
+@property (nonatomic,strong) NSArray *dataArray;//课表数据源
+@property (nonatomic,strong) SwipeView *swipeView;//存放时刻只存放三张课表，用于左右滑动。
+@property (nonatomic,strong) NSMutableArray *items;//swipeView的数据源
 @end
 
 @implementation CourseViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"viewDid");
-    [self observerNotification];
-    //获取当前状态栏的高度
-    self.statusHeight = [[UIApplication sharedApplication]statusBarFrame].size.height;
-    //获取导航栏的高度
-    self.navHeight = self.navigationController.navigationBar.frame.size.height;
-    //标签栏高度
-    self.tabBarHeight = self.tabBarController.tabBar.frame.size.height;
-    [self createRefreshButton];
-    WeekView *weekView = [[WeekView alloc]initWithFrame:CGRectMake(0, self.statusHeight+self.navHeight, self.view.frame.size.width, self.view.frame.size.height-(self.statusHeight+self.tabBarHeight))];
-    self.weekView = weekView;
-    
-    [self refreshWeekView];
-    [self createNextWeekButton];//下一周按钮
+    [self createSwipeView];//用于左右滑动，浏览课表
+    [self observerNotification];//注册通知，数据改变时。更新UI
+    [self createRefreshButton];//刷新按钮
+    [self fetchDataArray];//获取数据源
     [self createUsersButton];//显示所有用户
-    
 }
 
 //网络活动
@@ -63,14 +47,38 @@
     return _networking;
 }
 
--(User *)user
+//创建swipe视图，保证时刻只有三个courseView
+-(void)createSwipeView
 {
-    return [self returnApp].user;
-}
-
--(AppDelegate *)returnApp
-{
-    return [[UIApplication sharedApplication] delegate];
+    self.items = [NSMutableArray array];
+    for (int i = 1; i <= NumbersOfWeek; i++)
+    {
+        [_items addObject:@(i)];
+    }
+    SwipeView *swipeView = [[SwipeView alloc] init];
+    swipeView.delegate = self;
+    swipeView.dataSource = self;
+    [self.view addSubview:swipeView];
+    self.swipeView = swipeView;
+    [self addNavTitle:[NSString stringWithFormat:@"第%d周",swipeView.currentItemIndex+1]];
+    
+    [swipeView setBackgroundColor:[UIColor blackColor]];
+    //将子view添加到父视图上
+    [self.view addSubview:swipeView];
+    //使用Auto Layout约束，禁止将Autoresizing Mask转换为约束
+    [swipeView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    //layout 子view
+    //子view的上边缘
+    NSLayoutConstraint *contraint1 = [NSLayoutConstraint constraintWithItem:swipeView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:self.statusHeight+self.navHeight];
+    //子view的左边缘
+    NSLayoutConstraint *contraint2 = [NSLayoutConstraint constraintWithItem:swipeView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0];
+    //子view的下边缘
+    NSLayoutConstraint *contraint3 = [NSLayoutConstraint constraintWithItem:swipeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0];
+    //子view的右边缘
+    NSLayoutConstraint *contraint4 = [NSLayoutConstraint constraintWithItem:swipeView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0];
+    //把约束添加到父视图上
+    NSArray *array = [NSArray arrayWithObjects:contraint1, contraint2, contraint3, contraint4, nil];
+    [self.view addConstraints:array];
 }
 
 //刷新成绩
@@ -100,7 +108,7 @@
     [self.networking requestRefresh];
 }
 
-//刷新请求成功，开始请求数据
+//刷新请求成功(服务器验证帐号密码成功)，开始请求数据
 -(void)requestRefreshCourseData
 {
     self.networking.requestHtmlData = ^(NSData *gradeData,NSData *coursesData){
@@ -108,52 +116,6 @@
         [analyzeCourses analyzeCoursesHtmlData:coursesData];
     };
     [self.networking requestUserDataWithType:RefreshCourse];
-}
-
--(void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
-{
-    _managedObjectContext = managedObjectContext;
-    self.weekView.currentWeek = @"0";
-    [self refreshWeekView];
-    if (self.isRefresh) {
-        MBProgressHUD *hud = [self displayHud];
-        hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
-        self.isRefresh = NO;
-    }
-}
-
-//切换周数，按钮
--(void)createNextWeekButton
-{
-    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
-    [btn setTitle:@"下一周" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(refreshWeekView) forControlEvents:UIControlEventTouchUpInside];
-    [btn setTintColor:[UIColor blackColor]];
-    self.navigationItem.titleView = btn;
-}
-
-//更新课表
--(void)refreshWeekView
-{
-    CGRect rect = self.weekView.frame;
-    NSString *currentWeek = [NSString stringWithFormat:@"%ld",[self.weekView.currentWeek integerValue] + 1];
-    [self.weekView removeFromSuperview];
-    WeekView *weekView = [[WeekView alloc] initWithFrame:rect];
-    [self.view addSubview:weekView];
-    self.weekView = weekView;
-    weekView.ctrl = self;
-    weekView.currentWeek = currentWeek;
-    weekView.user = self.user;
-}
-
-//显示一个弹窗
--(MBProgressHUD *)displayHud
-{
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    hud.mode = MBProgressHUDModeText;
-    hud.offset = CGPointMake(0.f, -0.f);
-    [hud hideAnimated:YES afterDelay:0.8f];
-    return hud;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -170,10 +132,10 @@
     [self.tabBarController.view.layer addAnimation:transition forKey:nil];
 }
 
-//显示用户列表
+//左上角显示用户列表
 -(void)createUsersButton
 {
-    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"users" title:nil target:self action:@selector(displayOrHide)];
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 8, 30, 28) type:UIButtonTypeCustom bgImageName:@"profle" title:nil target:self action:@selector(displayOrHide)];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.leftBarButtonItem = item;
     
@@ -182,6 +144,7 @@
     self.menu = menu;
 }
 
+//隐藏或显示用户表
 -(void)displayOrHide
 {
     if (self.menu.coverView.alpha > 0) {
@@ -200,8 +163,88 @@
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {
-         self.managedObjectContext = note.userInfo[@"context"];
+         [self fetchDataArray];
+         [self.swipeView removeFromSuperview];
+         [self createSwipeView];
+         if (self.isRefresh) {
+             MBProgressHUD *hud = [self displayHud];
+             hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
+             self.isRefresh = NO;
+         }
      }];
 }
 
+//显示一个弹窗
+-(MBProgressHUD *)displayHud
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.offset = CGPointMake(0.f, -0.f);
+    [hud hideAnimated:YES afterDelay:0.8f];
+    return hud;
+}
+
+//获取课表数据源
+-(void)fetchDataArray
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Courses"];
+    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
+    NSArray *courseArray = [self.user.managedObjectContext executeFetchRequest:request error:nil];
+    
+    NSMutableArray *modelArray = [[NSMutableArray alloc]init];
+    for(Courses *course in courseArray)
+    {
+        TimetableModel *model = [[TimetableModel alloc]init];
+        model.name = course.name;
+        model.smartPeriod = course.smartPeriod;
+        model.day = course.day;
+        model.sectionstart = course.sectionstart;
+        model.sectionend = course.sectionend;
+        model.teacher = course.teacher;
+        model.locale = course.locale;
+        model.period = course.period;
+        [modelArray addObject:model];
+    }
+    self.dataArray = modelArray;
+}
+
+#pragma mark iCarousel methods
+
+- (NSInteger)numberOfItemsInSwipeView:(SwipeView *)swipeView
+{
+    return [_items count];
+}
+
+//配置swipeView
+- (UIView *)swipeView:(SwipeView *)swipeView viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
+{
+    //创建一个新的courseView
+    if (view == nil)
+    {
+        CourseView *courseView = [[CourseView alloc] initWithFrame:self.swipeView.bounds];
+        courseView.currentWeek = [_items[index] stringValue];
+        courseView.dataArray = self.dataArray;
+        courseView.ctrl = self;
+        view = courseView;
+        view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    } else{//重用
+        CourseView *courseView = (CourseView *)view;
+        [courseView removeAllButtons];
+        courseView.currentWeek = [_items[index] stringValue];
+        courseView.dataArray = self.dataArray;
+        view = courseView;
+    }
+    return view;
+}
+
+- (CGSize)swipeViewItemSize:(SwipeView *)swipeView
+{
+    return self.swipeView.bounds.size;
+}
+
+//改变导航栏标题
+-(void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
+{
+    [self addNavTitle:[NSString stringWithFormat:@"第%d周",swipeView.currentItemIndex+1]];
+}
 @end

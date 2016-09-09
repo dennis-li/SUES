@@ -8,6 +8,11 @@
 
 #ifndef Public_h
 #define Public_h
+#import "MyUtil.h"
+#import "MBProgressHUD.h"
+
+//一共28周课
+#define NumbersOfWeek 28
 
 //系统的版本号
 #define SystemVersion ([[[UIDevice currentDevice]systemVersion]floatValue])

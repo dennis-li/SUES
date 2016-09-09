@@ -44,6 +44,8 @@
 		5C4641261D688BE2007289EA /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641201D688BE2007289EA /* XPathQuery.m */; };
 		5C4641271D688BE2007289EA /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4641231D688BE2007289EA /* SwipeView.m */; };
 		5C6EAD6F1D804B59000A134D /* CourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6EAD6E1D804B59000A134D /* CourseViewController.m */; };
+		5C6EAD721D81212D000A134D /* CourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6EAD711D81212D000A134D /* CourseView.m */; };
+		5C6EAD7D1D8262F1000A134D /* CourseDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C6EAD7C1D8262F1000A134D /* CourseDetailTableViewController.m */; };
 		5C944F771D61E926000BBEB7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944F761D61E926000BBEB7 /* main.m */; };
 		5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C944F791D61E926000BBEB7 /* AppDelegate.m */; };
 		5C944F801D61E926000BBEB7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C944F7E1D61E926000BBEB7 /* Main.storyboard */; };
@@ -164,6 +166,10 @@
 		5C4641231D688BE2007289EA /* SwipeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwipeView.m; sourceTree = "<group>"; };
 		5C6EAD6D1D804B59000A134D /* CourseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewController.h; sourceTree = "<group>"; };
 		5C6EAD6E1D804B59000A134D /* CourseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewController.m; sourceTree = "<group>"; };
+		5C6EAD701D81212D000A134D /* CourseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseView.h; sourceTree = "<group>"; };
+		5C6EAD711D81212D000A134D /* CourseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseView.m; sourceTree = "<group>"; };
+		5C6EAD7B1D8262F1000A134D /* CourseDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailTableViewController.h; sourceTree = "<group>"; };
+		5C6EAD7C1D8262F1000A134D /* CourseDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailTableViewController.m; sourceTree = "<group>"; };
 		5C944F721D61E926000BBEB7 /* SUES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SUES.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C944F761D61E926000BBEB7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5C944F781D61E926000BBEB7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -272,6 +278,8 @@
 				5C944FDC1D61F862000BBEB7 /* TimetableViewController.m */,
 				5C6EAD6D1D804B59000A134D /* CourseViewController.h */,
 				5C6EAD6E1D804B59000A134D /* CourseViewController.m */,
+				5C6EAD7B1D8262F1000A134D /* CourseDetailTableViewController.h */,
+				5C6EAD7C1D8262F1000A134D /* CourseDetailTableViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -304,6 +312,8 @@
 				5C089E181D6D584E0049FE84 /* WeekView.m */,
 				5C089F0F1D704A270049FE84 /* UsersView.h */,
 				5C089F101D704A270049FE84 /* UsersView.m */,
+				5C6EAD701D81212D000A134D /* CourseView.h */,
+				5C6EAD711D81212D000A134D /* CourseView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -930,6 +940,7 @@
 				5C089D831D6C10D90049FE84 /* Networking.m in Sources */,
 				5C089E161D6D57D40049FE84 /* TimetableModel.m in Sources */,
 				5C4641261D688BE2007289EA /* XPathQuery.m in Sources */,
+				5C6EAD7D1D8262F1000A134D /* CourseDetailTableViewController.m in Sources */,
 				5C089F081D70313E0049FE84 /* MyUtil.m in Sources */,
 				5C9450381D63F1B9000BBEB7 /* Grade+CoreDataProperties.m in Sources */,
 				5C089F1C1D7164BB0049FE84 /* Exam.m in Sources */,
@@ -957,6 +968,7 @@
 				5C089FB41D796B3A0049FE84 /* User+CoreDataProperties.m in Sources */,
 				5C089FBF1D796C230049FE84 /* AnswerQuestion+Flickr.m in Sources */,
 				5C089F811D76BFEC0049FE84 /* AnalyzeExamData.m in Sources */,
+				5C6EAD721D81212D000A134D /* CourseView.m in Sources */,
 				5C944F7A1D61E926000BBEB7 /* AppDelegate.m in Sources */,
 				5C089FBA1D796B540049FE84 /* AnswerQuestion+CoreDataProperties.m in Sources */,
 				5C089D6E1D6AD4540049FE84 /* MBProgressHUD.m in Sources */,

@@ -1,23 +1,21 @@
 //
-//  WeekView.m
-//  gcdqn
+//  CourseView.m
+//  SUES
 //
-//  Created by admin on 16/7/19.
-//  Copyright © 2016年 hardtosaygoodbye. All rights reserved.
+//  Created by lixu on 16/9/8.
+//  Copyright © 2016年 lixu. All rights reserved.
 //
 
-#import "WeekView.h"
+#import "CourseView.h"
 #import "Public.h"
 #import "timetableViewModel.h"
 #import "TimetableModel.h"
-#import "CourseDetailViewController.h"
 #import "BrowserView.h"
 #import "Courses.h"
-
+#import "CourseDetailTableViewController.h"
 
 #define kWidthGrid self.frame.size.width/7.5
-@interface WeekView()<BrowserViewDelegate>
-@property (nonatomic,strong) NSArray *dataArray;
+@interface CourseView ()<BrowserViewDelegate>
 @property (nonatomic,strong) UIScrollView *mainScrollView;
 
 @property (nonatomic,strong) NSNumber *startSchoolYear;
@@ -36,9 +34,7 @@
 @property (nonatomic,strong) NSMutableDictionary *haveAClass;
 @end
 
-
-@implementation WeekView
-
+@implementation CourseView
 #pragma - mark 改 30,50 magic number
 //表头高度
 static const CGFloat HEADER_VIEW_HEIGHT = 30.0f;
@@ -46,12 +42,17 @@ static const CGFloat HEADER_VIEW_HEIGHT = 30.0f;
 //网格高度
 static const CGFloat GRID_HEIGHT = 50.0f;
 
+//一天最多14节课
+static const NSInteger lessonsOfDay = 14;
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
         self.image = [UIImage imageNamed:@"backgroud2"];
+        //初始化ui界面
+        [self _initUI];
     }
     return self;
 }
@@ -64,19 +65,14 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     return _currentWeek;
 }
 
--(void)setUser:(User *)user
+-(void)setDataArray:(NSArray *)dataArray
 {
-    _user = user;
-    //初始化ui界面
-    [self _initUI];
-    //加载课表数据
-    [self _loadData];
+    _dataArray = dataArray;
     //将课表数据加载到界面上
     [self _showTimetable];
     //将按钮添加到滚动视图
     [self addAllButtonsToMainScrollView];
 }
-
 
 #pragma mark - courseButtonDictionary,haveAClass
 -(NSMutableDictionary<NSString *,UIButton *> *)courseButtonDictionary
@@ -143,18 +139,15 @@ static const CGFloat GRID_HEIGHT = 50.0f;
             //课程名字
             NSString *name = model.name;
             //每一次课都是一个按钮
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             btn.frame = CGRectMake(positionX, positionBeginY, kWidthGrid, positionEndY-positionBeginY);
             [btn setTitle:name forState:UIControlStateNormal];
-//            btn.titleLabel.numberOfLines = 0;
-//            btn.titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:10];
-//            
-//            btn.backgroundColor = [UIColor colorWithRed:arc4random_uniform(255)/255.0 green:arc4random_uniform(255)/255.0 blue:arc4random_uniform(255)/255.0 alpha:0.7];
-            btn.backgroundColor = [UIColor redColor];
-            btn.layer.masksToBounds = YES;
-            btn.layer.cornerRadius = 10;
-        
+            btn.titleLabel.numberOfLines = 0;
+            btn.titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:10];
+            int green = arc4random_uniform(255);
+            btn.backgroundColor = [UIColor colorWithRed:arc4random_uniform(green)/255.0 green:green/255.0 blue:arc4random_uniform(255)/255.0 alpha:0.7];
+            
+            
             btn.tag = 100 + tag;
             [btn addTarget:self action:@selector(displayCourseDetailView:) forControlEvents:UIControlEventTouchUpInside];
             /***（二）***/
@@ -215,15 +208,16 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     if ([obj isKindOfClass:[TimetableModel class]]) {
         
         //没有冲突，直接显示详情
-        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
-        courseDVC.view.backgroundColor = [UIColor whiteColor];
+//        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
+//        courseDVC.view.backgroundColor = [UIColor whiteColor];
+        CourseDetailTableViewController *courseDVC = [[CourseDetailTableViewController alloc] init];
         TimetableModel *model = (TimetableModel *)obj;
         courseDVC.title = model.name;
-        
+        [courseDVC addNotification];
+        [self.ctrl.navigationController pushViewController:courseDVC animated:YES];
         //发送通知
         [self sendNotificationToCourseDetailViewCtroller:model];
-        [self.ctrl.navigationController pushViewController:courseDVC animated:YES];
     }else if ([obj isKindOfClass:[NSMutableArray class]]){
         
         //冲突课程浏览器
@@ -254,38 +248,9 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     [self.browser removeFromSuperview];
 }
 
-- (void)_loadData
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Courses"];
-    request.predicate = [NSPredicate predicateWithFormat:@"whoCourse = %@", self.user];
-    NSArray *courseArray = [self.user.managedObjectContext executeFetchRequest:request error:nil];
-    
-    NSMutableArray *modelArray = [[NSMutableArray alloc]init];
-    for(Courses *course in courseArray)
-    {
-        TimetableModel *model = [[TimetableModel alloc]init];
-        model.name = course.name;
-        model.smartPeriod = course.smartPeriod;
-        model.day = course.day;
-        model.sectionstart = course.sectionstart;
-        model.sectionend = course.sectionend;
-        model.teacher = course.teacher;
-        model.locale = course.locale;
-        model.period = course.period;
-        [modelArray addObject:model];
-    }
-    self.dataArray = modelArray;
-    NSLog(@"datacout = %ld",[self.dataArray count]);
-}
 
 //初始化ui界面
 - (void)_initUI{
-    
-//    //设置课程表的背景
-//    UIImage *bgImage = [UIImage imageNamed:@"timetable_bg"];
-//    UIImageView *bgView = [[UIImageView alloc]initWithImage:bgImage];
-//    bgView.frame = self.bounds;
-//    [self addSubview:bgView];
     
     //课表头
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, HEADER_VIEW_HEIGHT)];
@@ -305,8 +270,8 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     //课程表主体部分
     self.mainScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, HEADER_VIEW_HEIGHT, self.frame.size.width, self.frame.size.height-HEADER_VIEW_HEIGHT)];
     self.mainScrollView.bounces = NO;
-    self.mainScrollView.contentSize = CGSizeMake(self.frame.size.width, GRID_HEIGHT*12);
-    for (int i = 0; i<12; i++) {
+    self.mainScrollView.contentSize = CGSizeMake(self.frame.size.width, GRID_HEIGHT*lessonsOfDay);
+    for (int i = 0; i<lessonsOfDay; i++) {
         for (int j = 0; j< 8; j++) {
             if (j == 0) {
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(j*kWidthGrid, i*GRID_HEIGHT,kWidthGrid*0.5, GRID_HEIGHT)];
@@ -320,12 +285,12 @@ static const CGFloat GRID_HEIGHT = 50.0f;
                 label.text =[NSString stringWithFormat:@"%d",i+1];
                 [self.mainScrollView addSubview:label];
             } else {
-                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((j-0.5)*kWidthGrid-1, i*GRID_HEIGHT, kWidthGrid, GRID_HEIGHT+1)];
-                imageView.image = [UIImage imageNamed:@"course_excel.png"];
-                [self.mainScrollView addSubview:imageView];
+//                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((j-0.5)*kWidthGrid-1, i*GRID_HEIGHT, kWidthGrid, GRID_HEIGHT+1)];
+//                imageView.image = [UIImage imageNamed:@"course_excel.png"];
+//                [self.mainScrollView addSubview:imageView];
                 
                 /***（一）***/
-                //初始化12*7个课时(NO代表没有课，YES代表有课)，默认没有课
+                //初始化14*7个课时(NO代表没有课，YES代表有课)，默认没有课
                 NSString *aClass = [NSString stringWithFormat:@"%d,%d",j,i+1];//字典的KEY
                 [self.haveAClass setObject:[NSNumber numberWithBool:NO] forKey:aClass];
             }
@@ -345,10 +310,11 @@ static const CGFloat GRID_HEIGHT = 50.0f;
     
     //过滤掉frame为(0,0,0,0)的部分
     for (UIButton *btn in set) {
-        if (btn.frame.size.height > 0) {
-//            btn.layer.masksToBounds = YES;
-            btn.clipsToBounds = YES;
-            btn.layer.cornerRadius = 10;
+        NSInteger height;
+        if ((height = btn.frame.size.height) > 0) {
+            btn.titleLabel.numberOfLines = 3*height/GRID_HEIGHT;//最多显示多少行文字
+            btn.layer.masksToBounds = YES;
+            btn.layer.cornerRadius = 20;
             [self.mainScrollView addSubview:btn];
         }
     }
@@ -359,11 +325,13 @@ static const CGFloat GRID_HEIGHT = 50.0f;
 
 - (void)browser:(BrowserView *)movieBrowser didSelectItem:(TimetableModel *)model
 {
-    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
-    courseDVC.view.backgroundColor = [UIColor whiteColor];
+//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
+//    courseDVC.view.backgroundColor = [UIColor whiteColor];
+//    courseDVC.title = model.name;
+    CourseDetailTableViewController *courseDVC = [[CourseDetailTableViewController alloc] init];
     courseDVC.title = model.name;
-    
+    [courseDVC addNotification];
     //发送通知
     [self sendNotificationToCourseDetailViewCtroller:model];
     
@@ -372,11 +340,11 @@ static const CGFloat GRID_HEIGHT = 50.0f;
 }
 
 /*在冲突课程浏览器下方显示课程名称
-- (void)browser:(BrowserView *)movieBrowser didChangeItem:(NSString *)name
-{
-    NSLog(@"name = %@", name);
-    self.courseNameLabel.text = name;
-}*/
+ - (void)browser:(BrowserView *)movieBrowser didChangeItem:(NSString *)name
+ {
+ NSLog(@"name = %@", name);
+ self.courseNameLabel.text = name;
+ }*/
 
 static NSInteger _lastIndex = -1;
 - (void)browser:(BrowserView *)movieBrowser didEndScrollingAtIndex:(NSInteger)index
@@ -395,6 +363,19 @@ static NSInteger _lastIndex = -1;
      postNotificationName:@"WeekViewToCourseDVC"
      object:self
      userInfo:userInfo];
+}
+
+//删除所有课程按钮
+-(void)removeAllButtons
+{
+    for (id btn in [self.mainScrollView subviews]) {
+        if ([btn isKindOfClass:[UIButton class]]) {
+            [btn removeFromSuperview];
+        }
+    }
+    self.courseDataArray = nil;
+    self.courseButtonDictionary = nil;
+    self.haveAClass = nil;
 }
 
 @end

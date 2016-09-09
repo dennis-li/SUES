@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TimetableViewController.h"
+#import "CourseViewController.h"
 #import "User.h"
 
 @interface WeekView : UIImageView
 
-@property (nonatomic,strong)TimetableViewController *ctrl;
+@property (nonatomic,strong)CourseViewController *ctrl;
 @property (nonatomic,strong) User *user;
 @property (nonatomic,strong) NSString *currentWeek;
 @end
