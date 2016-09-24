@@ -27,7 +27,7 @@
 //创建视图控制器
 -(void)createViewControllers
 {
-    NSArray *ctrlArray = @[@"CourseViewController",@"GradeTableViewController",@"MessageViewController",@"MineViewController"];
+    NSArray *ctrlArray = @[@"CourseViewController",@"GradeViewController",@"MessageViewController",@"MineViewController"];
     NSArray *titleArray = @[@"课表",@"成绩",@"考试",@"设置"];
     NSArray *imageArray = @[@"document_normal",@"check_normal",@"exam_normal",@"gear_normal"];
     NSArray *selctImageArray = @[@"document",@"check",@"exam",@"gear"];

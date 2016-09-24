@@ -14,6 +14,9 @@
 //一共28周课
 #define NumbersOfWeek 28
 
+//一共12个学期（可以改）
+#define NumbersOfYear 6
+
 //系统的版本号
 #define SystemVersion ([[[UIDevice currentDevice]systemVersion]floatValue])
 
@@ -96,6 +99,9 @@
 //答疑
 #define ANSWER_QUESTION_PLAN @"http://jxxt.sues.edu.cn/eams/stdQandA.action?method=showQandAForStd&semester.id=%@"
 
+//照片
+#define USER_PHOTO_URL @"http://jxxt.sues.edu.cn/eams/avatar/my.action"
+
 #define REQUEST_EXAM_DATA @"request exam data"
 
 //登录表单补充数据
@@ -104,3 +110,4 @@
 #define FORM_SUCCESS  @"http://my.sues.edu.cn/loginSuccess.portal"
 
 #endif /* Public_h */
+

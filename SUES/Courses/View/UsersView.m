@@ -102,11 +102,18 @@
 //处理完数据发送通知到前台
 -(void)sendNotificationToCourseTable
 {
-    NSDictionary *userInfo = @{@"context" : self.app.user.managedObjectContext};
+    NSDictionary *userInfo = @{@"curentItemIndex" : @(1)};
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"sendCurentItemIndexToForeground"
+     object:self
+     userInfo:userInfo];
+    
+    //sendContextToForeground
+    NSDictionary *userInfoWithContext = @{@"context" : self.app.user.managedObjectContext};
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"sendContextToForeground"
      object:self
-     userInfo:userInfo];
+     userInfo:userInfoWithContext];
 }
 
 //添加文字到图片上

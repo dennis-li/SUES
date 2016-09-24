@@ -17,8 +17,9 @@
 #import "TimetableModel.h"
 #import "CourseView.h"
 #import "SwipeView.h"
+#import "PopoverViewController.h"
 
-@interface CourseViewController ()<SwipeViewDelegate,SwipeViewDataSource>
+@interface CourseViewController ()<SwipeViewDelegate,SwipeViewDataSource,UIPopoverPresentationControllerDelegate>
 @property (nonatomic,assign) BOOL isRefresh;//判断是否是刷新，需要hud提示框提示数据已更新
 @property (nonatomic,strong) UsersView *usersView;//显示所有用户
 @property (nonatomic,strong) MenuView *menu;//usersView的载体
@@ -26,12 +27,13 @@
 @property (nonatomic,strong) NSArray *dataArray;//课表数据源
 @property (nonatomic,strong) SwipeView *swipeView;//存放时刻只存放三张课表，用于左右滑动。
 @property (nonatomic,strong) NSMutableArray *items;//swipeView的数据源
+@property (nonatomic,strong) PopoverViewController *popover;//选择第几周
 @end
 
 @implementation CourseViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self createSwipeView];//用于左右滑动，浏览课表
+    [self createSwipeViewWithCurrentItemIndex:1];//用于左右滑动，浏览课表,默认当前为第一周
     [self observerNotification];//注册通知，数据改变时。更新UI
     [self createRefreshButton];//刷新按钮
     [self fetchDataArray];//获取数据源
@@ -48,7 +50,7 @@
 }
 
 //创建swipe视图，保证时刻只有三个courseView
--(void)createSwipeView
+-(void)createSwipeViewWithCurrentItemIndex:(NSInteger)index
 {
     self.items = [NSMutableArray array];
     for (int i = 1; i <= NumbersOfWeek; i++)
@@ -59,8 +61,9 @@
     swipeView.delegate = self;
     swipeView.dataSource = self;
     [self.view addSubview:swipeView];
+    swipeView.currentItemIndex = index;
     self.swipeView = swipeView;
-    [self addNavTitle:[NSString stringWithFormat:@"第%d周",swipeView.currentItemIndex+1]];
+    [self addNavTitle:[NSString stringWithFormat:@"第%ld周",swipeView.currentItemIndex+1]];
     
     [swipeView setBackgroundColor:[UIColor blackColor]];
     //将子view添加到父视图上
@@ -84,9 +87,41 @@
 //刷新成绩
 -(void)createRefreshButton
 {
-    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 0, 30, 28) type:UIButtonTypeCustom bgImageName:@"arrow-down" title:nil target:self action:@selector(requestNetworking)];
+    UIButton *btn = [MyUtil createBtnFrame:CGRectMake(0, 0, 30, 28) type:UIButtonTypeCustom bgImageName:@"arrow-down" title:nil target:self action:@selector(displayChoiceWeekPopoverView)];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:btn];
     self.navigationItem.rightBarButtonItem = item;
+}
+
+//选择显示第几周的课程
+-(void)displayChoiceWeekPopoverView
+{
+    UIButton *rightBarButton = (UIButton *)self.navigationItem.rightBarButtonItem.customView;
+    [rightBarButton setBackgroundImage:[UIImage imageNamed:@"arrow-up"] forState:UIControlStateNormal];
+    self.popover = [[PopoverViewController alloc] init];
+    self.popover.modalPresentationStyle = UIModalPresentationPopover;
+    self.popover.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;  //rect参数是以view的左上角为坐标原点（0，0）
+    self.popover.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUnknown; //箭头方向,如果是baritem不设置方向，会默认up，up的效果也是最理想的
+//    self.popover.preferredContentSize = CGSizeMake(ScreenWidth/2, ScreenWidth*2/3);
+    self.popover.popoverPresentationController.delegate = self;
+    [self presentViewController:self.popover animated:YES completion:nil];
+}
+
+#pragma - mark UIPresentationControllerDelegate
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller{
+    return UIModalPresentationNone;
+}
+
+//popover消失
+-(void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+{
+    [self settingRightBarButtonImage];
+}
+
+//更换导航栏右侧按钮图片指向
+-(void)settingRightBarButtonImage
+{
+    UIButton *rightBarButton = (UIButton *)self.navigationItem.rightBarButtonItem.customView;
+    [rightBarButton setBackgroundImage:[UIImage imageNamed:@"arrow-down"] forState:UIControlStateNormal];
 }
 
 //请求刷新
@@ -159,19 +194,29 @@
 {
     
     [[NSNotificationCenter defaultCenter]
-     addObserverForName:@"sendContextToForeground"
+     addObserverForName:@"sendCurentItemIndexToForeground"
      object:nil
      queue:nil
      usingBlock:^(NSNotification * _Nonnull note) {
-         [self fetchDataArray];
-         [self.swipeView removeFromSuperview];
-         [self createSwipeView];
+         [self.popover dismissViewControllerAnimated:YES completion:^{
+             [self settingRightBarButtonImage];//导航栏右侧图片，反向
+         }];
+         NSInteger index = [note.userInfo[@"CurentItemIndex"] integerValue];
+         [self refreshSwipeViewWithCurrentItemIndex:index];//刷新swipeView
          if (self.isRefresh) {
              MBProgressHUD *hud = [self displayHud];
              hud.label.text = NSLocalizedString(@"课表已更新", @"HUD message title");
              self.isRefresh = NO;
          }
      }];
+}
+
+//更新swipeView
+-(void)refreshSwipeViewWithCurrentItemIndex:(NSInteger)index
+{
+    [self fetchDataArray];
+    [self.swipeView removeFromSuperview];
+    [self createSwipeViewWithCurrentItemIndex:index];
 }
 
 //显示一个弹窗
@@ -245,6 +290,6 @@
 //改变导航栏标题
 -(void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
 {
-    [self addNavTitle:[NSString stringWithFormat:@"第%d周",swipeView.currentItemIndex+1]];
+    [self addNavTitle:[NSString stringWithFormat:@"第%ld周",swipeView.currentItemIndex+1]];
 }
 @end

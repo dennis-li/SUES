@@ -50,7 +50,7 @@
 -(void)createData
 {
     self.imageArray = @[@"myFavo",@"myForum",@"myOrder",@"myNews",@"drawlots"];
-    self.titleArray = @[@"添加帐号",@"xxx",@"xxx",@"xxx",@"xxx"];
+    self.titleArray = @[@"添加帐号",@"更新成绩",@"更新课表",@"更新考试安排",@"xxx"];
 }
 
 -(void)createTableView

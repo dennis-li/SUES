@@ -58,6 +58,9 @@
         grade.yearAndSemester = gradeDictionary[COURSE_YEARANDSEMESTER];
         grade.whoGrade = [User searchUserWithId:gradeDictionary[GRADE_WHOGRADE] inManagedObjectContext:context];
     }
+    if (LX_DEBUG) {
+        NSLog(@"Grade.Flickr_year = %@,semester = %@",grade.startSchoolYear,grade.semester);
+    }
     return grade;
 }
 

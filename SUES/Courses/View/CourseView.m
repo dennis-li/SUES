@@ -207,14 +207,11 @@ static const NSInteger lessonsOfDay = 14;
     id obj = self.courseDataArray[button.tag-100];
     if ([obj isKindOfClass:[TimetableModel class]]) {
         
-        //没有冲突，直接显示详情
-//        UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
-//        courseDVC.view.backgroundColor = [UIColor whiteColor];
         CourseDetailTableViewController *courseDVC = [[CourseDetailTableViewController alloc] init];
         TimetableModel *model = (TimetableModel *)obj;
         courseDVC.title = model.name;
         [courseDVC addNotification];
+        courseDVC.hidesBottomBarWhenPushed = YES;
         [self.ctrl.navigationController pushViewController:courseDVC animated:YES];
         //发送通知
         [self sendNotificationToCourseDetailViewCtroller:model];
@@ -285,10 +282,6 @@ static const NSInteger lessonsOfDay = 14;
                 label.text =[NSString stringWithFormat:@"%d",i+1];
                 [self.mainScrollView addSubview:label];
             } else {
-//                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((j-0.5)*kWidthGrid-1, i*GRID_HEIGHT, kWidthGrid, GRID_HEIGHT+1)];
-//                imageView.image = [UIImage imageNamed:@"course_excel.png"];
-//                [self.mainScrollView addSubview:imageView];
-                
                 /***（一）***/
                 //初始化14*7个课时(NO代表没有课，YES代表有课)，默认没有课
                 NSString *aClass = [NSString stringWithFormat:@"%d,%d",j,i+1];//字典的KEY
@@ -302,6 +295,10 @@ static const NSInteger lessonsOfDay = 14;
 
 -(void)addAllButtonsToMainScrollView
 {
+    if (LX_DEBUG) {
+        NSLog(@"screen.width = %f,grad.width = %f",self.frame.size.width,kWidthGrid);
+    }
+    
     //提出所有的button
     NSArray *array = [self.courseButtonDictionary allValues];
     
@@ -314,7 +311,7 @@ static const NSInteger lessonsOfDay = 14;
         if ((height = btn.frame.size.height) > 0) {
             btn.titleLabel.numberOfLines = 3*height/GRID_HEIGHT;//最多显示多少行文字
             btn.layer.masksToBounds = YES;
-            btn.layer.cornerRadius = 20;
+            btn.layer.cornerRadius = self.frame.size.width/16;//magic number，16分之一倒出圆角圆润
             [self.mainScrollView addSubview:btn];
         }
     }
@@ -325,18 +322,14 @@ static const NSInteger lessonsOfDay = 14;
 
 - (void)browser:(BrowserView *)movieBrowser didSelectItem:(TimetableModel *)model
 {
-//    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    CourseDetailViewController *courseDVC = [mainStoryboard instantiateViewControllerWithIdentifier:@"courseDVC"];
-//    courseDVC.view.backgroundColor = [UIColor whiteColor];
-//    courseDVC.title = model.name;
     CourseDetailTableViewController *courseDVC = [[CourseDetailTableViewController alloc] init];
     courseDVC.title = model.name;
     [courseDVC addNotification];
     //发送通知
     [self sendNotificationToCourseDetailViewCtroller:model];
-    
-    [self tapbrowserBackgroundView];
+    courseDVC.hidesBottomBarWhenPushed = YES;
     [self.ctrl.navigationController pushViewController:courseDVC animated:YES];
+    [self tapbrowserBackgroundView];//取消冲突浏览器
 }
 
 /*在冲突课程浏览器下方显示课程名称
